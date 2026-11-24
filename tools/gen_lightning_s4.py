@@ -35,7 +35,7 @@ for a, b in [(2, 7), (3, 5), (4, 10), (9, 15), (6, 9), (8, 12), (9, 12), (10, 15
     w2 = g if g > 1 else a + b                 # the highest common factor, or the sum
     add(f'Lowest common multiple of {a} and {b}', L, [w1, w2], lambda x, a=a, b=b: x == lcm2(a, b))
 # 2. the highest common factor
-for a, b in [(8, 12), (12, 16), (10, 25), (16, 24), (18, 27), (20, 30), (14, 21), (24, 36), (15, 40), (28, 35), (32, 48), (9, 30), (12, 30), (18, 45)]:
+for a, b in [(8, 12), (12, 16), (10, 25), (16, 24), (18, 27), (20, 30), (14, 35), (24, 36), (15, 40), (28, 35), (32, 48), (9, 30), (12, 30), (18, 45)]:
     pair_ok(a, b)
     g = math.gcd(a, b)
     assert g == hcf2(a, b)
@@ -52,7 +52,7 @@ for a, b, k in [(2, 3, 3), (3, 4, 2), (2, 5, 4), (4, 5, 2), (3, 7, 1), (8, 12, 2
     mb = next(v for v in range(right + b, right + 9 * b, b) if v % a)   # a multiple of b only, just above
     add(f'Which is a common multiple of {a} and {b}?', right, [ma, mb], lambda x, a=a, b=b: x % a == 0 and x % b == 0)
 # 4. which number is a common factor?
-for a, b in [(12, 20), (20, 30), (16, 24), (18, 30), (24, 40), (27, 36), (20, 28), (30, 45), (12, 32), (36, 48)]:
+for a, b in [(12, 20), (20, 30), (16, 24), (18, 30), (24, 32), (27, 36), (20, 28), (30, 45), (12, 32), (40, 60)]:
     pair_ok(a, b)
     common = sorted(set(facts(a)) & set(facts(b)))
     right = R.choice([c for c in common if c > 1])
@@ -62,10 +62,10 @@ for a, b in [(12, 20), (20, 30), (16, 24), (18, 30), (24, 40), (27, 36), (20, 28
 for x, y in [(8, 40), (7, 28), (9, 54), (6, 30), (4, 36), (45, 9), (32, 8), (60, 12), (21, 7), (48, 6), (8, 30), (25, 10)]:
     word = 'factor' if y % x == 0 else 'multiple' if x % y == 0 else 'neither'
     rel = lambda w, x=x, y=y: w == ('factor' if x * (y // x) == y else 'multiple' if y * (x // y) == x else 'neither')
-    add(f'{x} is a ___ of {y}', word, [w for w in ('factor', 'multiple', 'neither') if w != word], rel)
+    add(f'Is {x} a factor or a multiple of {y}?', word, [w for w in ('factor', 'multiple', 'neither') if w != word], rel)
 # 6. the n-th multiple
 ORD = {3: '3rd', 4: '4th', 5: '5th', 6: '6th', 7: '7th', 8: '8th'}
-for k, n in [(7, 6), (8, 5), (9, 4), (6, 7), (12, 3), (11, 5), (15, 4)]:
+for k, n in [(13, 3), (25, 3), (7, 6), (6, 7), (12, 3), (20, 4), (15, 4)]:
     add(f'The {ORD[n]} multiple of {k} is', n * k, [(n - 1) * k, (n + 1) * k], lambda x, k=k, n=n: x == sum([k] * n))
 # 7. how many factors?
 for n in [9, 12, 16, 18, 20, 25, 28, 30]:
@@ -85,7 +85,7 @@ for n in [18, 20, 28, 32, 45, 50, 44, 27]:
     add(f'Factors of {n}: {shown}', miss, near[:2], lambda x, n=n, fs=fs, i=i: n % x == 0 and fs[i - 1] < x < fs[i + 1])
 # 10. the words of the stop (written out; each one is checked below by a small test of its own)
 add('A number in two times tables is a common ...', 'multiple', ['factor', 'product'], lambda w: w == 'multiple')
-add('The smallest factor of every whole number is', 1, [0, 2], lambda x: x != 0 and all(n % x == 0 for n in range(1, 200)))
+add('The smallest factor of every whole number (not 0) is', 1, [0, 2], lambda x: x != 0 and all(n % x == 0 for n in range(1, 200)))
 add('The biggest factor of 36 is', 36, [18, 6], lambda x: x == max(facts(36)))
 add('The first multiple of 9 is', 9, [18, 1], lambda x: x == 9 * 1)
 add('5 × 8 = 40. So 40 is the ___ of 5 and 8', 'product', ['sum', 'factor'], lambda w: w == 'product' and 5 * 8 == 40 and 5 + 8 != 40)

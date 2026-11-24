@@ -32,7 +32,7 @@
 (function () {
 "use strict";
 const M = MX.M, D = MX.D, arrange = MX.arrange, cap = MX.cap, LET = MX.LET;
-const L = (t, u) => D.s(t) + " " + u;                                  /* 3500, 'cm' -> '3.5 cm' */
+const L = (t, u) => D.s(t) + "\u00a0" + u;                             /* 3500, 'cm' -> '3.5 cm' (a no-break space: never "3.5 / cm") */
 const raw = t => D.s(t).replace(/,/g, "");                             /* the text to type: no comma */
 const UN = { mm: 1, cm: 10, m: 1000 }, UNAME = { mm: "millimetres", cm: "centimetres", m: "metres" };
 function conv(t, from, to) {
@@ -76,13 +76,15 @@ const WHAT = {
   short: "a line from the centre that stops before the circumference"
 };
 const THE = k => (k === "centre" || k === "circumference" ? "the " + k : k === "chord" || k === "short" ? WHAT[k] : "a " + k);
-function partFig(part, a, lab) {
+/* plain: one ink for every kind of line (a question that asks for the NAME of a part must not show its colour) */
+function partFig(part, a, lab, plain) {
   a = a == null ? 30 : a;
-  if (part === "centre") return { k: "circle", dot: "hl", dotLab: lab || "" };
-  if (part === "circumference") return { k: "circle", ring: "hl", ringLab: lab || "" };
+  const p = plain ? { plain: true } : {};
+  if (part === "centre") return Object.assign({ k: "circle", dot: "hl", dotLab: lab || "" }, p);
+  if (part === "circumference") return Object.assign({ k: "circle", ring: "hl", ringLab: lab || "" }, p);
   const t = { radius: "r", diameter: "d", chord: "c", short: "s" }[part];
   if (!t) throw new Error("circle: no part " + part);
-  return { k: "circle", lines: [{ t: t, a: a, lab: lab || "", hl: true }] };
+  return Object.assign({ k: "circle", lines: [{ t: t, a: a, lab: lab || "", hl: true }] }, p);
 }
 
 M.cname = function (d) {
@@ -92,7 +94,7 @@ M.cname = function (d) {
     why: i === 0 ? "" : cap(THE(x)) + " is " + WHAT[x] + ". Look at the part marked ? again." })), d.at);
   return {
     q: "Look at the circle. What is the name of the part marked <b>?</b>", sub: "Tick (✓) one box.",
-    fig: partFig(part, d.a, "?"), opts: opts,
+    fig: partFig(part, d.a, "?", true), opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why }; },
     hint: { step: "Is it a point, a straight line or a curved line? Does it pass through the centre?" },
     worked: { text: "The part marked ? is " + WHAT[part] + ". It is " + THE(part) + ".", pic: partFig(part, d.a, part) },
@@ -104,7 +106,7 @@ M.cname = function (d) {
 M.cshow = function (d) {
   const part = d.part, a0 = d.a == null ? 20 : d.a;
   if (d.opts[0] !== part || new Set(d.opts).size !== d.opts.length) throw new Error("cshow: opts[0] must be the part, all different");
-  const opts = arrange(d.opts.map((x, i) => ({ html: "", fig: partFig(x, a0 + i * 55), alt: "A circle with " + WHAT[x], ok: i === 0,
+  const opts = arrange(d.opts.map((x, i) => ({ html: "", fig: partFig(x, a0 + i * 55, "", true), alt: "A circle with " + WHAT[x], ok: i === 0,
     why: i === 0 ? "" : "This picture shows " + THE(x) + ". " + cap(THE(part)) + " is " + WHAT[part] + "." })), d.at);
   const right = opts.findIndex(o => o.ok);
   return {
@@ -236,7 +238,7 @@ M.cdraw = function (d, mode) {
       if (!r.drawn) return { ok: false, msg: "Tap Draw to draw your circle." };
       if (r.at !== at) return { ok: false, msg: "The centre must be " + at + ". Put the point of the compasses on " + at + "." };
       if (r.h === h) return { ok: true };
-      const open = "Your compasses are open " + cmOf(r.h) + " cm. ";
+      const open = "Your compasses are open " + cmOf(r.h) + "\u00a0cm. ";
       if (r.h === 2 * h) return { ok: false, msg: c.from === "d" ? open + "That is the diameter. Set them to the radius: half of " + L(c.d, u) + "." : open + "Your circle is too big. The radius must be " + L(c.r, u) + "." };
       if (c.from === "r" && r.h * 2 === h) return { ok: false, msg: open + "The radius is given: do not halve it." };
       return { ok: false, msg: open + (c.from === "d" ? "The opening is the radius: half of " + L(c.d, u) + "." : "They must be open " + L(c.r, u) + ": the radius.") };
@@ -246,7 +248,7 @@ M.cdraw = function (d, mode) {
     worked: { text: text, pic: { k: "cgrid", r: raw(c.r), lab: c.from === "r", across: c.from === "d", big: true } },
     yes: "The compasses were open " + L(c.r, u) + ": the radius. The circle is " + L(c.d, u) + " across.",
     key: "compasses open " + L(c.r, u) + ", point on " + at,
-    given: r => "open " + r.r + " cm, point on " + (r.at || "no point")
+    given: r => "open " + r.r + "\u00a0cm, point on " + (r.at || "no point")
   };
 };
 
@@ -365,7 +367,7 @@ M.ccfix = function (d) {
     reasons = [
       { t: "The compasses must be set to the radius, not to the diameter." },
       { t: "The compasses must be opened to double the diameter.", why: "Then the circle is even bigger. The opening of the compasses is the radius of the circle." },
-      { t: "There is no mistake. The circle is " + L(c.d, u) + " across.", why: "With the compasses open " + L(c.d, u) + ", the radius is " + L(c.d, u) + ". So the circle is " + L(2 * c.d, u) + " across." }];
+      { t: "The point must go on the circumference, not on the centre.", why: "The point of the compasses goes on the centre. The pencil draws the circumference." }];
     abAsk = "Write the correct distance between the point and the pencil.";
     if (u === "cm" && c.d % 500 === 0 && c.d <= 5000) fig = { k: "cruler", r: raw(c.d), cap: who + "'s compasses" };
     step = "The opening of the compasses is the radius of the circle. What is the radius when the diameter is " + L(c.d, u) + "?";
@@ -393,7 +395,7 @@ M.ccfix = function (d) {
       const o = opts[r.pick], pickOk = !!(o && o.ok), vOk = D.eq((r.v || [])[0], ans), v = D.p((r.v || [])[0]);
       if (pickOk && vOk) return { ok: true, parts: [true], pickOk: true };
       const msg = !pickOk ? (o && o.why ? o.why : "Read the three boxes again.") + (vOk ? "" : " Then write the right length.")
-        : v === wrongV ? "That is " + who + "'s length. " + step : "The mistake is right. Now find the length. " + step;
+        : v === wrongV ? "That is " + who + "'s length. " + step : "You found the mistake. Now find the length. " + step;
       return { ok: false, msg: msg, parts: [vOk], pickOk: pickOk };
     },
     hint: { pic: { k: "circle", lines: kind === "set" ? [{ t: "d", a: 0, lab: L(c.d, u) }, { t: "r", a: 125, lab: "?" }] : [{ t: "r", a: 0, lab: L(c.r, u) }, { t: "r", a: 180, lab: L(c.r, u), dash: true }] }, step: step },

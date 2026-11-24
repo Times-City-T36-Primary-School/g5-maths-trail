@@ -139,7 +139,10 @@ function sumSlip(a, b, op, typed) {
   const v = D.p(typed), s = slips(a, b, op), w = work(a, b, op);
   if (isNaN(v)) return "Write a number.";
   if (v === s.right) return "Line up the decimal points, not the last digits. Tenths go under tenths.";
-  if (v === s.nozero) { const p = w.cols[w.cols.length - 1]; return a + " has no " + p.many + ". Write 0 there as a place holder. Then exchange."; }
+  if (v === s.nozero) {
+    if (w.dpa === 0) return a + " has no " + list(w.cols.slice(w.cols.length - w.dp).map(p => p.many)).replace(" and ", " or ") + ". Write " + a + " as " + D.s(D.p(a), w.dp) + ". Then exchange.";
+    const p = w.cols[w.cols.length - 1]; return a + " has no " + p.many + ". Write 0 there as a place holder. Then exchange.";
+  }
   if (v === s.nocarry) return "You forgot to carry. When a column makes 10 or more, carry 1 to the next column.";
   if (v === s.noex) return "Take the bottom digit from the top digit. When the top digit is smaller, exchange.";
   if (v === s.noreduce) return "You exchanged. Now the next column on the left must go down by 1.";
@@ -191,11 +194,17 @@ M.dround = function (d) {
 /* tick the rounded number: the wrong options are the other end, the other place and one step too far */
 M.droundto = function (d) {
   const n = d.n, to = d.to, T0 = TO[to], O = TO[T0.other], t = D.p(n), l = fl(t, T0.u), h = l + T0.u, a = rd(t, T0.u), end = a === l ? h : l, dg = D.digit(t, T0.look.k);
-  const oa = rd(t, O.u), far = a === h ? h + T0.u : l - T0.u, cut = to === "whole" ? fl(t, 100) : (rd(t, 1000) === fl(t, 1000) ? fl(t, 1000) + 1000 : fl(t, 1000));
+  const oa = rd(t, O.u), far = a === h ? h + T0.u : l - T0.u, between = n + " is between " + rs(l, to) + " and " + rs(h, to) + ".";
+  /* the third slip. To a whole number: the tenths kept (12.75 -> 12.7). To a tenth: the decimals cut off when the
+     whole number below is not the rounded whole (4.96 -> 4); else the number not rounded at all (0.38 -> 0.39) */
+  let cut;
+  if (to === "whole") { const c = fl(t, 100); cut = { v: c, html: D.s(c, 1), why: D.s(c, 1) + " is not a whole number. Round to the nearest whole number: " + between }; }
+  else if (oa !== fl(t, 1000)) { const c = fl(t, 1000); cut = { v: c, html: D.s(c, 0), why: D.s(c, 0) + " has no tenths. Round to the nearest tenth: " + between }; }
+  else { const c = D.digit(t, PL[PLK.hu].k) === 9 ? t - 10 : t + 10; cut = { v: c, html: D.s(c, 2), why: D.s(c, 2) + " is not rounded. A number rounded to the nearest tenth has 1 decimal place." }; }
   const cand = [
     { v: end, html: rs(end, to), why: a === h ? "The " + T0.look.many + " digit is " + dg + ". 5 or more: round up." : "The " + T0.look.many + " digit is " + dg + ". Less than 5: round down." },
     { v: oa, html: rs(oa, T0.other), why: "That is " + n + " to the nearest " + O.name + ", not to the nearest " + T0.name + "." },
-    { v: cut, html: to === "whole" ? D.s(cut, 1) : D.s(cut, 0), why: n + " is between " + rs(l, to) + " and " + rs(h, to) + ". Choose the nearer one." },
+    cut,
     { v: far, html: rs(far, to), why: n + " is between " + rs(l, to) + " and " + rs(h, to) + ". Choose the nearer one." }];
   const seen = [a], wrong = [];
   cand.forEach(c => { if (c.v >= 0 && seen.indexOf(c.v) < 0 && wrong.length < 3) { seen.push(c.v); wrong.push(c); } });

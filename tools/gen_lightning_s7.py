@@ -7,7 +7,9 @@
 # otherwise). When it is not ("lines of symmetry: a rectangle" is 2 or 4), the question must name the shape exactly
 # ("a rectangle that is not a square").
 # The order of rotational symmetry of a rectangle and of a kite is the real test question: it is not asked here.
-import json, math, random
+# run from the project folder: python3 tools/gen_lightning_s7.py [--write]
+#   -> tools/lightning_s7.txt; with --write the list is also put into src/js/22-pack-stop7.js (lightning items)
+import json, math, random, sys
 R = random.Random(77)
 EPS = 1e-6
 R3 = math.sqrt(3)
@@ -235,10 +237,11 @@ for q, frac, hand in (('A quarter turn is', 4, 90), ('A half turn is', 2, 180), 
 for n in (1, 2, 3, 4):
     add(f'A shape fits {n} time{"" if n == 1 else "s"} in one full turn. Its order is', n, [x for x in (n - 1, n + 1, n * 2) if x != n])
 add('Order 1 means the shape has', 'no rotational symmetry', ['1 line of symmetry', '1 right angle'])
-# lines of symmetry + order
-for n in ['square', 'rhombus that is not a square', 'letter H', 'equilateral triangle']:
-    r, s = subject(n, 'rot'), subject(n, 'sym')
-    add('Lines of symmetry + order: ' + A(n), r + s, [x for x in (r, s, r + s + 2, r * s, 1) if x != r + s])
+# more lines of symmetry (plain items, one fact each); slips: the order, a nearby count
+for n in ['letter H', 'letter T', 'letter L', 'plus sign (+)']:
+    s = subject(n, 'sym')
+    r = subject(n, 'rot')
+    add('Lines of symmetry: ' + A(n), s, [x for x in (r, 2, 1, 0) if x != s])
 # the words
 add('Lines that never meet are', 'parallel', ['perpendicular', 'diagonal'])
 add('Lines that meet at a right angle are', 'perpendicular', ['parallel', 'equal'])
@@ -253,4 +256,10 @@ for q, o in items: assert 'isosceles' not in q + ' '.join(o) and 'leans' not in 
 R.shuffle(items)
 for q, o in items: assert len(set(o)) == 3 and 'None' not in o, q
 print(len(items))
-open('tools/lightning_s7.txt', 'w', encoding='utf8').write(',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items))
+out = ',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items) + '\n'
+open('tools/lightning_s7.txt', 'w', encoding='utf8').write(out)
+if '--write' in sys.argv:                 # also put the items into the pack, between "lightning: {" and the self-check
+    pk = 'src/js/22-pack-stop7.js'; src = open(pk, encoding='utf8').read()
+    i = src.index('items: [\n', src.index('    lightning: {')) + len('items: [\n'); j = src.index('      ]\n    },\n', i)
+    open(pk, 'w', encoding='utf8').write(src[:i] + out + src[j:])
+    print('written into', pk)

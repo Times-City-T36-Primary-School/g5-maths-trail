@@ -13,7 +13,10 @@
    smean      { nums, unit?, tool?, labels? }                write the mean (tool: the towers; then the mean is whole)
    srange     { nums, unit?, tool? }                         write the range
    sall       { nums, unit?, which?: ['mode', 'median', 'mean', 'range'] }   several measures of one data set
-   sfreq      { head: ['Shoe size', 'Frequency'], vals, freqs, ask?: 'mode' | 'count' }   read a frequency table
+   sfreq      { head: ['Shoe size', 'Frequency'], vals, freqs, ask?: 'mode' | 'count', tq?, per? }   read a frequency table
+                                                             (tq: the sentence that says what the table shows, in place of
+                                                             "The table shows the frequency of each ..."; per: the unit of a
+                                                             value, e.g. 'goals': "It is in the row for 5 goals.")
    smissmean  { known: [..], mean, what?, unit?, short? }    the mean and all values but one are given: find the last one
                                                              (short: "The mean time is 14 minutes." for a measure)
    smissrange { known: [..], range, end: 'max' | 'min', unit? }   the range is given: find the largest / smallest value
@@ -243,7 +246,7 @@ M.sfreq = function (d) {
   const mode = tops[0], at = fr.indexOf(maxF), thing = d.head[0].toLowerCase(), want = (ask === "mode" ? mode : count) * 1000;
   const table = { k: "dfreq", head: d.head, vals: vals, freqs: fr };
   return {
-    q: ask === "mode" ? "The table shows the <b>[[frequency]]</b> of each " + thing + ". What is the <b>mode</b>?" : "The table shows the <b>[[frequency]]</b> of each " + thing + ". How many values are in the data set?",
+    q: (d.tq || "The table shows the <b>[[frequency]]</b> of each " + thing + ".") + (ask === "mode" ? " What is the <b>mode</b>?" : " How many values are in the data set?"),
     fig: table, lines: [(ask === "mode" ? "mode = " : "number of values = ") + "{0}"], blanks: [{ len: 4, w: "big" }],
     check(r) {
       if (D.eq(r.v[0], want)) return { ok: true };
@@ -258,7 +261,7 @@ M.sfreq = function (d) {
       return { ok: false, msg: "The frequency tells how many times each value appears. Add all the frequencies.", parts: [false] };
     },
     hint: { step: ask === "mode" ? "The frequency tells how many times each value appears. The mode is the value with the highest frequency." : "The frequency tells how many times each value appears. Add all the frequencies." },
-    worked: { text: ask === "mode" ? "The highest frequency is " + fmt(maxF) + ". It belongs to " + thing + " " + fmt(mode) + ". The mode is " + fmt(mode) + "." : fr.join(" + ") + " = " + fmt(count) + ". There are " + fmt(count) + " values in the data set.",
+    worked: { text: ask === "mode" ? "The highest frequency is " + fmt(maxF) + ". " + (d.per ? "It is in the row for " + fmt(mode) + " " + d.per + ". The mode is " + fmt(mode) + " " + d.per + "." : "It belongs to " + thing + " " + fmt(mode) + ". The mode is " + fmt(mode) + ".") : fr.join(" + ") + " = " + fmt(count) + ". There are " + fmt(count) + " values in the data set.",
       pic: Object.assign({ hl: ask === "mode" ? at : -1 }, table) },
     yes: ask === "mode" ? fmt(mode) + " has the highest frequency, " + fmt(maxF) + ". The mode is " + fmt(mode) + "." : fr.join(" + ") + " = " + fmt(count) + ".",
     key: String(fmt(want / 1000)), fill: [String(want / 1000)]

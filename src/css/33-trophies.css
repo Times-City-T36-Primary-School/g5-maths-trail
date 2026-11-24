@@ -48,7 +48,7 @@
 }
 .shelf__pic { width: 4.5rem; height: 4.5rem; flex: none; }
 .shelf__name { font: 800 var(--fs-small)/1.2 var(--font-body); color: var(--ink); overflow-wrap: anywhere; }
-.shelf__status { font: 700 .875rem/1.2 var(--font-body); color: var(--ink-2); }
+.shelf__status { font: 700 var(--fs-small)/1.2 var(--font-body); color: var(--ink-2); }
 .shelf__item.is-won .shelf__status, .shelf__slot.is-won .shelf__status { color: var(--gold-text); }
 .shelf__item.is-won .shelf__pic { box-shadow: 0 0 0 .1875rem var(--gold); border-radius: 50%; }
 /* not won yet: a quiet outline of the trophy, so the child sees what there is to win */
@@ -58,7 +58,7 @@
 .shelf__new {
   position: absolute; top: 0; right: 12%; z-index: 1;
   padding: .125rem .5rem; border-radius: var(--r-pill); background: var(--go); color: var(--go-ink);
-  font: 800 .8125rem/1.3 var(--font-body);
+  font: 800 var(--fs-small)/1.3 var(--font-body);
   animation: rw-best-in var(--dur-slow) var(--ease-pop) 400ms both;
 }
 

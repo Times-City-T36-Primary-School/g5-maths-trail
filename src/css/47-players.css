@@ -143,7 +143,7 @@
 .who__face .avatar { width: 2.375rem; height: 2.375rem; font-size: 1.125rem; box-shadow: inset 0 0 0 .15rem var(--hue, var(--accent)); }
 .who__text { display: flex; flex-direction: column; min-width: 0; }
 .who__name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 800 1rem/1.2 var(--font-body); color: var(--ink); }
-.who__meta { font: 800 .875rem/1.15 var(--font-body); color: var(--ink-2); }
+.who__meta { font: 800 var(--fs-small)/1.15 var(--font-body); color: var(--ink-2); }
 
 /* phones: the child's name matters more than the app's name in the header */
 @media (max-width: 599px) {
@@ -152,6 +152,21 @@
   .home__head .who__name { font-size: .9375rem; }
   .home__head .brand__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .players__head .brand__name { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+  .howto__head .brand__name, .trophies__head .brand__name { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+}
+
+/* tablets (600-1023 px): the child's name keeps at least 6 letters ("Li…" before); the school line under the title
+   gives way first (it wraps and shrinks), then the title */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .home__head .who { flex: 0 0 auto; }
+  .home__head .who__text { min-width: 6.5ch; }
+  .home__head .brand__text { flex: 1 1 0; min-width: 0; }
+  .home__head .brand__text .brand__name { overflow: hidden; text-overflow: ellipsis; }
+  .home__head .brand__school { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+}
+@media (min-width: 600px) and (max-width: 767px) {
+  .home__head .brand .brand__text .brand__name { white-space: normal; }
+  .home__head .brand__school { -webkit-line-clamp: 1; }
 }
 
 /* ---------- the player menu (a sheet from the map) ---------- */

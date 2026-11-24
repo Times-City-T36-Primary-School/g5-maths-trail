@@ -690,7 +690,7 @@
     paintClasses();
     setRole(role);
     // the first time on this device: a hand points at the classes (nobody is playing yet: remembered on the device)
-    if (!editing && !pick.cls) T.guide.point('start', function () { return role === 'student' ? classButtons[0] : null; }, { scope: 'device' });
+    if (!editing && !pick.cls) T.guide.point('start', function () { return role === 'student' ? classButtons[0] : null; }, { scope: 'device', small: true, at: 0.14 });   // a small hand that rests inside 5B01 (not on 5B04)
     bar.primary({ label: editing ? 'Save my details' : 'Start my trail', iconEnd: editing ? 'check' : 'next', onClick: submit });
     if (editing || playing) bar.secondary({ label: 'Back', icon: 'back', onClick: function () { T.router.go('home'); } });
 

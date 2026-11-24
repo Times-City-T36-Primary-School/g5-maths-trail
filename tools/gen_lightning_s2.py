@@ -1,8 +1,8 @@
 # makes the Lightning round items of Stop 2 (round, add and subtract decimals): [question, [right, wrong, wrong]]
-# run from the project folder: python3 tools/gen_lightning_s2.py  -> tools/lightning_s2.txt (pasted into 22-pack-stop2.js)
+# run from the project folder: python3 tools/gen_lightning_s2.py [--write]  -> tools/lightning_s2.txt (--write: also into 22-pack-stop2.js)
 # Every right answer is worked out with Decimal and checked again with whole numbers (hundredths). The wrong answers
 # are the real slips: rounding the wrong way at 5, rounding the wrong place, lining up the last digits, no exchange.
-import random, json
+import random, json, sys
 from decimal import Decimal as Dc, ROUND_HALF_UP, ROUND_FLOOR
 R = random.Random(62)
 
@@ -70,9 +70,15 @@ while c < 8:
     if ra == floor(a, ONE) and rb == floor(b, ONE): continue          # one number at least must round up
     if op == '−' and ra - rb < 1: continue
     est = ra + rb if op == '+' else ra - rb
-    cut = floor(a, ONE) + floor(b, ONE) if op == '+' else floor(a, ONE) - floor(b, ONE)   # the slip: cut off the decimals
-    w2 = est + 1 if cut != est + 1 else est - 1
-    if add(f'Estimate: {s(a)} {op} {s(b)} is about', s(est), [s(cut), s(w2)], ('est', str(a), str(b), op)): c += 1
+    exact = rnd(a + b if op == '+' else a - b, ONE)                   # the exact answer rounded: never a wrong option
+    fa, fb = floor(a, ONE), floor(b, ONE)
+    # the slips: the decimals cut off; one number rounded the wrong way; then the estimate 1 or 2 out
+    slips = [fa + fb if op == '+' else fa - fb]
+    slips += [ra + (2 * fb + 1 - rb) if op == '+' else ra - (2 * fb + 1 - rb), (2 * fa + 1 - ra) + rb if op == '+' else (2 * fa + 1 - ra) - rb]
+    slips += [est + 1, est - 1, est + 2, est - 2]
+    if slips[0] == est: continue                                      # cutting off gives the estimate: not a good item
+    wr = [x for x in dict.fromkeys(slips) if x != est and x != exact and x >= 0][:2]
+    if add(f'Round each number, then estimate: {s(a)} {op} {s(b)}', s(est), [s(x) for x in wr], ('est', str(a), str(b), op)): c += 1
 # 6. add: different numbers of decimal places. Slips: the last digits lined up; no carry (or one whole out)
 def digits_slip(a, b, sub):   # the last digits lined up, not the decimal points: 3.4 + 2.15 -> 34 + 215 = 249 -> 2.49
     ia = int(str(a).replace('.', '')); ib = int(str(b).replace('.', ''))
@@ -114,7 +120,10 @@ for (q, o), k in zip(items, keys):
     elif k[0] == 'half': want = (H(k[1]) + H(k[1]) + 10) // 2
     elif k[0] == 'min': want = min(h for h in range(H(k[1]) - 20, H(k[1]) + 20) if rnd_h(h, 10) == H(k[1]))
     elif k[0] == 'max': want = max(h for h in range(H(k[1]) - 20, H(k[1]) + 20) if rnd_h(h, 10) == H(k[1]))
-    elif k[0] == 'est': want = rnd_h(H(k[1]), 100) + rnd_h(H(k[2]), 100) if k[3] == '+' else rnd_h(H(k[1]), 100) - rnd_h(H(k[2]), 100)
+    elif k[0] == 'est':
+        want = rnd_h(H(k[1]), 100) + rnd_h(H(k[2]), 100) if k[3] == '+' else rnd_h(H(k[1]), 100) - rnd_h(H(k[2]), 100)
+        ex = rnd_h(H(k[1]) + H(k[2]) if k[3] == '+' else H(k[1]) - H(k[2]), 100)
+        assert all(H(w) != ex for w in o[1:]), (q, o)                 # no wrong option is the exact answer rounded
     elif k[0] == 'sum': want = H(k[1]) + H(k[2]) if k[3] == '+' else H(k[1]) - H(k[2])
     elif k[0] == 'which':
         want = right; assert rnd_h(right, 10) == H(k[2]), q
@@ -123,4 +132,10 @@ for (q, o), k in zip(items, keys):
     assert all(H(w) != right for w in o[1:]), (q, o)                  # no wrong answer is worth the same as the right one
     assert len(set(o)) == 3 and len(q) <= 60, q
 print(len(items), 'items, all checked twice')
-open('tools/lightning_s2.txt', 'w', encoding='utf8').write(',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items) + '\n')
+out = ',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items) + '\n'
+open('tools/lightning_s2.txt', 'w', encoding='utf8').write(out)
+if '--write' in sys.argv:                 # also put the items into the pack, between "lightning: {" and the self-check
+    pk = 'src/js/22-pack-stop2.js'; src = open(pk, encoding='utf8').read()
+    i = src.index('items: [\n', src.index('    lightning: {')) + len('items: [\n'); j = src.index('      ]\n    },\n', i)
+    open(pk, 'w', encoding='utf8').write(src[:i] + out + src[j:])
+    print('written into', pk)

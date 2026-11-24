@@ -45,6 +45,13 @@
 @media (max-width: 479px) {
   .s3-bub { font-size: 1.0625rem; margin: 0 .0625rem; }
   .s3-bub .fr { font-size: .9375rem; }
+  /* a phone: a shorter track, so the answer line under it starts on the first screen */
+  .s3-hopbox { height: 2.25rem; }
+  .s3-bub { min-height: 2.5rem; }
+  .s3-say { margin-top: .25rem; }
+  .s3-ctl { margin-top: .25rem; gap: .375rem .75rem; }
+  .s3-pm, .s3-undo { min-width: 2.75rem; min-height: 2.75rem; }
+  .s3-hop { min-height: 2.75rem; }
 }
 .wb--mini .s3-hopbox { height: 2.5rem; }
 .wb--mini .s3-bub { min-height: 2.25rem; font-size: 1.0625rem; }

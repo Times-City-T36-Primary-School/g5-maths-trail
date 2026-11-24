@@ -10,7 +10,7 @@
      { k: 'shkey' }                              what the three marks mean
      { k: 'rot', id, turns? }                    the turning tool as a picture (all the turns shown)
    T.tools.rot(host, spec)      a shape turns over its dotted outline; the ticks count how many times it fits
-       spec = { id, step?, turns?, tell?, fixed, mini }   step: 90 degrees (120 for a shape of order 3); tell: say "Order n"
+       spec = { id, turns?, tell?, fixed, mini }   always 90 degrees a tap (order 3 cannot be shown); tell: say "Order n"
        get() -> { turns, fits, full, order }; events 'change', 'trade' { act: 'turn' } (See it: wait 'turn',
        until { full: true }); extras: allow({ turn: true }), restart(), solve(), tip()
    T.tools.qgrid(host, spec)    a dot grid: tap dots to make the corners of a quadrilateral
@@ -65,7 +65,9 @@
   function rot(host, spec) {
     spec = spec || {};
     const g = G(), s = shapeArg(spec), p = g.of(s), ev = T.tools.emitter();
-    const step = spec.step || (p.rot === 3 ? 120 : 90), n = Math.round(360 / step);
+    /* always 90° a tap, for every shape: the child sees each quarter turn that does not fit (no order-3 shape is
+       given to this tool: the models draw those on their own) */
+    const step = 90, n = 4;
     const fit = []; for (let k = 1; k <= n; k++) fit.push(g.fitsAfter(s, k * step));
     const start = spec.turns != null ? spec.turns : (spec.fixed ? n : 0);
     let turns = start, locked = !!spec.fixed, can = spec.can ? !!spec.can.turn : true;
@@ -97,7 +99,7 @@
       const f = fits(), full = turns >= n;
       count.textContent = 'Fits: ' + f;
       now.textContent = turns === 0 ? 'Turn the shape. Does it fit its outline?'
-        : full ? 'One full turn. It fits ' + f + (f === 1 ? ' time.' : ' times.') + (spec.tell ? ' Order ' + f + '.' : '')
+        : full ? 'One full turn. It fits ' + f + (f === 1 ? ' time.' : ' times.') + (spec.tell && f === p.rot ? ' Order ' + f + '.' : '')
           : 'After ' + turns * step + '°: ' + (fit[turns - 1] ? 'it fits!' : 'it does not fit.');
       btn.disabled = locked || !can || full;
       again.disabled = locked || !can || turns === 0;

@@ -7,7 +7,7 @@
     title: { en: 'How to use the trail', vi: 'Cách dùng hành trình' },
     cards: {
       trail: { t: 'The trail', en: '9 worlds. Go from Stop\u00a01 to Stop\u00a09.', vi: '9 thế giới. Đi từ Trạm 1 đến Trạm 9.' },
-      steps: { t: '5 steps', en: 'Do the steps in order. Each step wins 3 stars.', vi: 'Làm các bước theo thứ tự. Mỗi bước được 3 sao.' },
+      steps: { t: '5 steps', en: 'Do the steps in order. Each step wins up to 3 stars.', vi: 'Làm các bước theo thứ tự. Mỗi bước được tối đa 3 sao.' },
       extras: { t: '2 extras', en: 'Beat the clock. Then tell your teacher how it went.', vi: 'Thi nhanh với đồng hồ. Rồi cho thầy cô biết em học thế nào.' },
       win: { t: 'Win', en: 'Stars, a badge for each stop, medals and bolts.', vi: 'Sao, huy hiệu cho mỗi trạm, huy chương và tia chớp.' },
       zip: { t: 'Zip helps you', en: 'Zip says what to do. Tap VI for Vietnamese.', vi: 'Zip nói em cần làm gì. Bấm VI để xem tiếng Việt.' },

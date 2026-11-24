@@ -7,15 +7,19 @@
    dfracval  { n, d, p? }                                    the value of a decimal digit as a fraction (tick)
    dmake     { parts: [['o', 6], ['ths', 9], ['hu', 4]], cells?: true }   write the decimal from its places (given in
                                                              any order); cells: in the boxes of the chart
-   dclue     { whole: 2, te: 4, hu: 0, ths: 7 }               clues about each decimal place: write the number
+   dclue     { whole: 2, te: 4, hu: 0, ths: 7, vals?: true }  clues about each decimal place: write the number; vals: each
+                                                             clue gives a digit's value (its digit 8 is worth 0.08) and a
+                                                             0 place is told as "It has no tenths." (order: the clues that
+                                                             are not 0, as indices te 0, hu 1, ths 2)
    dexp      { n: '6.305', miss?: 'ths' }                     expanded form: one part is missing, or (no miss) write the number
    dslide    { n: '3.75', op: 'x' | 'd', by: 10 | 100 | 1000 }   on the decimal slider, then write the answer
    dcalc     { items: [{ n, op, by }, ...] }                  "Calculate." with one line for each part
-   dmissing  { items: [{ a, op, by, hide: 'a' | 'by' }] }     a missing number in a x or / by 10, 100, 1000
+   dmissing  { items: [{ a, op, by, hide: 'a' | 'by', eq? }] }   a missing number in a x or / by 10, 100, 1000; eq:
+                                                             { n, op, by }: the right side is that calculation (two steps)
    dsame     { n, op, by, opts: [{ n, op, by } x 3], at }     which calculation has the same answer? (opts[0] must match)
    dchain    { start: '0.48', ops: [['x', 100], ['d', 10]], give: 0 }   a chain of boxes (the v2 chain, with decimals)
    dscale    { text, n, op, by, unit, plus?, plusSay? }       a real-life problem: x or / by 10, 100 or 1000; with plus
-                                                             ('12'), a second step: add it (plusSay: "Add the box.") */
+                                                             ('12'), a second step: add it (plusSay: "Then add the box.") */
 (function () {
 "use strict";
 const M = MX.M, D = MX.D, PL = D.PL, PLK = D.PLK, fmt = MX.fmt, arrange = MX.arrange, cap = MX.cap, F = MX.F;
@@ -165,8 +169,12 @@ M.dclue = function (d) {
   const clues = [["te", d.te], ["hu", d.hu]].concat(d.ths != null ? [["ths", d.ths]] : []);
   const order = d.order ? d.order.map(i => clues[i]) : clues;
   const line = x => "the digit <b>" + x[1] + "</b> in the " + PL[PLK[x[0]]].many + " place";
+  const vline = x => "its digit <b>" + x[1] + "</b> is worth <b>" + D.val(x[1], x[0]) + "</b>";
+  const say = d.vals
+    ? clues.filter(x => x[1] === 0).map(x => "It has no " + PL[PLK[x[0]]].many + ". ").join("") + cap(order.filter(x => x[1] !== 0).map(vline).join(", ").replace(/, ([^,]*)$/, " and $1")) + "."
+    : "It has " + order.map(line).join(order.length > 2 ? ", " : " and ").replace(/, ([^,]*)$/, " and $1") + ".";
   return {
-    q: "My number is between <b>" + d.whole + "</b> and <b>" + (d.whole + 1) + "</b>. " + (dp === 2 ? "It has two decimal places. " : "") + "It has " + order.map(line).join(order.length > 2 ? ", " : " and ").replace(/, ([^,]*)$/, " and $1") + ". Write my number.",
+    q: "My number is between <b>" + d.whole + "</b> and <b>" + (d.whole + 1) + "</b>. " + (dp === 2 ? "It has two decimal places. " : "") + say + " Write my number.",
     lines: ["{0}"], blanks: [{ len: 6, w: "big", dec: 3 }],
     check(r) {
       const v = D.p(r.v[0]);
@@ -175,7 +183,7 @@ M.dclue = function (d) {
       const bad = clues.find(x => isNaN(v) || D.digit(v, x[0]) !== x[1]);
       return { ok: false, msg: bad ? "Check the " + PL[PLK[bad[0]]].many + " place. It must be " + bad[1] + "." : "Read each clue again.", parts: [false] };
     },
-    hint: { pic: { k: "dchart", from: d.whole >= 10 ? "t" : "o", to: dp === 3 ? "ths" : "hu", ask: true }, step: "Between " + d.whole + " and " + (d.whole + 1) + " means the whole part is " + d.whole + ". Then fill the tenths" + (dp === 3 ? ", hundredths and thousandths." : " and hundredths.") },
+    hint: { pic: { k: "dchart", from: d.whole >= 10 ? "t" : "o", to: dp === 3 ? "ths" : "hu", ask: true }, step: "Between " + d.whole + " and " + (d.whole + 1) + " means the whole part is " + d.whole + ". " + (d.vals ? "A digit worth 0.1, 0.2 ... is in the tenths place, 0.01, 0.02 ... in the hundredths and 0.001, 0.002 ... in the thousandths. Write 0 in an empty place." : "Then fill the tenths" + (dp === 3 ? ", hundredths and thousandths." : " and hundredths.")) },
     worked: { text: "The whole part is " + d.whole + ". " + clues.map(x => cap(PL[PLK[x[0]]].many) + ": " + x[1]).join(". ") + ". The number is " + text + ".", pic: { k: "dchart", n: text, to: dp === 3 ? "ths" : "hu" } },
     yes: text + " is between " + d.whole + " and " + (d.whole + 1) + ".", key: text, fill: [text]
   };
@@ -251,12 +259,17 @@ M.dcalc = function (d) {
 
 M.dmissing = function (d) {
   const it = d.items.map(x => {
-    const res = show(calc(x.a, x.op, x.by)), tell = x.a + " " + SYM[x.op] + " " + fmt(x.by) + " = " + res, k = K(x.by);
+    const val = calc(x.a, x.op, x.by), res = show(val), k = K(x.by);
+    /* eq: the right side is a calculation too; first work it out (two steps) */
+    const e = x.eq, eTx = e ? e.n + " " + SYM[e.op] + " " + fmt(e.by) : "", rhs = e ? eTx : res;
+    if (e && calc(e.n, e.op, e.by) !== val) throw new Error("dmissing: " + eTx + " is not " + res);
+    const first = e ? "First work out " + eTx + " = " + res + ". " : "";
+    const tell = x.a + " " + SYM[x.op] + " " + fmt(x.by) + " = " + (e ? eTx + " = " : "") + res;
     return x.hide === "a"
-      ? { line: "{#} " + SYM[x.op] + " " + fmt(x.by) + " = " + res, want: D.p(x.a), ans: String(x.a), tell: tell, dec: 3,
-        tip: "Go backwards from " + res + ": do the opposite, " + SYM[OPP[x.op]] + " " + fmt(x.by) + ".", pic: { k: "dslider", n: res } }
-      : { line: x.a + " " + SYM[x.op] + " {#} = " + res, want: x.by * 1000, ans: String(x.by), tell: tell, dec: 0,
-        tip: "How many places did the digits of " + x.a + " move? 1 place is 10, 2 places is 100, 3 places is 1,000.", pic: { k: "dslider", n: x.a } };
+      ? { line: "{#} " + SYM[x.op] + " " + fmt(x.by) + " = " + rhs, want: D.p(x.a), ans: String(x.a), tell: tell, dec: 3,
+        tip: first + "Go backwards from " + res + ": do the opposite, " + SYM[OPP[x.op]] + " " + fmt(x.by) + ".", pic: { k: "dslider", n: res.replace(/,/g, "") } }
+      : { line: x.a + " " + SYM[x.op] + " {#} = " + rhs, want: x.by * 1000, ans: String(x.by), tell: tell, dec: 0,
+        tip: first + "How many places did the digits of " + x.a + " move to make " + res + "? 1 place is 10, 2 places is 100, 3 places is 1,000.", pic: { k: "dslider", n: x.a } };
   });
   return {
     q: it.length > 1 ? "Write the missing numbers." : "Write the missing number.", marks: it.length,
@@ -328,8 +341,8 @@ M.dscale = function (d) {
   return {
     q: d.text, real: d.pic || "",
     lines: ["{0} " + d.unit], blanks: [{ len: 7, w: "big", dec: 3 }],
-    check(r) { return D.eq(r.v[0], ans) ? { ok: true } : { ok: false, msg: d.plus && D.eq(r.v[0], first) ? "That is the first step. " + (d.plusSay || "Now add " + d.plus + ".") : D.eq(r.v[0], calc(d.n, OPP[d.op], d.by)) ? (d.op === "x" ? "You divided. Here the answer must be bigger than " + d.n + "." : "You multiplied. Here the answer must be smaller than " + d.n + ".") : slip(d.n, d.op, d.by, r.v[0]), parts: [false] }; },
-    hint: { pic: { k: "drule", op: d.op, by: d.by }, step: step + (d.plus ? " Then do the second step: " + (d.plusSay || "add " + d.plus + ".") : "") },
+    check(r) { return D.eq(r.v[0], ans) ? { ok: true } : { ok: false, msg: d.plus && D.eq(r.v[0], first) ? "That is the first step. " + (d.plusSay || "Then add " + d.plus + ".") : D.eq(r.v[0], calc(d.n, OPP[d.op], d.by)) ? (d.op === "x" ? "You divided. Here the answer must be bigger than " + d.n + "." : "You multiplied. Here the answer must be smaller than " + d.n + ".") : slip(d.n, d.op, d.by, r.v[0]), parts: [false] }; },
+    hint: { pic: { k: "drule", op: d.op, by: d.by }, step: step + (d.plus ? " " + (d.plusSay || "Then add " + d.plus + ".") : "") },
     worked: { text: work + ". The answer is " + a + " " + d.unit + ".", pic: { k: "dslider", n: d.n, shift: d.op === "x" ? K(d.by) : -K(d.by) } },
     yes: work + ".", key: a, fill: [a.replace(/,/g, "")]
   };

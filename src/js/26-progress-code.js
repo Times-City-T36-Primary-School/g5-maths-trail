@@ -252,7 +252,8 @@
           el('li', line('Tap your *name* at the top, then *Enter a progress code*.', 'Chạm vào *tên* của em ở trên cùng, rồi chọn *Enter a progress code*.')),
           el('li', line('Type the code and tap *Bring my stars*.', 'Nhập mã và chạm *Bring my stars*.'))),
         line('Finished steps and your best Mini Practice test marks move over. A step you have only started does not.', 'Các bước đã hoàn thành và điểm bài kiểm tra nhỏ cao nhất sẽ được chuyển. Bước mới làm dở thì không được chuyển.'),
-        line('Earned more stars? Make a new code before you change device.', 'Có thêm sao? Hãy lấy mã mới trước khi đổi thiết bị.')
+        line('Earned more stars? Make a new code before you change device.', 'Có thêm sao? Hãy lấy mã mới trước khi đổi thiết bị.'),
+        line('The Summit Trophy stays on this device.', 'Cúp Đỉnh núi chỉ được lưu trên thiết bị này.')
       ],
       actions: [{ label: 'Done', kind: 'primary', icon: 'check' }]
     });

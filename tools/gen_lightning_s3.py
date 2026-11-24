@@ -1,8 +1,10 @@
 # makes the Lightning round items of Stop 3 (sequences and term rules): [question, [right, wrong, wrong]]
 # Every right answer is worked out with exact fractions, then checked again a second way (see the end).
 # The wrong answers are real slips: a wrong sign, one step too many, adding instead of multiplying, 2 x n for n x n ...
-# Number sets of the EOS1 papers are kept out (BAN).
-import random, json, re
+# Number sets of the EOS1 papers are kept out (BAN), and so are the answers and sequences of the Mini test (TEST_*).
+# run from the project folder: python3 tools/gen_lightning_s3.py [--write]
+#   -> tools/lightning_s3.txt; with --write the list is also put into src/js/22-pack-stop3.js (lightning items)
+import random, json, re, sys
 from fractions import Fraction as Fr
 from decimal import Decimal as Dc
 R = random.Random(303)
@@ -20,11 +22,22 @@ def s(x):
 def ordn(n):
     return str(n) + ('th' if 11 <= n % 100 <= 13 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th'))
 
-items = []; seen = set(); checks = []
-def add(q, right, wrongs, check=None):
+# the Mini test (22-pack-stop3.js test): its right answers and the start of its sequences never come up here, so the
+# test is not practised in advance
+TEST_ANS = {'3.5', '3/4', '3.6', '−1', '−5', '−0.2', '−0.6', '−9', '−15', '204', '112', '154', '169', '225', '196',
+            '61', '27', '46', '91', '75', '8', '17.2', '−11', '86', '80', '256', '124', '97'}
+TEST_SEQ = ['8.3, 7.1, 5.9', '9.6, 8.1, 6.6', '11, 7, 3', '1, 0.6, 0.2', '9, 3, −3', '12, 24, 36', '7, 14, 21',
+            '11, 22, 33', '1, 4, 9', '11, 19, 27', '7, 12, 17', '6, 9, 14', '0, 3, 8', '49, 64, 81', '3, 11, 19',
+            '8, 15, 22', '2, 8, 14', '10, 16, 22', '9, 19, 29', '9, 14, 19', '5, 12, 19', '2 3/4, 2 1/4']
+def in_test(q, right):
+    return right in TEST_ANS or any(re.search(r'(^|[^\d.])' + re.escape(t) + r'($|[^\d.])', q) for t in TEST_SEQ)
+
+items = []; seen = set(); checks = []; rights = set()
+def add(q, right, wrongs, check=None, once=False):
     opts = list(dict.fromkeys([right] + [w for w in wrongs if w != right]))
-    if len(opts) < 3 or q in seen or len(q) > 60: return False
-    seen.add(q); items.append([q, opts[:3]]); checks.append(check); return True
+    if len(opts) < 3 or q in seen or len(q) > 60 or in_test(q, right): return False
+    if once and right in rights: return False          # e.g. only one "subtract 0.9" answer
+    seen.add(q); rights.add(right); items.append([q, opts[:3]]); checks.append(check); return True
 
 # sequences that must not appear (the real papers)
 def banned(a, d):
@@ -56,7 +69,7 @@ c = 0
 while c < 6:
     den = R.choice([5, 7, 8, 9, 10]); st = R.randint(2, 3); a = R.randint(1, 2)
     tops = [a + i * st for i in range(4)]
-    if tops[3] % den == 0: continue
+    if any(x % den == 0 for x in tops): continue          # no 5/5 or 10/5 among the terms
     f = lambda n, dd=den: f'{n}/{dd}'
     if add('Next term: ' + ', '.join(f(x) for x in tops[:3]) + ', ...', f(tops[3]), [f(tops[3], 2 * den), f(tops[3] + 1)], ('frac', tops, den)): c += 1
 
@@ -67,7 +80,7 @@ while c < 7:
     t = [a + i * d for i in range(3)]
     if banned(a, d): continue
     w = 'add ' if d > 0 else 'subtract '; wo = 'subtract ' if d > 0 else 'add '
-    if add('Rule for ' + ', '.join(s(x) for x in t) + ', ... ?', w + s(abs(d)), [wo + s(abs(d)), w + s(abs(d) * 10)], ('step', t, d)): c += 1
+    if add('Rule for ' + ', '.join(s(x) for x in t) + ', ... ?', w + s(abs(d)), [wo + s(abs(d)), w + s(abs(d) * 10)], ('step', t, d), once=True): c += 1
 
 # 5. position-to-term: multiples
 c = 0
@@ -118,8 +131,9 @@ for cc, n in ((1, 7),):                      # 2, 5, 10, 17 ... the 7th term
     add(', '.join(map(str, t)) + f', ... The {ordn(n)} term is', s(n * n + cc), [s(n * n), s((n - 1) * (n - 1) + cc)], ('sq', 0, cc, n))
 
 # 10. words
-add('In 5, 8, 11, 14, ... the term in position 3 is', '11', ['8', '3'])
-add('In 2, 9, 16, 23, ... the 4th term is', '23', ['16', '4'])
+# (ask for a term that is not shown: the wrong answers are one step short and position x step)
+add('In 5, 8, 11, 14, ... the term in position 7 is', '23', ['20', '21'], ('rule', 3, 2, 7))
+add('In 2, 9, 16, 23, ... the 6th term is', '37', ['30', '44'], ('rule', 7, -5, 6))
 add('"Add 6 each time" is a', 'term-to-term rule', ['position-to-term rule', 'square number'])
 add('"Multiply the position by 6" is a', 'position-to-term rule', ['term-to-term rule', 'negative number'])
 add('Adding 4 five times is the same as', '5 × 4', ['5 + 4', '4 × 4'])
@@ -162,5 +176,15 @@ for (q, o), ch in zip(items, checks):
         assert int(num(o[0])) == total, q
         assert all(int(num(w)) != total for w in o[1:]), q
 assert not any(re.search(r'4, 9, 16, 25|9, 16, 25', q) for q, o in items)
+assert not any(in_test(q, o[0]) for q, o in items)
+steps = [o[0] for q, o in items if q.startswith('Rule for')]; assert len(steps) == len(set(steps)), steps
+for q, o in items:                                   # never ask for a term that is already shown
+    m = re.match(r'(?:In )?([−\d., ]+), \.\.\. the (\d+)\w\w term is', q) or re.match(r'(?:In )?([−\d., ]+), \.\.\. the term in position (\d+) is', q)
+    if m: assert int(m.group(2)) > len(m.group(1).split(', ')), q
 print(len(items), 'items')
-open('tools/lightning_s3.txt', 'w', encoding='utf8').write(',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items))
+out = ',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items)
+open('tools/lightning_s3.txt', 'w', encoding='utf8').write(out)
+if '--write' in sys.argv:                 # also put the items into the pack, between "lightning: {" and the self-check
+    pk = 'src/js/22-pack-stop3.js'; src = open(pk, encoding='utf8').read()
+    i = src.index('items: [', src.index('lightning: {')) + len('items: [\n'); j = src.index('\n      ]\n    },\n    // My self-check', i)
+    open(pk, 'w', encoding='utf8').write(src[:i] + out + src[j:])

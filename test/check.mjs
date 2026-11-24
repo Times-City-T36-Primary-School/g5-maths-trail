@@ -11,6 +11,7 @@ const errs = [];
 p.on('pageerror', e => errs.push('pageerror: ' + e.message));
 p.on('console', m => { if (m.type() === 'error') errs.push('console: ' + m.text()); });
 await p.goto('file://' + path.resolve(process.env.DIST || 'dist/index.html'));
+{ const lo = await p.evaluate(() => { const m = document.querySelector('meta[name=build-left-out]'); return m && m.content; }); if (lo) { console.log('FAIL: the build left out files that do not parse: ' + lo); process.exitCode = 1; } }
 await p.waitForTimeout(400);
 const out = await p.evaluate((want) => {
   const bad = [], info = [];

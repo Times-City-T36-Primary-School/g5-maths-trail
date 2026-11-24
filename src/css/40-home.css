@@ -65,7 +65,7 @@
   flex: none;
   width: 100%;
   max-width: 27rem;
-  height: 77.5rem;              /* nine stops and the Summit */
+  height: 78.5rem;              /* nine stops and the Summit (and room above Stop 1 for Zip) */
   margin: 0 auto;
 }
 .map__ground, .map__nodes, .map__trail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
@@ -73,7 +73,7 @@
 .map__ground, .map__trail { overflow: visible; pointer-events: none; }
 
 /* a place on the map: a point; what stands there is centred on it */
-.map-pos { position: absolute; left: 27%; top: calc(7.25rem + var(--i) * 7.25rem); width: 0; height: 0; }
+.map-pos { position: absolute; left: 27%; top: calc(8.25rem + var(--i) * 7.25rem); width: 0; height: 0; }
 .map-pos.is-odd { left: 73%; }
 
 /* each world colours the ground around its stop */
@@ -201,6 +201,12 @@
   animation: zip-bob 3.4s ease-in-out infinite;
 }
 .map-node.is-odd .map-node__zip { left: 1.75rem; right: auto; }
+/* a stop on the left (1, 3, 5 ...): Zip stands higher and a little further out, so he never covers the stop's number at
+   its top left, nor the name of the stop before (there is no stop before Stop 1: the map has a rem more room above it) */
+.map-node:not(.is-odd):first-child .map-node__zip { top: -7.375rem; }
+@media (min-width: 385px) and (max-width: 599px) {
+  .map-node:not(.is-odd) .map-node__zip { right: 2.5rem; top: -7.25rem; width: 3.25rem; }
+}
 .map-node__zip:empty { display: none; }
 @keyframes node-ring { 0% { transform: scale(.9); opacity: .75; } 70%, 100% { transform: scale(1.16); opacity: 0; } }
 @keyframes zip-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.375rem); } }

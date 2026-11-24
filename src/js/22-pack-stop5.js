@@ -33,7 +33,7 @@
         'proper fraction': { art: 'w-proper-fraction', vi: 'phân số bé hơn 1 (tử số bé hơn mẫu số)', def: 'A fraction that is less than 1 whole. The numerator is smaller than the denominator, as in 3/5.' },
         'improper fraction': { art: 'w-improper-fraction', vi: 'phân số lớn hơn hoặc bằng 1 (tử số không bé hơn mẫu số)', def: 'A fraction that is 1 whole or more. The numerator is not smaller than the denominator, as in 7/5.' },
         'mixed number': { art: 'w-mixed-number', vi: 'hỗn số', def: 'A whole number and a fraction together. 1 2/5 is a mixed number. It is the same as 7/5.' },
-        'fraction of an amount': { art: 'w-fraction-of-an-amount', vi: 'phân số của một số', def: 'A part of a number. To find 3/4 of 20, divide 20 by 4, then multiply by 3. The answer is 15.' }
+        'fraction of an amount': { art: 'w-fraction-of-an-amount', vi: 'phân số của một số', def: 'What you get when a fraction acts on a number. 3/4 of 20: divide by 4, multiply by 3: 15. 5/4 of 20 is 25, more than 20.' }
       }
     },
     // See it: Concrete. Merge the parts of a fraction bar until the fraction is in its simplest form; share an amount
@@ -131,7 +131,7 @@
           { mode: "your", lo: ["6Nf.03"], twm: ["TWM.02"], v: [
             {"type":"fcomf","n":12,"d":20,"k":4},
             {"type":"fcomf","n":18,"d":27,"k":9},
-            {"type":"fcomf","n":16,"d":24}] },
+            {"type":"fcomf","n":16,"d":24,"k":8}] },
           { mode: "your", lo: ["6Nf.03"], twm: ["TWM.05"], v: [
             {"type":"fsimpis","ask":"is","at":1,"fr":[[7,9],[6,9],[3,9]]},
             {"type":"fsimpis","ask":"not","at":2,"fr":[[9,21],[10,21],[8,21]]},
@@ -141,22 +141,22 @@
             {"type":"fopcalc","items":[{"n":3,"d":8,"amt":48},{"n":7,"d":4,"amt":28}]},
             {"type":"fopcalc","items":[{"n":5,"d":6,"amt":54},{"n":4,"d":3,"amt":21}]},
             {"type":"fopcalc","items":[{"n":7,"d":10,"amt":90},{"n":9,"d":5,"amt":40}]}] },
-          { mode: "your", lo: ["6Nf.02"], twm: ["TWM.01"], v: [
+          { mode: "your", lo: ["6Nf.02"], twm: ["TWM.07"], v: [
             {"type":"fopmore","a":{"n":2,"d":3,"amt":24},"b":{"n":3,"d":5,"amt":25}},
             {"type":"fopmore","a":{"n":2,"d":3,"amt":36},"b":{"n":7,"d":6,"amt":24}},
             {"type":"fopmore","a":{"n":5,"d":8,"amt":40},"b":{"n":5,"d":6,"amt":30}}] },
-          { mode: "your", lo: ["6Nf.02"], twm: ["TWM.01"], v: [
+          { mode: "your", lo: ["6Nf.02"], twm: ["TWM.02"], v: [
             {"type":"fopstory","kind":"left","n":5,"d":8,"amt":56,"unit":"rolls","text":"A baker makes <b>56</b> bread rolls. She sells {f} of them. How many rolls are left?"},
             {"type":"fopstory","kind":"extra","n":7,"d":5,"amt":45,"unit":"cakes","text":"A café sells <b>45</b> cakes in Week 1. In Week 2 it sells {f} of that number. How many <b>more</b> cakes does it sell in Week 2 than in Week 1?"},
-            {"type":"fopstory","kind":"each","n":3,"d":8,"amt":32,"by":2,"unit":"dollars","step2":"multiply the number of muffins by the cost of one muffin.","text":"There are <b>32</b> muffins on a tray. {f} of them are chocolate muffins. One chocolate muffin costs <b>2</b> dollars. How much do all the chocolate muffins cost?"}] }] },
+            {"type":"fopstory","kind":"each","n":3,"d":8,"amt":32,"by":2,"unit":"dollars","step2":"multiply the number of chocolate muffins by 2 dollars.","text":"There are <b>32</b> muffins on a tray. {f} of them are chocolate muffins. One chocolate muffin costs <b>2</b> dollars. How much do all the chocolate muffins cost?"}] }] },
       { title: { en: "Who is correct?", vi: "Ai đúng?" }, rounds: [
           { mode: "your", lo: ["6Nf.02"], twm: ["TWM.07", "TWM.08"], v: [
             {"type":"fopfix","who":"Hung","he":true,"n":2,"d":3,"amt":18,"slip":"nodiv","at":1},
             {"type":"fopfix","who":"Yen","he":false,"n":3,"d":5,"amt":40,"slip":"unit","at":2},
             {"type":"fopfix","who":"Binh","he":true,"n":3,"d":4,"amt":24,"slip":"flip","at":0}] },
-          { mode: "your", lo: ["6Nf.03", "6Nf.02"], twm: ["TWM.07", "TWM.04"], v: [
-            {"type":"claim","who":"Giang","ok":false,"at":1,"says":F(9, 15) + " cannot be simplified, because 9 and 15 are both odd numbers.","reasons":[{"t":"9 and 15 can both be divided by 3. So " + F(9, 15) + " = " + F(3, 5) + "."},{"t":"odd numbers cannot be divided, so the fraction is already in its simplest form.","why":"Odd numbers can be divided by other odd numbers. Try dividing 9 and 15 by 3."},{"t":"only fractions with two even numbers can be simplified.","why":"Dividing by 2 is not the only way. Any number that divides both will do: here it is 3."}],"hint":{"pic":{"k":"fbar","n":9,"d":15},"step":"Is there a number bigger than 1 that divides both 9 and 15? Try 3."},"worked":"9 ÷ 3 = 3 and 15 ÷ 3 = 5. So " + F(9, 15) + " = " + F(3, 5) + ". Two odd numbers can still share a factor.","model":"Giang is incorrect because 9 and 15 can both be divided by 3: the simplest form is " + F(3, 5) + "."},
-            {"type":"claim","who":"Tam","ok":true,"at":0,"says":F(5, 3) + " of 24 is more than 24.","reasons":[{"t":F(5, 3) + " is more than 1 whole. 24 ÷ 3 = 8 and 5 × 8 = 40."},{"t":"a fraction of a number is always smaller than the number.","why":"That is true for proper fractions only. " + F(5, 3) + " is more than 1 whole."},{"t":"you divide 24 by 5 and multiply by 3.","why":"Divide by the denominator, 3. Then multiply by the numerator, 5."}],"hint":{"pic":{"k":"famt","amt":24,"n":5,"d":3,"show":"ask"},"step":"Find one part: 24 ÷ 3. Then take 5 parts. Compare your answer with 24."},"worked":"24 ÷ 3 = 8. 5 × 8 = 40. 40 is more than 24, because " + F(5, 3) + " is more than 1 whole.","model":"Tam is correct because " + F(5, 3) + " of 24 is 5 × 8 = 40, and 40 is more than 24."},
+          { mode: "your", lo: ["6Nf.03"], twm: ["TWM.07", "TWM.04"], v: [
+            {"type":"claim","who":"Giang","ok":false,"at":1,"says":F(20, 28) + " = " + F(10, 14) + ", so the simplest form of " + F(20, 28) + " is " + F(10, 14) + ".","reasons":[{"t":"10 and 14 are both even, so they can be divided by 2 again: " + F(10, 14) + " = " + F(5, 7) + "."},{"t":"Giang divided both numbers by 2, so " + F(10, 14) + " is the simplest form.","why":"Dividing both by 2 is right, but it is only the first step. 10 and 14 are both even: divide again."},{"t":"the simplest form of " + F(20, 28) + " is " + F(10, 28) + ".","why":"Divide the numerator and the denominator by the same number. 28 ÷ 2 = 14, not 28."}],"hint":{"pic":{"k":"fbar","n":10,"d":14},"step":"Look at " + F(10, 14) + ". Is there a number bigger than 1 that divides both 10 and 14?"},"worked":"20 ÷ 2 = 10 and 28 ÷ 2 = 14, so " + F(20, 28) + " = " + F(10, 14) + ". But 10 ÷ 2 = 5 and 14 ÷ 2 = 7, so " + F(10, 14) + " = " + F(5, 7) + ". Only 1 divides both 5 and 7. Or in one step: divide 20 and 28 by 4.","model":"Giang is incorrect because 10 and 14 can both be divided by 2: the simplest form is " + F(5, 7) + "."},
+            {"type":"claim","who":"Tam","ok":false,"at":0,"says":"When you simplify a fraction, the fraction gets smaller.","reasons":[{"t":F(4, 10) + " = " + F(2, 5) + ". The numbers get smaller, but the value stays the same: the two fractions are equivalent."},{"t":"the numerator and the denominator both get smaller, so the fraction is smaller.","why":"The numbers get smaller, but each part gets bigger. The shaded amount stays the same: " + F(4, 10) + " = " + F(2, 5) + "."},{"t":"you divide, and dividing always makes a number smaller.","why":"You divide both numbers by the same number. That does not change the value of the fraction."}],"hint":{"pic":{"k":"fbar","n":4,"d":10,"to":[2,5]},"step":"Simplify " + F(4, 10) + ". Look at the two bars: is the shaded part smaller?"},"worked":"4 ÷ 2 = 2 and 10 ÷ 2 = 5, so " + F(4, 10) + " = " + F(2, 5) + ". The two bars show the same shaded amount. Simplifying does not change the value of a fraction.","model":"Tam is incorrect because " + F(4, 10) + " = " + F(2, 5) + ": the numbers are smaller, but the value is the same."},
             {"type":"claim","who":"Dung","ok":true,"at":2,"says":F(10, 16) + " and " + F(15, 24) + " are equivalent fractions.","reasons":[{"t":"both fractions are " + F(5, 8) + " in their simplest form: 10 ÷ 2 = 5, 16 ÷ 2 = 8 and 15 ÷ 3 = 5, 24 ÷ 3 = 8."},{"t":"they cannot be equal, because all four numbers are different.","why":"Equivalent fractions look different but have the same value. Simplify each one, then compare."},{"t":F(15, 24) + " is bigger, because its numbers are bigger.","why":"Bigger numbers do not make a bigger fraction. Simplify both fractions, then compare."}],"hint":{"pic":[{"k":"fbar","n":10,"d":16},{"k":"fbar","n":15,"d":24}],"step":"Write each fraction in its simplest form. Are the two answers the same?"},"worked":"10 ÷ 2 = 5 and 16 ÷ 2 = 8, so " + F(10, 16) + " = " + F(5, 8) + ". 15 ÷ 3 = 5 and 24 ÷ 3 = 8, so " + F(15, 24) + " = " + F(5, 8) + " too.","model":"Dung is correct because both fractions simplify to " + F(5, 8) + "."}] }] }] }
     ],
     // Notes: how to do it, each with a worked example and a picture made by the maths tools; then one gap
@@ -167,8 +167,8 @@
           vi: 'Phân số có tử số ở trên và mẫu số ở dưới. Mẫu số cho biết cái toàn thể được chia thành bao nhiêu phần bằng nhau. Tử số cho biết ta lấy bao nhiêu phần.',
           example: ['In 3/5 the bar has *5* equal parts.', '*3* parts are shaded.'],
           pic: { k: 'fbar', n: 3, d: 5 } },
-        { en: '[[Equivalent fractions]] have the same value. To make one, multiply or divide the numerator and the denominator by the same number.',
-          vi: 'Các phân số bằng nhau có cùng giá trị. Để tạo phân số bằng nhau, nhân cả tử số và mẫu số với cùng một số, hoặc chia cả hai cho cùng một số (khác 0).',
+        { en: '[[Equivalent fractions]] have the same value. To make one, multiply or divide the numerator and the denominator by the same number (not 0).',
+          vi: 'Các phân số bằng nhau có cùng giá trị. Để tạo phân số bằng nhau, nhân cả tử số và mẫu số với cùng một số khác 0, hoặc chia cả hai cho cùng một số khác 0.',
           example: ['2/3 = *4/6* (both numbers × 2)', '2/3 = *6/9* (both numbers × 3)'],
           pic: { k: 'fbar', n: 2, d: 3, to: [4, 6] } },
         { en: 'To [[simplify]] a fraction, divide the numerator and the denominator by a number bigger than 1 that divides both.',
@@ -202,7 +202,7 @@
     test: {
       items: [
         { dok: 1, lo: ["6Nf.03"], twm: ["TWM.02"], v: [
-          {"type":"fsimp","n":10,"d":14},
+          {"type":"fsimp","n":16,"d":18},
           {"type":"fsimp","n":9,"d":21},
           {"type":"fsimp","n":15,"d":40}
         ] },
@@ -222,21 +222,21 @@
           {"type":"fopcalc","items":[{"n":9,"d":7,"amt":14}]}
         ] },
         { dok: 1, lo: ["6Nf.03"], twm: ["TWM.02"], v: [
-          {"type":"fequiv","n":3,"d":7,"k":3,"hide":2},
-          {"type":"fequiv","n":4,"d":5,"k":6,"hide":3},
-          {"type":"fequiv","n":5,"d":6,"k":4,"hide":0}
+          {"type":"fequiv","n":7,"d":10,"k":3,"hide":0},
+          {"type":"fequiv","n":4,"d":5,"k":6,"hide":1},
+          {"type":"fequiv","n":5,"d":9,"k":4,"hide":0}
         ] },
         { dok: 2, lo: ["6Nf.03"], twm: ["TWM.07", "TWM.08"], v: [
-          {"type":"fsimpfix","who":"Son","he":true,"n":12,"d":20,"slip":"part","at":2},
-          {"type":"fsimpfix","who":"Hanh","he":false,"n":10,"d":15,"slip":"two","at":0},
-          {"type":"fsimpfix","who":"Hai","he":true,"n":15,"d":20,"slip":"top","at":1}
+          {"type":"fsimpfix","who":"Son","he":true,"n":24,"d":32,"slip":"part","at":2},
+          {"type":"fsimpfix","who":"Hanh","he":false,"n":20,"d":45,"slip":"two","at":0},
+          {"type":"fsimpfix","who":"Hai","he":true,"n":15,"d":35,"slip":"top","at":1}
         ] },
-        { dok: 2, lo: ["6Nf.02"], twm: ["TWM.01"], v: [
+        { dok: 2, lo: ["6Nf.02"], twm: ["TWM.07"], v: [
           {"type":"fopmore","a":{"n":3,"d":4,"amt":28},"b":{"n":2,"d":3,"amt":33}},
           {"type":"fopmore","a":{"n":5,"d":6,"amt":36},"b":{"n":7,"d":8,"amt":32}},
-          {"type":"fopmore","a":{"n":4,"d":3,"amt":18},"b":{"n":3,"d":2,"amt":16}}
+          {"type":"fopmore","a":{"n":5,"d":4,"amt":28},"b":{"n":7,"d":6,"amt":30}}
         ] },
-        { dok: 2, lo: ["6Nf.02"], twm: ["TWM.01"], v: [
+        { dok: 2, lo: ["6Nf.02"], twm: ["TWM.02"], v: [
           {"type":"fopstory","kind":"sum2","n":5,"d":6,"amt":24,"n2":2,"d2":5,"amt2":30,"unit":"pies and tarts","text":"A bakery has <b>24</b> pies and <b>30</b> tarts. It sells {f} of the pies and {f2} of the tarts. How many pies and tarts does it sell altogether?"},
           {"type":"fopstory","kind":"left","n":4,"d":9,"amt":72,"unit":"stickers","text":"Thu has <b>72</b> stickers. She gives {f} of them to her friends. How many stickers does she have left?"},
           {"type":"fopstory","kind":"extra","n":7,"d":5,"amt":60,"unit":"loaves","text":"A shop sells <b>60</b> loaves of bread on Friday. On Saturday it sells {f} of that number. How many <b>more</b> loaves does it sell on Saturday than on Friday?"}
@@ -246,9 +246,9 @@
           {"type":"fopmiss","n":5,"d":8,"amt":48},
           {"type":"fopmiss","n":4,"d":3,"amt":21}
         ] },
-        { dok: 3, lo: ["6Nf.03", "6Nf.02"], twm: ["TWM.07", "TWM.04"], v: [
+        { dok: 3, lo: ["6Nf.03"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Linh","ok":false,"at":2,"says":"A fraction with an odd numerator and an odd denominator is always in its simplest form.","reasons":[{"t":F(3, 9) + " has two odd numbers, but both can be divided by 3: " + F(3, 9) + " = " + F(1, 3) + ". One example like this shows the rule is not always true."},{"t":"odd numbers cannot be divided by 2, so the fraction cannot be simplified.","why":"Dividing by 2 is not the only way. Try " + F(3, 9) + ": divide both numbers by 3."},{"t":F(5, 7) + " has two odd numbers, and it is in its simplest form.","why":"That example fits. But one example that fits does not show 'always'. Try " + F(3, 9) + "."}],"hint":{"pic":{"k":"fbar","n":3,"d":9},"step":"Test the rule. Try " + F(5, 7) + ". Then try " + F(3, 9) + ": can you divide both numbers by 3?"},"worked":F(5, 7) + " fits the rule. But 3 ÷ 3 = 1 and 9 ÷ 3 = 3, so " + F(3, 9) + " = " + F(1, 3) + ". Two odd numbers can still share a factor. The rule is not always true.","model":"Linh is incorrect because " + F(3, 9) + " has two odd numbers and it can be simplified to " + F(1, 3) + "."},
-          {"type":"claim","who":"Phong","ok":false,"at":0,"says":"When you find a fraction of a number, the answer is always smaller than the number.","reasons":[{"t":F(4, 3) + " of 12 is 16, and 16 is bigger than 12. " + F(4, 3) + " is more than 1 whole, so the answer is more than the number."},{"t":F(3, 4) + " of 12 is 9, and 9 is smaller than 12.","why":"That example fits. But try an improper fraction, like " + F(4, 3) + " of 12."},{"t":"you always divide, and dividing makes a number smaller.","why":"You divide by the denominator, but then you multiply by the numerator. Try " + F(4, 3) + " of 12."}],"hint":{"pic":{"k":"famt","amt":12,"n":4,"d":3,"show":"ask"},"step":"Test the rule. Try a proper fraction: " + F(3, 4) + " of 12. Then try an improper fraction: " + F(4, 3) + " of 12."},"worked":F(3, 4) + " of 12 = 9, which is smaller than 12. But 12 ÷ 3 = 4 and 4 × 4 = 16, so " + F(4, 3) + " of 12 = 16, which is bigger than 12. The rule is not always true.","model":"Phong is incorrect because " + F(4, 3) + " of 12 is 16, and 16 is more than 12."},
+          {"type":"claim","who":"Phong","ok":false,"at":0,"says":"A fraction with the denominator 12 can always be simplified.","reasons":[{"t":F(11, 12) + " has the denominator 12, but only 1 divides both 11 and 12. One example like this shows the rule is not always true."},{"t":F(10, 12) + " = " + F(5, 6) + ", so the rule is true.","why":"That example fits. But one example that fits does not show 'always'. Try " + F(11, 12) + "."},{"t":"12 has many factors (2, 3, 4 and 6), so the fraction can always be divided.","why":"The numerator must share a factor with 12 too. Try " + F(11, 12) + ": only 1 divides both 11 and 12."}],"hint":{"pic":{"k":"fbar","n":11,"d":12},"step":"Test the rule. Try " + F(10, 12) + ". Then try " + F(11, 12) + ": is there a number bigger than 1 that divides both 11 and 12?"},"worked":F(10, 12) + " = " + F(5, 6) + " fits the rule. But only 1 divides both 11 and 12, so " + F(11, 12) + " is already in its simplest form. The rule is not always true.","model":"Phong is incorrect because " + F(11, 12) + " has the denominator 12, and it cannot be simplified."},
           {"type":"claim","who":"Chi","ok":true,"at":1,"says":"If the numerator and the denominator are both even, the fraction is never in its simplest form.","reasons":[{"t":"every even number can be divided by 2. So you can always divide both numbers by 2."},{"t":F(4, 6) + " is in its simplest form, and 4 and 6 are both even.","why":F(4, 6) + " is not in its simplest form: 4 ÷ 2 = 2 and 6 ÷ 2 = 3, so " + F(4, 6) + " = " + F(2, 3) + "."},{"t":"even numbers are always bigger than odd numbers.","why":"That is not true (2 is smaller than 9), and it does not help. Think: which number divides every even number?"}],"hint":{"pic":{"k":"fbar","n":4,"d":6,"to":[2,3]},"step":"Try some fractions with two even numbers, like " + F(4, 6) + " or " + F(2, 10) + ". Can you always divide both numbers by 2?"},"worked":"Every even number is in the 2 times table. So when both numbers are even, you can divide both by 2: " + F(4, 6) + " = " + F(2, 3) + ", " + F(2, 10) + " = " + F(1, 5) + ". The fraction was not in its simplest form.","model":"Chi is correct because 2 divides every even number, so both numbers can always be divided by 2."}
         ] }
       ]
@@ -273,7 +273,7 @@
         ["5/2 of 8", ["20", "4", "8"]],
         ["5/6 of a number is 10. The number is", ["12", "2", "60"]],
         ["5/3 of 9", ["15", "6", "3"]],
-        ["Biggest number that divides both 16 and 24", ["8", "2", "16"]],
+        ["Biggest number that divides both 18 and 24", ["6", "2", "18"]],
         ["2/3 of 21", ["14", "7", "42"]],
         ["16/24 in its simplest form is", ["2/3", "8/12", "2/24"]],
         ["9/8 of 40 is ___ 40", ["more than", "less than", "equal to"]],

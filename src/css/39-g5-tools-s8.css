@@ -19,6 +19,11 @@
 .mk__opt .c8-fig, .tp-sheet .tp-opt .c8-fig { flex: 0 0 auto; }
 .mk__opt .c8-fig--circle .c8-svg { width: 7.5rem; }
 .mk__opt .c8-fig--grid .c8-grid { width: 7.75rem; }
+/* "which circle?" on the grid: the squares must be countable, so each picture is at least 200 px wide (one a row
+   on a phone and an iPad, three side by side on the board) */
+@media (min-width: 1000px) { .mk__opts:has(.c8-fig--grid) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.mk__opt .c8-fig--grid { flex: 1 1 auto; max-width: 15rem; }
+.mk__opt .c8-fig--grid .c8-grid { width: min(100%, 13.5rem); min-width: 12.5rem; }
 
 .c8-disc { fill: #FFFFFF; }
 .c8-ring { fill: none; stroke: #10305E; stroke-width: 2.2; }
@@ -39,6 +44,7 @@
 .c8-dim { fill: none; stroke: #3D5A85; stroke-width: 1.2; }
 .c8-t { font: 700 11.5px/1 var(--font-body); fill: #10305E; paint-order: stroke; stroke: #FFFFFF; stroke-width: 3.5px; stroke-linejoin: round; }
 .c8-t--sm { font-size: 10.5px; }
+.c8-t--row { font-size: 15px; }
 .c8-t--r { fill: #1D62AE; }
 .c8-t--d { fill: #A8328F; }
 .c8-t--ring { fill: #147A51; }
@@ -47,18 +53,23 @@
 .c8-tag circle { fill: #FFFFFF; stroke: #10305E; stroke-width: 1.5; }
 .c8-tag.is-on circle { fill: #FFD9F1; stroke: #A8328F; stroke-width: 2.5; }
 .c8-tag__t { font: 800 11.5px/1 var(--font-body); fill: #10305E; }
+/* plain: a question that asks for the name of a part: one ink for the lines, the ring and the centre */
+.c8-plain .c8-ring.is-hl { stroke: #10305E; }
+.c8-plain .c8-dot.is-hl { fill: #10305E; }
+.c8-plain .c8-halo { fill: #10305E; opacity: .18; }
+.c8-plain .c8-end { fill: #10305E; }
 
 /* the centimetre grid */
 .c8-grid__bg { fill: #FFFFFF; }
 .c8-grid__ln { fill: none; stroke: #B8C8DB; stroke-width: .5; }
 .c8-grid__frame { fill: none; stroke: #10305E; stroke-width: 1.2; }
-.c8-grid__lab { font: 700 7px/1 var(--font-body); fill: #A8328F; paint-order: stroke; stroke: #FFFFFF; stroke-width: 2.4px; stroke-linejoin: round; }
+.c8-grid__lab { font: 700 8.5px/1 var(--font-body); fill: #A8328F; paint-order: stroke; stroke: #FFFFFF; stroke-width: 2.4px; stroke-linejoin: round; }
 .c8-grid .c8-ln { stroke-width: 1.4; }
 .c8-arc { fill: none; stroke: #10305E; stroke-width: 1.7; stroke-linecap: round; }
 .c8-arc.is-new { animation: c8-ink 80ms linear both; }
 @keyframes c8-ink { from { opacity: 0; } to { opacity: 1; } }
 .c8-pt__dot { fill: #10305E; }
-.c8-pt__t { font: 800 7.5px/1 var(--font-body); fill: #10305E; paint-order: stroke; stroke: #FFFFFF; stroke-width: 2.4px; stroke-linejoin: round; }
+.c8-pt__t { font: 800 9px/1 var(--font-body); fill: #10305E; paint-order: stroke; stroke: #FFFFFF; stroke-width: 2.4px; stroke-linejoin: round; }
 .c8-arm__bar { stroke: #A8328F; stroke-width: 1.3; stroke-dasharray: 2.2 1.8; }
 .c8-arm__bar.is-off { opacity: 0; }
 .c8-arm__pen { fill: #A8328F; stroke: #FFFFFF; stroke-width: .7; }
@@ -69,7 +80,7 @@
 /* the compasses on the ruler */
 .c8-ruler__body { fill: #FFE9A8; stroke: #B8770E; stroke-width: .7; }
 .c8-ruler__tick { fill: none; stroke: #7B4E00; stroke-width: .6; }
-.c8-ruler__n { font: 700 6px/1 var(--font-body); fill: #5A3A00; }
+.c8-ruler__n { font: 700 8px/1 var(--font-body); fill: #5A3A00; }   /* 8 units: at least 15 px on a phone (the ruler is 8 rem wide) */
 .c8-ruler__span { fill: #A8328F; }
 .c8-leg { fill: none; stroke: #5B6B82; stroke-width: 2.2; stroke-linecap: round; }
 .c8-leg--pen { stroke: #3D5A85; }
@@ -93,6 +104,21 @@
   .c8-board { grid-area: board; width: min(17.5rem, 46vh); }
   .c8-setbox { grid-area: set; align-self: end; }
   .c8-gobox { grid-area: go; align-self: start; }
+}
+/* a phone: the grid on the left, the ruler with − and + and Draw on the right, so that the whole grid is on the
+   screen above the action bar at 390 x 800 */
+@media (max-width: 699px) {
+  .c8-compass { grid-template-columns: minmax(0, 1fr) 8rem; grid-template-areas: "board set" "board go"; gap: .5rem .5rem; align-items: center; }
+  .c8-board { grid-area: board; width: min(100%, 15rem, 34vh); justify-self: center; }
+  .c8-setbox { grid-area: set; align-self: end; gap: .25rem; }
+  .c8-gobox { grid-area: go; align-self: start; gap: .25rem; }
+  .c8-set { flex-wrap: wrap; gap: .25rem .5rem; }
+  .c8-rulerbox { flex: 1 1 100%; order: -1; }
+  .c8-now { font-size: 1rem; text-align: center; }
+  .c8-now span { display: block; }
+  .c8-go { flex-direction: column; width: 100%; }
+  .c8-b--draw, .c8-go .c8-b { min-width: 0; width: 100%; }
+  .c8 .c8-say { text-align: left; }
 }
 .c8-pt {
   position: absolute; width: 2.75rem; height: 2.75rem; margin: -1.375rem 0 0 -1.375rem; padding: 0; border-radius: 50%;

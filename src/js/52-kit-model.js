@@ -127,8 +127,10 @@
   function toLine(html) {
     let s = String(html || '');
     s = s.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, function (m, shown, key) { return hasWord(key || shown) ? m : shown; });
+    // a mixed number (1<span class="fr">...): keep a space after the whole number, so 1 1/4 is not read as 11/4
+    s = s.replace(/(\d)(<span class="fr">)/g, '$1 $2');
     s = s.replace(/<\/?(b|strong)>/gi, '*').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '');
-    return decode(s).replace(/\*\s*\*/g, '').replace(/\s+/g, ' ').trim();
+    return decode(s).replace(/\*\s*\*/g, '').replace(/[^\S\u00a0]+/g, ' ').trim();
   }
 
   // HTML of a model -> nodes for the question card: [[w]] becomes a word card link (or bold until the card exists)
@@ -174,6 +176,15 @@
     const scroller = el('div', { class: 'mk__scroll' });
     root.appendChild(scroller);
     g.body.appendChild(root);
+    // the floating "Level n of 3" pill sits over the top of the question: once the question is scrolled, fade it out
+    // so it never covers the text (it has no hearts on Practise, so nothing is lost)
+    (function () {
+      const lvl = root.closest('.gm-level');
+      if (!lvl) return;
+      const onScroll = function () { lvl.classList.toggle('is-scrolled', scroller.scrollTop > 8); };
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      lvl.classList.remove('is-scrolled');
+    })();
 
     // the question card
     const headRow = el('p', { class: 'mk__head' },
@@ -285,6 +296,22 @@
     if (task.blanks && blanks.length) {
       pad = T.tools.numpad({ blanks: blanks, defs: task.blanks, onChange: change, onEnter: function () { if (!over && ready()) check(); } });
       root.appendChild(pad.el);
+      // Grade 5: on a phone, when the question also has a tool, a picture or answers to tap, the number pad waits
+      // until the child taps an answer box (else it opens over the list or the options the child must see first).
+      // The tapped box then scrolls into view above the pad. A physical keyboard works all the time.
+      const phone = !!(window.matchMedia && window.matchMedia('(max-width: 599px)').matches);
+      if (phone && (big || task.opts) && !(ui.k === 'cells' || (ui.cells))) {
+        pad.el.hidden = true;
+        root.classList.add('mk--padwait');
+        blanks.forEach(function (bl) {
+          bl.addEventListener('click', function () {
+            if (!pad.el.hidden) return;
+            pad.el.hidden = false;
+            root.classList.remove('mk--padwait');
+            requestAnimationFrame(function () { try { bl.scrollIntoView({ block: 'nearest' }); } catch (e) { /* old browsers */ } });
+          });
+        });
+      }
     }
 
     const fb = el('div', { class: 'mk__fb', 'aria-live': 'polite' });

@@ -47,3 +47,23 @@ for (const n of Object.keys(out)) {
   console.log('review/stop-' + n + '.txt', out[n].split('\n').length, 'lines');
 }
 console.log(hits ? hits + ' lines look like the exam' : 'nothing looks like the exam');
+
+// pictures are not in the text above: list every multiples list a picture or hint can draw (clist/csort/venn of
+// multiples, the packs story's hint lists) and look for the exam's run 6, 12, 18, 24, 30
+{
+  const gcd = (x, y) => y ? gcd(y, x % y) : x;
+  let pics = 0;
+  for (let n = 1; n <= 9; n++) {
+    const f = 'src/js/22-pack-stop' + n + '.js';
+    if (!fs.existsSync(f)) continue;
+    const src = fs.readFileSync(f, 'utf8');
+    for (const m of src.matchAll(/\{[^{}]*"(?:kind|k)":"(?:mult|packs|clist|csort|venn)"[^{}]*\}|\{[^{}]*"kind":"mult"[^{}]*\}/g)) {
+      const o = m[0];
+      if (!/"(?:kind)":"(?:mult|packs)"/.test(o)) continue;
+      const a = +((o.match(/"a":(\d+)/) || [])[1] || 0), b = +((o.match(/"b":(\d+)/) || [])[1] || 0);
+      const upto = +((o.match(/"upto":(\d+)/) || [])[1] || (a && b ? a * b / gcd(a, b) : 0));
+      for (const x of [a, b]) if (x === 6 && upto >= 30) { pics++; console.log('EXAM-LIKE stop ' + n + ' picture lists 6, 12, 18, 24, 30: ' + o.slice(0, 120)); }
+    }
+  }
+  if (pics) { console.log(pics + ' pictures look like the exam'); process.exitCode = 1; } else console.log('no picture lists the exam run');
+}

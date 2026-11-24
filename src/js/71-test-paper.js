@@ -164,7 +164,8 @@
   /* ---------- the label: code and skill, DOK level, TWM characteristics ---------- */
 
   function tagParts(meta) {
-    const lo = (meta.lo || []).map(function (c) { return { code: c, name: (T.OBJECTIVES && T.OBJECTIVES[c]) || '' }; });
+    // an objective's own full stop goes: the objectives are joined with '; ' (never '.;')
+    const lo = (meta.lo || []).map(function (c) { return { code: c, name: String((T.OBJECTIVES && T.OBJECTIVES[c]) || '').replace(/\.\s*$/, '') }; });
     const d = T.DOK && T.DOK[meta.dok];
     const twm = (meta.twm || []).map(function (c) { return { code: c, name: (T.TWM && T.TWM[c] && T.TWM[c].name) || '' }; });
     return { lo: lo, dok: d ? { code: 'DOK ' + meta.dok, name: d.name } : null, twm: twm };

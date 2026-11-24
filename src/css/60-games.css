@@ -134,3 +134,6 @@
   .gm-lamp { animation: none; box-shadow: 0 0 0 .375rem var(--gold); }
   .gm-banner.is-out { transition: none; }
 }
+/* the level pill fades out while the question under it is scrolled (52-kit-model.js), so it never covers text */
+.gm-pill { transition: opacity var(--dur-fast, .15s) ease-out; }
+.gm-level.is-scrolled > .gm-pill:not(:has(.hearts)) { opacity: 0; }

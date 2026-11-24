@@ -10,6 +10,14 @@
 .guide-hand__in { display: block; animation: guide-tap 1.1s ease-in-out 260ms infinite; }
 .guide-hand__svg { display: block; width: 100%; height: auto; overflow: visible; }
 @media (min-width: 1600px) and (min-height: 900px) { .guide-hand { width: 4.5rem; } }
+/* opts.small: a hand that stays inside a small target (a class button on the start screen), with a shorter tap */
+.guide-hand.is-small { width: 2.25rem; }
+.guide-hand.is-small .guide-hand__in { animation-name: guide-tap-sm; }
+@keyframes guide-tap-sm {
+  0%, 100% { transform: translateY(.25rem); }
+  45% { transform: translateY(0) scale(.94); }
+  60% { transform: translateY(0) scale(.94); }
+}
 
 /* the ring around the target: a soft pulse, or (reduced motion) a still gold ring */
 .guide-ring {

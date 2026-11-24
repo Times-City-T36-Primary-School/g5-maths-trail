@@ -150,9 +150,11 @@ M.fequiv = function (d) {
   const addSlip = right ? mine + (to - from) : mine - (to - from);
   const rule = right ? from + " × " + k + " = " + to + ", so " + mine + " × " + k + " = " + want : to + " ÷ " + k + " = " + from + ", so " + mine + " ÷ " + k + " = " + want;
   const small = barOk(v[0], v[1]) && barOk(v[2], v[3]);
+  /* the picture: the known fraction on top with its label, the fraction with the missing number below with "?" */
+  const askPic = !small ? null : h < 2 ? { k: "fbar", n: v[2], d: v[3], to: [v[0], v[1]], ask: true } : { k: "fbar", n: v[0], d: v[1], to: [v[2], v[3]], ask: true };
   return {
     q: "The two fractions are equal. Write the missing number.",
-    fig: d.bar && small ? { k: "fbar", n: v[0], d: v[1], to: [v[2], v[3]], ask: true } : null,
+    fig: d.bar ? askPic : null,
     lines: [frm(0, 1) + " = " + frm(2, 3)], blanks: [FR],
     check(r) {
       const x = int(r.v[0]);
@@ -163,7 +165,7 @@ M.fequiv = function (d) {
       else if (x === mine) msg = "The two fractions have different numbers. " + (right ? from + " × ? = " + to : to + " ÷ ? = " + from) + ". Do the same to " + mine + ".";
       return { ok: false, msg: msg, parts: [false] };
     },
-    hint: { pic: !d.bar && small ? { k: "fbar", n: v[0], d: v[1], to: [v[2], v[3]], ask: true } : null,
+    hint: { pic: d.bar ? null : askPic,
       step: (right ? from + " × ? = " + to : to + " ÷ ? = " + from) + ". Do the same to the " + (top ? "numerator" : "denominator") + "." },
     worked: { text: cap(rule) + ". " + F(v[0], v[1]) + " = " + F(v[2], v[3]) + ".", pic: small ? { k: "fbar", n: v[0], d: v[1], to: [v[2], v[3]] } : null },
     yes: cap(rule) + ".", key: String(want), fill: [String(want)]
@@ -365,7 +367,7 @@ M.fsimpfix = function (d) {
     two: P.He + " divided the numerator and the denominator by different numbers."
   };
   const WHY = {
-    part: equal ? "Only 1 divides both " + w[0] + " and " + w[1] + ", so " + P.he + " did not stop too soon." : F(w[0], w[1]) + " is not equal to " + F(n, dn) + ". So this is not just stopping too soon.",
+    part: gcd(w[0], w[1]) === 1 ? "Only 1 divides both " + w[0] + " and " + w[1] + ", so " + F(w[0], w[1]) + " cannot be simplified again." : F(w[0], w[1]) + " is not equal to " + F(n, dn) + ". So this is not just stopping too soon.",
     top: "Look at the denominator: " + dn + " changed to " + w[1] + ".",
     sub: w[1] === dn ? "The numerator goes down by " + (n - w[0]) + ", but the denominator does not change. Not the same number." : n + " − " + w[0] + " = " + (n - w[0]) + ", but " + dn + " − " + w[1] + " = " + (dn - w[1]) + ". Not the same number.",
     two: n % w[0] === 0 && dn % w[1] === 0 && n / w[0] === dn / w[1] ? "Both numbers were divided by " + n / w[0] + ". That step is right." : "Check: is " + w[0] + " the answer to " + n + " ÷ a whole number, and " + w[1] + " to " + dn + " ÷ a whole number?"
@@ -384,7 +386,7 @@ M.fsimpfix = function (d) {
     reasons: [{ t: SAY[d.slip] }].concat(others.map(k => ({ t: SAY[k], why: WHY[k] }))),
     abAsk: "Write " + F(n, dn) + " in its simplest form.", lines: [F(n, dn) + " = " + FB(0, 1)], blanks: [FR, FR],
     parts: v => [int(v[0]) === s[0], int(v[1]) === s[1]],
-    slip: v => (int(v[0]) === w[0] && int(v[1]) === w[1] ? "That is " + d.who + "'s answer. " : "The mistake is right. ") + simpSlip(n, dn, int(v[0]), int(v[1])),
+    slip: v => (int(v[0]) === w[0] && int(v[1]) === w[1] ? "That is " + d.who + "'s answer. " : "You found the mistake. Now fix the answer. ") + simpSlip(n, dn, int(v[0]), int(v[1])),
     hint: { pic: barOk(n, dn) ? { k: "fbar", n: n, d: dn } : null, step: "Simplify " + tx(n, dn) + " yourself: divide both numbers by the same number until only 1 divides both. Then compare." },
     worked: { text: cap(divSteps(n, dn)) + ", so " + F(n, dn) + " = " + F(s[0], s[1]) + ". " + d.who + " wrote " + F(w[0], w[1]) + ". " + WORK[d.slip], pic: barOk(n, dn) ? { k: "fbar", n: n, d: dn, to: s } : null },
     yes: F(n, dn) + " = " + F(s[0], s[1]) + ".", key: tx(s[0], s[1]), fill: [String(s[0]), String(s[1])]
@@ -414,7 +416,7 @@ M.fopfix = function (d) {
     reasons: [{ t: SAY[d.slip] }].concat(others.map(k => ({ t: SAY[k], why: WHY[k] }))),
     abAsk: "Write the correct answer.", lines: [opText(n, dn, amt) + " = {0}"], blanks: [box(Math.max(ans, w))],
     parts: v => [int(v[0]) === ans],
-    slip: v => (int(v[0]) === w ? "That is " + d.who + "'s answer. " : "The mistake is right. ") + opSlip(n, dn, amt, int(v[0]) === w ? NaN : int(v[0])).replace("Write a number.", "First find one part: " + fmt(amt) + " ÷ " + dn + ". Then multiply by " + n + "."),
+    slip: v => (int(v[0]) === w ? "That is " + d.who + "'s answer. " : "You found the mistake. Now fix the answer. ") + opSlip(n, dn, amt, int(v[0]) === w ? NaN : int(v[0])).replace("Write a number.", "First find one part: " + fmt(amt) + " ÷ " + dn + ". Then multiply by " + n + "."),
     hint: { pic: amPic(n, dn, amt, "ask"), step: "Work it out yourself: " + fmt(amt) + " ÷ " + dn + ", then × " + n + ". Then look at what " + d.who + " did." },
     worked: { text: cap(opWork(n, dn, amt)) + ". So " + opText(n, dn, amt) + " = " + fmt(ans) + ". " + d.who + " wrote " + fmt(w) + ". " + WORK[d.slip], pic: amPic(n, dn, amt) },
     yes: opText(n, dn, amt) + " = " + fmt(ans) + ".", key: fmt(ans), fill: [String(ans)]

@@ -93,7 +93,7 @@ for q, o in (
     ('The middle value of data in order is the', ['median', 'mode', 'range']),
     ('Total ÷ number of values gives the', ['mean', 'median', 'range']),
     ('Largest value − smallest value gives the', ['range', 'mean', 'mode']),
-    ('Data with two modes is', ['bimodal', 'in order', 'level']),
+    ('Data with two modes is', ['bimodal', 'no mode', 'the median']),
     ('Before you find the median, you', ['order the data', 'add the data', 'halve the data']),
     ('Which one is NOT an average?', ['range', 'mode', 'median']),
     ('Which one tells how spread out data is?', ['range', 'mean', 'mode']),

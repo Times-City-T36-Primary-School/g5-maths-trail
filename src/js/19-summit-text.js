@@ -12,6 +12,8 @@
     mapWon: 'Trophy won',
     blurb: { en: 'You climbed the whole trail! Show what you know in a test like the real test.',
       vi: 'Em đã đi hết hành trình! Hãy thể hiện điều em biết trong bài kiểm tra giống bài thi thật.' },
+    blurbLocked: { en: 'The top of the trail. Do {n} Mini tests to open the final test.',
+      vi: 'Đỉnh của hành trình. Làm {n} bài kiểm tra nhỏ để mở bài kiểm tra cuối.' },
     zip: {
       locked: { en: 'Finish *{n} more* Mini tests to climb up here!', vi: 'Hoàn thành thêm *{n}* bài kiểm tra nhỏ để leo lên đây!' },
       open: { en: 'You made it! Start with the *final test*.', vi: 'Em đã đến nơi! Hãy bắt đầu với *bài kiểm tra cuối*.' },
@@ -54,10 +56,11 @@
       titleTry: 'Good try!',
       titleSample: 'Short test finished',
       score: 'You got *{s}* out of {t} marks.',
-      papers: ['Paper 1: {n} out of 20.', 'Paper 2: {n} out of 20.'],
+      papers: ['Paper 1: {n} out of {m}.', 'Paper 2: {n} out of {m}.'],
       need: 'Get {w} marks to win the trophy. Try again with new questions.',
       practise: 'Practise again: {list}.',
-      allStops: 'You got marks in every stop. Brilliant!',
+      allStops: 'You got at least half the marks for every stop. Brilliant!',
+      allStopsVi: 'Em đạt ít nhất một nửa số điểm ở mọi trạm. Tuyệt vời!',
       trophyOver: 'You reached the top!'
     },
     big: { title: 'Big Lightning round', from: 'Questions from all 9 stops' },

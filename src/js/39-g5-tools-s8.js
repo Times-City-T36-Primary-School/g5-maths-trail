@@ -24,7 +24,7 @@
        dotLab: 'O', ring: 'hl', ringLab: '?', plain: true, sq: '10 cm', cap }
          t: r a radius, d a diameter, c a line across that misses the centre, s a line from the centre that stops short;
          a: the direction of the line from the centre, in degrees (0 = to the right, 90 = up);
-         plain: every line in the same ink (the colour must not give the answer away); sq: a square round the circle
+         plain: every line, the ring and the centre in the same ink (the colour must not give the answer away); sq: a square round the circle
      { k: 'crow', n: 3, lab: '? cm', r: '2 cm', d: '', box: true, cap }   n equal circles that touch, in a row
      { k: 'cgrid', r: '2.5', size: 10, lab: true, cap }                   a circle drawn on the centimetre grid
      { k: 'cruler', r: '3.5', cap }                                       the compasses opened on a ruler */
@@ -70,7 +70,7 @@
   function circleSvg(spec) {
     spec = spec || {};
     const W = 160, H = spec.sq ? 150 : 140, cx = 80, cy = spec.sq ? 66 : 70, R = spec.sq ? 46 : 48;
-    const g = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'c8-svg', role: 'img', 'aria-label': spec.alt || describe(spec) });
+    const g = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'c8-svg' + (spec.plain ? ' c8-plain' : ''), role: 'img', 'aria-label': spec.alt || describe(spec) });
     if (spec.sq) {
       g.appendChild(svg('rect', { x: cx - R, y: cy - R, width: 2 * R, height: 2 * R, class: 'c8-sq' }));
       if (typeof spec.sq === 'string') {
@@ -119,11 +119,11 @@
       // a label outside the circle: "?" at the top right with a short pointer; a word above the circle, in the middle
       if (spec.ringLab.length > 2) {
         g.appendChild(svg('line', { x1: cx, y1: cy - R - 2, x2: cx, y2: cy - R - 7, class: 'c8-lead' }));
-        labels.push(text(cx, cy - R - 10, spec.ringLab, 'c8-t c8-t--ring'));
+        labels.push(text(cx, cy - R - 10, spec.ringLab, 'c8-t' + (spec.plain ? '' : ' c8-t--ring')));
       } else {
         const a = rad(48), px = cx + R * Math.cos(a), py = cy - R * Math.sin(a);
         g.appendChild(svg('line', { x1: f1(px + 2), y1: f1(py - 2), x2: f1(px + 12), y2: f1(py - 11), class: 'c8-lead' }));
-        labels.push(text(px + 17, py - 12, spec.ringLab, 'c8-t c8-t--ring' + (spec.ringLab === '?' ? ' is-ask' : '')));
+        labels.push(text(px + 17, py - 12, spec.ringLab, 'c8-t' + (spec.plain ? '' : ' c8-t--ring') + (spec.ringLab === '?' ? ' is-ask' : '')));
       }
     }
     labels.forEach(function (n) { g.appendChild(n); });
@@ -139,8 +139,11 @@
   /* ---------- n equal circles that touch, in a row (a picture) ---------- */
 
   function rowSvg(spec) {
-    const n = Math.max(1, Math.min(6, spec.n || 3)), R = 20, x0 = 10, cy = spec.lab ? 46 : 28, W = n * 2 * R + 2 * x0, H = cy + R + (spec.r || spec.d ? 19 : spec.box ? 10 : 6);
-    const g = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'c8-svg', role: 'img',
+    // the words are 15 units high and a circle is 40 units wide (4 rem): on a phone the row is at least
+    // 1.1 px a unit, so a length is never under 16 px on screen
+    const n = Math.max(1, Math.min(6, spec.n || 3)), R = 20, x0 = 10, top = spec.lab ? 36 : 6, cy = top + R, W = n * 2 * R + 2 * x0;
+    const H = cy + R + (spec.r || spec.d ? 22 : spec.box ? 10 : 6);
+    const g = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'c8-svg c8-rowsvg', role: 'img',
       'aria-label': spec.alt || (n + ' equal circles in a row. They touch.' + (spec.r ? ' The radius of one circle is ' + spec.r + '.' : '') + (spec.d ? ' The diameter of one circle is ' + spec.d + '.' : '') + (spec.lab ? ' The length of the row is ' + spec.lab + '.' : '')) });
     if (spec.box) g.appendChild(svg('rect', { x: x0, y: cy - R, width: n * 2 * R, height: 2 * R, class: 'c8-sq' }));
     for (let i = 0; i < n; i++) {
@@ -149,18 +152,18 @@
       g.appendChild(svg('circle', { cx: cx, cy: cy, r: R, class: 'c8-ring' }));
       g.appendChild(svg('circle', { cx: cx, cy: cy, r: 1.8, class: 'c8-dot' }));
     }
-    const c0 = x0 + R;
+    const c0 = x0 + R, lx = function (s) { return Math.max(c0, String(s).length * 4.4 + 2); };    // the words start inside the picture
     if (spec.r) {
       g.appendChild(svg('line', { x1: c0, y1: cy, x2: c0 + R, y2: cy, class: 'c8-ln c8-ln--r' }));
-      g.appendChild(text(Math.max(c0, 21), cy + R + 14, spec.r, 'c8-t c8-t--r c8-t--sm' + (spec.r === '?' ? ' is-ask' : '')));
+      g.appendChild(text(lx(spec.r), cy + R + 17, spec.r, 'c8-t c8-t--r c8-t--row' + (spec.r === '?' ? ' is-ask' : '')));
     }
     if (spec.d) {
       g.appendChild(svg('line', { x1: c0 - R, y1: cy, x2: c0 + R, y2: cy, class: 'c8-ln c8-ln--d' }));
-      g.appendChild(text(Math.max(c0, 21), cy + R + 14, spec.d, 'c8-t c8-t--d c8-t--sm' + (spec.d === '?' ? ' is-ask' : '')));
+      g.appendChild(text(lx(spec.d), cy + R + 17, spec.d, 'c8-t c8-t--d c8-t--row' + (spec.d === '?' ? ' is-ask' : '')));
     }
     if (spec.lab) {
-      g.appendChild(svg('path', { d: 'M' + x0 + ' 18h' + n * 2 * R + 'M' + x0 + ' 13v10M' + (x0 + n * 2 * R) + ' 13v10', class: 'c8-dim' }));
-      g.appendChild(text(W / 2, 11, spec.lab, 'c8-t c8-t--sm' + (/\?/.test(spec.lab) ? ' is-ask' : '')));
+      g.appendChild(svg('path', { d: 'M' + x0 + ' 26h' + n * 2 * R + 'M' + x0 + ' 21v10M' + (x0 + n * 2 * R) + ' 21v10', class: 'c8-dim' }));
+      g.appendChild(text(W / 2, 17, spec.lab, 'c8-t c8-t--row' + (/\?/.test(spec.lab) ? ' is-ask' : '')));
     }
     g.style.width = 'min(100%, ' + (n * 4 + 2) + 'rem)';
     return g;
@@ -197,12 +200,12 @@
   function rulerSvg(h, max) {
     max = max || 5;
     const x0 = 8, y0 = 30, L = 27, W = max * U + 2 * x0, half = h * U / 4, hy = y0 - Math.sqrt(L * L - half * half);
-    const g = svg('svg', { viewBox: '0 0 ' + W + ' 46', class: 'c8-ruler', role: 'img', 'aria-label': 'The compasses are open ' + cmText(h) + ' cm on the ruler.' });
-    g.appendChild(svg('rect', { x: 3, y: y0, width: W - 6, height: 14, rx: 1.5, class: 'c8-ruler__body' }));
+    const g = svg('svg', { viewBox: '0 0 ' + W + ' 47', class: 'c8-ruler', role: 'img', 'aria-label': 'The compasses are open ' + cmText(h) + '\u00a0cm on the ruler.' });
+    g.appendChild(svg('rect', { x: 3, y: y0, width: W - 6, height: 16, rx: 1.5, class: 'c8-ruler__body' }));
     let d = '';
     for (let i = 0; i <= max * 2; i++) d += 'M' + (x0 + i * U / 2) + ' ' + y0 + 'v' + (i % 2 ? 2.6 : 4.4);
     g.appendChild(svg('path', { d: d, class: 'c8-ruler__tick' }));
-    for (let i = 0; i <= max; i++) g.appendChild(text(x0 + i * U, y0 + 11.6, i, 'c8-ruler__n'));
+    for (let i = 0; i <= max; i++) g.appendChild(text(x0 + i * U, y0 + 13.6, i, 'c8-ruler__n'));
     const xp = x0 + h * U / 2, xh = x0 + half;
     g.appendChild(svg('rect', { x: x0, y: y0, width: h * U / 2, height: 2.4, class: 'c8-ruler__span' }));
     g.appendChild(svg('path', { d: 'M' + x0 + ' ' + y0 + 'L' + f1(xh) + ' ' + f1(hy), class: 'c8-leg' }));
@@ -262,7 +265,7 @@
         if (drawn) layer.appendChild(arcs(cx, cy, r, go));
         if (drawn && across) {
           layer.appendChild(svg('line', { x1: cx - r, y1: cy, x2: cx + r, y2: cy, class: 'c8-ln c8-ln--d' }));
-          layer.appendChild(text(cx, cy + 9, cmText(h * 2) + ' cm', 'c8-grid__lab'));
+          layer.appendChild(text(cx, cy + 9, cmText(h * 2) + '\u00a0cm', 'c8-grid__lab'));
         }
         // the compasses from above: the point on the centre, the pencil one opening away
         const arm = svg('g', { class: 'c8-arm' + (go ? ' is-turn' : '') }, [
@@ -273,8 +276,8 @@
         layer.appendChild(svg('circle', { cx: cx, cy: cy, r: 2.6, class: 'c8-arm__pin' }));
       }
       T.ui.empty(rulerBox); rulerBox.appendChild(rulerSvg(h, HMAX / 2));
-      T.ui.empty(now); now.appendChild(el('span', 'Compasses: ')); now.appendChild(el('b', cmText(h) + ' cm'));
-      say.textContent = !p ? 'Tap a point on the grid to put the compasses there.' : !drawn ? 'The point is on ' + at + '. Tap Draw.' : across ? 'Across the circle, through ' + at + ': ' + cmText(h * 2) + ' cm.' : 'A circle with centre ' + at + '.';
+      T.ui.empty(now); now.appendChild(el('span', 'Compasses: ')); now.appendChild(el('b', cmText(h) + '\u00a0cm'));
+      say.textContent = !p ? 'Tap a point for the compasses.' : !drawn ? 'The point is on ' + at + '. Tap Draw.' : across ? 'Across the circle, through ' + at + ': ' + cmText(h * 2) + '\u00a0cm.' : 'A circle with centre ' + at + '.';
       const off = locked;
       minus.disabled = off || !canDo(can, 'set') || h <= 1;
       plus.disabled = off || !canDo(can, 'set') || h >= HMAX;
@@ -361,7 +364,7 @@
     const ev = T.tools.emitter(), D = window.MX.D, unit = spec.unit || 'cm';
     const picking = !!spec.pick, lines = (spec.lines || []).map(function (x) { return Object.assign({}, x); });
     const rT = D.p(spec.r != null ? spec.r : '5');
-    const rLab = D.s(rT) + ' ' + unit, dLab = D.s(rT * 2) + ' ' + unit;
+    const rLab = D.s(rT) + '\u00a0' + unit, dLab = D.s(rT * 2) + '\u00a0' + unit;   // a no-break space: never "5 / cm"
     let part = '', choice = '', locked = !!spec.fixed, can = spec.can || null;
     const seen = {};
     const pic = el('div', { class: 'c8-fig c8-fig--tool' });
@@ -438,11 +441,11 @@
     g.appendChild(arcs(c, c, h * U / 2, false));
     if (spec.lab) {
       g.appendChild(svg('line', { x1: c, y1: c, x2: c + h * U / 2, y2: c, class: 'c8-ln c8-ln--r' }));
-      g.appendChild(text(c + h * U / 4, c - 3.5, cmText(h) + ' cm', 'c8-grid__lab c8-t--r'));
+      g.appendChild(text(c + h * U / 4, c - 3.5, cmText(h) + '\u00a0cm', 'c8-grid__lab c8-t--r'));
     }
     if (spec.across) {
       g.appendChild(svg('line', { x1: c - h * U / 2, y1: c, x2: c + h * U / 2, y2: c, class: 'c8-ln c8-ln--d' }));
-      g.appendChild(text(c, c + 9.5, cmText(h * 2) + ' cm', 'c8-grid__lab c8-t--d'));
+      g.appendChild(text(c, c + 9.5, cmText(h * 2) + '\u00a0cm', 'c8-grid__lab c8-t--d'));
     }
     g.appendChild(svg('circle', { cx: c, cy: c, r: 1.7, class: 'c8-pt__dot' }));
     return figure('c8-fig--grid', g, spec);
@@ -450,7 +453,7 @@
   kinds.cruler = function (spec) {
     const h = halves(spec.r);
     if (isNaN(h) || h < 1 || h > HMAX) return null;
-    return figure('c8-fig--ruler', rulerSvg(h, HMAX / 2), Object.assign({ cap: 'The compasses are open <b>' + cmText(h) + ' cm</b>.' }, spec));
+    return figure('c8-fig--ruler', rulerSvg(h, HMAX / 2), Object.assign({ cap: 'The compasses are open <b>' + cmText(h) + '\u00a0cm</b>.' }, spec));
   };
 
   // Zip's first line when a question opens with one of these tools (54-g5-glue.js)

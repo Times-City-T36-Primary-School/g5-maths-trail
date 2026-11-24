@@ -102,20 +102,20 @@
             {"type":"droundall","nums":["12.5","13.4","13.5","12.49","12.8"],"to":"whole","target":"13"},
             {"type":"droundall","nums":["0.85","0.94","0.95","0.84","0.88"],"to":"tenth","target":"0.9"}] }] },
       { title: { en: "Add in columns", vi: "Cộng theo cột" }, rounds: [
-          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.02"], v: [
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.01"], v: [
             {"type":"dcolsum","a":"2.4","b":"3.15","op":"+"},
             {"type":"dcolsum","a":"1.36","b":"4.5","op":"+"},
             {"type":"dcolsum","a":"5.7","b":"2.18","op":"+"}] },
-          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.02"], v: [
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.01"], v: [
             {"type":"dcolsum","a":"7.85","b":"4.6","op":"+"},
             {"type":"dcolsum","a":"6.8","b":"5.47","op":"+"},
             {"type":"dcolsum","a":"8.75","b":"3.8","op":"+"}] }] },
       { title: { en: "Subtract in columns", vi: "Trừ theo cột" }, rounds: [
-          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.02"], v: [
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.01"], v: [
             {"type":"dcolsum","a":"7.3","b":"2.45","op":"-"},
             {"type":"dcolsum","a":"9.1","b":"3.64","op":"-"},
             {"type":"dcolsum","a":"6.2","b":"1.58","op":"-"}] },
-          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.02"], v: [
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.01"], v: [
             {"type":"dcolsum","a":"6","b":"2.35","op":"-"},
             {"type":"dcolsum","a":"9","b":"4.72","op":"-"},
             {"type":"dcolsum","a":"5","b":"1.84","op":"-"}] }] }] },
@@ -131,12 +131,12 @@
             {"type":"drange","target":"3.4","to":"tenth","ask":"min","dp":2},
             {"type":"drange","target":"8","to":"whole","ask":"max","dp":2},
             {"type":"drange","target":"5.2","to":"tenth","ask":"max","dp":2}] },
-          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.08"], v: [
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.04"], v: [
             {"type":"dest","a":"4.8","b":"3.25","op":"+"},
             {"type":"dest","a":"9.2","b":"3.75","op":"-"},
             {"type":"dest","a":"6.71","b":"2.9","op":"+"}] }] },
       { title: { en: "Add and subtract", vi: "Cộng và trừ" }, rounds: [
-          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.02"], v: [
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.01"], v: [
             {"type":"dsum","items":[{"a":"3.45","b":"2.8","op":"+"},{"a":"8.4","b":"5.67","op":"-"}]},
             {"type":"dsum","items":[{"a":"0.96","b":"4.7","op":"+"},{"a":"10","b":"3.48","op":"-"}]},
             {"type":"dsum","items":[{"a":"12.6","b":"7.59","op":"+"},{"a":"6.05","b":"2.8","op":"-"}]}] },
@@ -153,8 +153,8 @@
             {"type":"dcolfix","who":"Duc","a":"3.4","b":"2.15","op":"+","slip":"right","at":1},
             {"type":"dcolfix","who":"Trang","pro":"she","a":"6.2","b":"3.48","op":"-","slip":"nozero","at":0},
             {"type":"dcolfix","who":"Son","a":"5.31","b":"2.74","op":"-","slip":"noex","at":2}] },
-          { mode: "your", lo: ["6Np.04", "6Nf.09"], twm: ["TWM.07", "TWM.04"], v: [
-            {"type":"claim","who":"Phong","ok":true,"at":1,"says":"7.96 rounded to the nearest tenth is 8.0.","reasons":[{"t":"7.96 is between 7.9 and 8.0. The hundredths digit is 6, so it rounds up to 8.0."},{"t":"the tenths digit must stay 9, so the answer is 7.9.","why":"The hundredths digit is 6, so round up. 9 tenths and 1 more tenth make 10 tenths: one more whole."},{"t":"the tenth after 7.9 is 7.10, so the answer is 7.10.","why":"7.10 is the same as 7.1. Ten tenths make 1 whole, so the tenth after 7.9 is 8.0."}],"hint":{"pic":{"k":"dround","n":"7.96","to":"tenth","mid":true},"step":"7.96 is between 7.9 and 8.0. Look at the hundredths digit."},"worked":"7.96 is between 7.9 and 8.0. Halfway is 7.95. 7.96 is past halfway, so it rounds up to 8.0.","model":"Phong is correct because 7.96 is nearer to 8.0 than to 7.9."},
+          { mode: "your", lo: ["6Nf.09"], twm: ["TWM.07", "TWM.04"], v: [
+            {"type":"claim","who":"Phong","ok":true,"at":1,"says":"9.3 − 4.16 = 5.14.","reasons":[{"t":"9.3 = 9.30. Exchange 1 tenth: 10 − 6 = 4, 2 − 1 = 1, 9 − 4 = 5."},{"t":"9.3 has no hundredths, so bring the 6 down. The answer is 5.26.","why":"Write 9.3 as 9.30. 0 − 6: exchange 1 tenth for 10 hundredths. 10 − 6 = 4."},{"t":"after the exchange the tenths are still 3, so 3 − 1 = 2. The answer is 5.24.","why":"When you exchange 1 tenth, the 3 tenths become 2 tenths. 2 − 1 = 1."}],"hint":{"pic":{"k":"dcol","a":"9.3","b":"4.16","op":"-"},"step":"Write 9.3 as 9.30. Line up the decimal points. Start with the hundredths."},"worked":"9.3 = 9.30. Hundredths: 0 − 6, so exchange 1 tenth for 10 hundredths. 10 − 6 = 4. Tenths: 2 − 1 = 1. Ones: 9 − 4 = 5. So 9.3 − 4.16 = 5.14.","model":"Phong is correct because 9.30 − 4.16 = 5.14."},
             {"type":"claim","who":"Yen","ok":false,"at":0,"says":"2.6 + 1.35 = 1.61, because 26 + 135 = 161.","reasons":[{"t":"the decimal points must be in a line. 2.60 + 1.35 = 3.95."},{"t":"you can always add the digits like whole numbers and then put the point back.","why":"That only works when both numbers have the same number of decimal places. Write 2.6 as 2.60 first."},{"t":"the sum of two decimals is always smaller than both numbers.","why":"Adding makes a bigger number. The sum must be more than 2.6."}],"fig":{"k":"dcol","a":"2.6","b":"1.35","op":"+","lined":false,"shown":"1.61"},"hint":{"pic":{"k":"dcol","a":"2.6","b":"1.35","op":"+"},"step":"Estimate first: 3 + 1 = 4. Is 1.61 close to 4? Then line up the decimal points."},"worked":"Estimate: 3 + 1 = 4, so 1.61 is much too small. Line up the points: 2.60 + 1.35 = 3.95.","model":"Yen is incorrect because the decimal points are not in a line. 2.60 + 1.35 = 3.95."},
             {"type":"claim","who":"Binh","ok":true,"at":2,"says":"6.82 − 2.19 is about 5, because 7 − 2 = 5.","reasons":[{"t":"6.82 rounds to 7 and 2.19 rounds to 2. The exact answer, 4.63, is close to 5."},{"t":"an estimate must be the exact answer, and the exact answer is not 5.","why":"An estimate does not have to be exact. It only has to be close."},{"t":"both numbers must round down, so the estimate is 6 − 2 = 4.","why":"6.82 is nearer to 7 than to 6, because its tenths digit is 8."}],"hint":{"pic":[{"k":"dround","n":"6.82","to":"whole","mid":true},{"k":"dround","n":"2.19","to":"whole","mid":true}],"step":"Round each number to the nearest whole number. Then subtract."},"worked":"6.82 rounds to 7. 2.19 rounds to 2. 7 − 2 = 5. The exact answer is 6.82 − 2.19 = 4.63, which is close to 5.","model":"Binh is correct because 6.82 is about 7 and 2.19 is about 2, and 7 − 2 = 5."}] }] }] }
     ],
@@ -184,8 +184,8 @@
           pic: { k: 'dcol', a: '3.7', b: '1.25', op: '+', ans: true } },
         { en: 'When the top digit is smaller, [[exchange]]: 1 tenth = 10 hundredths. Show your [[working]].',
           vi: 'Khi chữ số ở trên bé hơn, hãy đổi: 1 phần mười = 10 phần trăm. Hãy trình bày các bước tính.',
-          example: ['6.4 − 2.58: write 6.4 as 6.40.', '0 − 8? Exchange. The [[difference]] is *3.82*.'],
-          pic: { k: 'dcol', a: '6.4', b: '2.58', op: '-', ans: true } }
+          example: ['5.6 − 2.39: write 5.6 as 5.60.', '0 − 9? Exchange. The [[difference]] is *3.21*.'],
+          pic: { k: 'dcol', a: '5.6', b: '2.39', op: '-', ans: true } }
       ],
       check: [
         { sentence: '6.18 is between 6.1 and 6.2. It rounds to {6.2|6.1|6.0}.', answer: '6.2' },
@@ -201,7 +201,7 @@
     test: {
       items: [
         { dok: 1, lo: ["6Np.04"], twm: ["TWM.05"], v: [
-          {"type":"dround","items":[{"n":"3.72","to":"whole"}]},
+          {"type":"dround","items":[{"n":"7.68","to":"whole"}]},
           {"type":"dround","items":[{"n":"18.29","to":"whole"}]},
           {"type":"dround","items":[{"n":"5.53","to":"whole"}]}
         ] },
@@ -211,16 +211,16 @@
           {"type":"dround","items":[{"n":"10.65","to":"tenth"}]}
         ] },
         { dok: 1, lo: ["6Np.04"], twm: ["TWM.01"], v: [
-          {"type":"droundpick","target":"4.6","to":"tenth","opts":["4.57","4.67","4.51","4.66"],"at":2},
+          {"type":"droundpick","target":"6.6","to":"tenth","opts":["6.63","6.67","6.54","6.68"],"at":2},
           {"type":"droundpick","target":"12","to":"whole","opts":["11.52","12.5","11.48","12.61"],"at":0},
           {"type":"droundpick","target":"0.3","to":"tenth","opts":["0.25","0.35","0.24","0.36"],"at":3}
         ] },
-        { dok: 1, lo: ["6Nf.09"], twm: ["TWM.02"], v: [
-          {"type":"dsum","items":[{"a":"4.35","b":"2.8","op":"+"}]},
+        { dok: 1, lo: ["6Nf.09"], twm: ["TWM.01"], v: [
+          {"type":"dsum","items":[{"a":"5.36","b":"2.7","op":"+"}]},
           {"type":"dsum","items":[{"a":"6.7","b":"1.86","op":"+"}]},
           {"type":"dsum","items":[{"a":"0.59","b":"3.6","op":"+"}]}
         ] },
-        { dok: 1, lo: ["6Nf.09"], twm: ["TWM.02"], v: [
+        { dok: 1, lo: ["6Nf.09"], twm: ["TWM.01"], v: [
           {"type":"dsum","items":[{"a":"7.6","b":"3.25","op":"-"}]},
           {"type":"dsum","items":[{"a":"9.04","b":"5.3","op":"-"}]},
           {"type":"dsum","items":[{"a":"8","b":"2.65","op":"-"}]}
@@ -230,24 +230,24 @@
           {"type":"drange","target":"2.8","to":"tenth","ask":"min","dp":2},
           {"type":"drange","target":"15","to":"whole","ask":"max","dp":2}
         ] },
-        { dok: 2, lo: ["6Nf.09"], twm: ["TWM.08"], v: [
+        { dok: 2, lo: ["6Nf.09"], twm: ["TWM.04"], v: [
           {"type":"dest","a":"5.9","b":"2.35","op":"+"},
-          {"type":"dest","a":"8.1","b":"3.64","op":"-"},
+          {"type":"dest","a":"8.1","b":"3.67","op":"-"},
           {"type":"dest","a":"3.78","b":"4.6","op":"+"}
         ] },
         { dok: 2, lo: ["6Nf.09"], twm: ["TWM.01"], v: [
           {"type":"dstory","kind":"change","have":"20","items":["8.45","2.69"],"pre":"$","dp":2,"text":"Thu pays with a <b>$20</b> note. She buys a kite for <b>$8.45</b> and some string for <b>$2.69</b>. How much change does she get?"},
-          {"type":"dstory","kind":"left","start":"4","each":"0.85","n":3,"unit":"m","text":"A plank of wood is <b>4 m</b> long. Hung saws off <b>3</b> pieces. Each piece is <b>0.85 m</b> long. How long is the plank now?"},
+          {"type":"dstory","kind":"left","start":"5","each":"0.65","n":3,"unit":"m","text":"A plank of wood is <b>5 m</b> long. Hung saws off <b>3</b> pieces. Each piece is <b>0.65 m</b> long. How long is the plank now?"},
           {"type":"dstory","kind":"both","a":"3.8","d":"2.75","more":true,"unit":"kg","text":"A cat has a mass of <b>3.8 kg</b>. A dog is <b>2.75 kg</b> heavier than the cat. What is the total mass of the cat and the dog?"}
         ] },
         { dok: 2, lo: ["6Nf.09"], twm: ["TWM.07"], v: [
+          {"type":"dcolfix","who":"Tam","a":"7.24","b":"4.58","op":"-","slip":"noex","at":1},
           {"type":"dcolfix","who":"Hai","a":"4.7","b":"1.32","op":"+","slip":"right","at":0},
-          {"type":"dcolfix","who":"Kim","pro":"she","a":"8.5","b":"2.36","op":"-","slip":"nozero","at":2},
-          {"type":"dcolfix","who":"Tam","a":"7.24","b":"4.58","op":"-","slip":"noex","at":1}
+          {"type":"dcolfix","who":"Kim","pro":"she","a":"8.5","b":"2.36","op":"-","slip":"nozero","at":2}
         ] },
-        { dok: 3, lo: ["6Np.04", "6Nf.09"], twm: ["TWM.07", "TWM.04"], v: [
+        { dok: 3, lo: ["6Np.04"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Giang","ok":false,"at":1,"says":"When you round a decimal to the nearest whole number, the answer is always bigger than the decimal.","reasons":[{"t":"4.3 rounds to 4, and 4 is smaller than 4.3. One example like this shows the rule is not always true."},{"t":"rounding always goes up, like 4.7 rounds to 5.","why":"That example fits. But try a number with a small tenths digit, like 4.3."},{"t":"a rounded number is always equal to the decimal.","why":"4.7 rounds to 5, and 5 is not equal to 4.7."}],"hint":{"pic":{"k":"dround","n":"4.3","to":"whole","mid":true},"step":"Test the rule. Try 4.7. Then try a number with a small tenths digit, like 4.3."},"worked":"4.7 rounds up to 5, which is bigger. But 4.3 rounds down to 4, which is smaller than 4.3. So the rule is not always true.","model":"Giang is incorrect because 4.3 rounds to 4, and 4 is smaller than 4.3."},
-          {"type":"claim","who":"Dung","ok":false,"at":2,"says":"When you add two decimals, the sum is never a whole number.","reasons":[{"t":"2.5 + 3.5 = 6, and 6 is a whole number. One example like this shows that “never” is wrong."},{"t":"a decimal plus a decimal is always a decimal, like 2.4 + 3.1 = 5.5.","why":"That example fits. But try 2.5 + 3.5. The tenths make one more whole."},{"t":"the sum of two decimals is always less than 1.","why":"2.4 + 3.1 = 5.5, and 5.5 is more than 1."}],"hint":{"pic":{"k":"dcol","a":"2.5","b":"3.5","op":"+"},"step":"Test the rule. Try 2.4 + 3.1. Then try two numbers whose tenths make 10 tenths, like 2.5 + 3.5."},"worked":"2.4 + 3.1 = 5.5 is a decimal. But 2.5 + 3.5 = 6.0, and that is the whole number 6. So “never” is wrong.","model":"Dung is incorrect because 2.5 + 3.5 = 6, and 6 is a whole number."},
+          {"type":"claim","who":"Dung","ok":false,"at":2,"says":"A number that rounds to 7.0, to the nearest tenth, is always less than 7.","reasons":[{"t":"7.04 rounds to 7.0, and 7.04 is more than 7. One example like this shows the rule is not always true."},{"t":"numbers that round to 7.0 are all just under 7, like 6.98.","why":"6.98 rounds to 7.0. But 7.03 rounds to 7.0 too, and 7.03 is more than 7."},{"t":"only 7.00 rounds to 7.0.","why":"6.97 and 7.02 round to 7.0 too."}],"hint":{"pic":{"k":"dround","n":"7.04","to":"tenth","mid":true},"step":"Test the rule. Round 6.98 to the nearest tenth. Then round 7.04."},"worked":"6.98 rounds up to 7.0, and 6.98 is less than 7. But 7.04 rounds down to 7.0, and 7.04 is more than 7. So the rule is not always true.","model":"Dung is incorrect because 7.04 rounds to 7.0, and 7.04 is more than 7."},
           {"type":"claim","who":"Hanh","ok":true,"at":0,"says":"A number with 2 decimal places that rounds to 5, to the nearest whole number, is always less than 5.5.","reasons":[{"t":"5.5 is halfway between 5 and 6, and halfway rounds up to 6. So the numbers that round to 5 stop at 5.49."},{"t":"5.5 rounds to 5, so the number can be 5.5.","why":"5.5 is exactly halfway between 5 and 6. Halfway rounds up, to 6."},{"t":"only the number 5.00 rounds to 5.","why":"Try 4.87 and 5.32. They round to 5 too."}],"hint":{"pic":{"k":"dround","from":"5","to":"whole","mid":true},"step":"Round 5.49, then 5.50, then 5.51 to the nearest whole number."},"worked":"5.49 rounds down to 5. 5.5 is halfway, so it rounds up to 6. Every number bigger than 5.5 rounds to 6 or more. So the numbers that round to 5 are all less than 5.5.","model":"Hanh is correct because 5.5 rounds up to 6, so a number that rounds to 5 must be less than 5.5."}
         ] }
       ]
@@ -258,7 +258,7 @@
       secs: 60,
       items: [
         ["9.54 to the nearest whole number", ["10", "9", "9.5"]],
-        ["Estimate: 9.6 − 1.39 is about", ["9", "8", "10"]],
+        ["Round each number, then estimate: 9.6 − 1.39", ["9", "10", "11"]],
         ["19.25 to the nearest tenth", ["19.3", "19.2", "19"]],
         ["19.26 to the nearest whole number", ["19", "20", "19.3"]],
         ["17.06 to the nearest tenth", ["17.1", "17.0", "17"]],
@@ -284,7 +284,7 @@
         ["Halfway between 6.2 and 6.3", ["6.25", "6.3", "6.7"]],
         ["5.8 + 1.96", ["7.76", "2.54", "6.76"]],
         ["12.25 to the nearest tenth", ["12.3", "12.2", "12"]],
-        ["Estimate: 4.7 − 3.29 is about", ["2", "1", "3"]],
+        ["Round each number, then estimate: 4.7 − 3.29", ["2", "3", "4"]],
         ["Which number rounds to 9.1 (nearest tenth)?", ["9.08", "9.15", "9.04"]],
         ["1.07 + 8.4", ["9.47", "1.91", "9.57"]],
         ["Which number rounds to 6.5 (nearest tenth)?", ["6.48", "6.55", "6.44"]],
@@ -292,7 +292,7 @@
         ["6.34 + 7.6", ["13.94", "7.1", "14.04"]],
         ["4.7 − 2.97", ["1.73", "1.87", "2.5"]],
         ["13.46 to the nearest tenth", ["13.5", "13.4", "13"]],
-        ["Estimate: 9.2 − 3.98 is about", ["5", "6", "4"]],
+        ["Round each number, then estimate: 9.2 − 3.98", ["5", "6", "4"]],
         ["Smallest 2-decimal-place number that rounds to 6.1?", ["6.05", "6.06", "6.04"]],
         ["Smallest 2-decimal-place number that rounds to 8.5?", ["8.45", "8.46", "8.44"]],
         ["19.24 to the nearest tenth", ["19.2", "19.3", "19"]],
@@ -303,15 +303,15 @@
         ["4.08 to the nearest whole number", ["4", "5", "4.1"]],
         ["Smallest 2-decimal-place number that rounds to 7.2?", ["7.15", "7.16", "7.14"]],
         ["Halfway between 2.3 and 2.4", ["2.35", "2.4", "2.8"]],
-        ["Estimate: 5.1 − 2.52 is about", ["2", "3", "1"]],
+        ["Round each number, then estimate: 5.1 − 2.52", ["2", "1", "4"]],
         ["10.36 to the nearest whole number", ["10", "11", "10.4"]],
         ["Which number rounds to 2.3 (nearest tenth)?", ["2.28", "2.35", "2.24"]],
-        ["Estimate: 5.3 + 1.93 is about", ["7", "6", "8"]],
+        ["Round each number, then estimate: 5.3 + 1.93", ["7", "6", "8"]],
         ["12.78 to the nearest whole number", ["13", "12", "12.8"]],
         ["Halfway between 9.5 and 9.6", ["9.55", "9.6", "10.0"]],
         ["12.71 to the nearest tenth", ["12.7", "12.8", "13"]],
         ["7.6 − 3.14", ["4.46", "4.54", "2.38"]],
-        ["Estimate: 7.1 + 4.54 is about", ["12", "11", "13"]],
+        ["Round each number, then estimate: 7.1 + 4.54", ["12", "11", "13"]],
         ["Smallest 2-decimal-place number that rounds to 2.7?", ["2.65", "2.66", "2.64"]],
         ["8.9 − 2.14", ["6.76", "6.84", "1.25"]],
         ["Halfway between 7.1 and 7.2", ["7.15", "7.2", "7.6"]],
@@ -329,9 +329,9 @@
         ["15.91 to the nearest tenth", ["15.9", "16.0", "16"]],
         ["6.5 − 2.75", ["3.75", "3.85", "2.1"]],
         ["3.59 to the nearest tenth", ["3.6", "3.5", "4"]],
-        ["Estimate: 9.7 + 4.63 is about", ["15", "13", "16"]],
+        ["Round each number, then estimate: 9.7 + 4.63", ["15", "13", "16"]],
         ["5.5 to the nearest whole number", ["6", "5", "5.5"]],
-        ["Estimate: 6.3 + 3.78 is about", ["10", "9", "11"]]
+        ["Round each number, then estimate: 6.3 + 3.78", ["10", "9", "11"]]
       ]
     },
     // My self-check: the goals of the stop. again: the step to practise again for each goal (c = See it, r and a = Practise).

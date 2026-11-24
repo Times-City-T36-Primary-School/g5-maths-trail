@@ -113,7 +113,8 @@
         el('p', { class: 'hub__eyebrow' }, S.eyebrow),
         el('h1', { class: 'hub__title' }, S.name),
         teacherView ? el('p', { class: 'sm-teacher' }, T.ui.icon('pencil'), el('span', 'Teacher view'), el('span', { class: 'sm-teacher__vi', lang: 'vi' }, 'Chế độ giáo viên')) : null,
-        T.ui.instruction({ en: S.blurb.en, vi: S.blurb.vi, zip: false, plain: true }).el,
+        T.ui.instruction(open ? { en: S.blurb.en, vi: S.blurb.vi, zip: false, plain: true }
+          : { en: fill(S.blurbLocked.en, { n: OPEN_AT }), vi: fill(S.blurbLocked.vi, { n: OPEN_AT }), zip: false, plain: true }).el,
         progress,
         !open ? el('p', { class: 'hub__hint sm-locked' }, T.ui.icon('lock'), el('span', fill(S.locked.line, { d: done }))) : null),
       T.ui.instruction({ en: line.en, vi: line.vi, mood: line.mood, sound: false, cls: 'sm-zip' }).el,
@@ -181,8 +182,9 @@
       const plan = T.summit.plan(T.packs, { avoid: avoid });
       if (!plan) { ctx.instruct({ en: 'No questions here yet.', vi: 'Chưa có câu hỏi nào.', mood: 'think' }); return; }
       const codes = plan.papers.map(function (p) { return p.map(T.summit.code); });
-      T.store.set(['summit', 'lastItems'], codes[0].concat(codes[1]));
-      const resume = { codes: full ? codes : [codes[0], codes[1]], full: !!full, at: 0, p: [], by: {} };
+      // the short test ("One paper only") keeps Paper 1 only: Paper 2 was never seen, so the next try may use its items
+      T.store.set(['summit', 'lastItems'], full ? codes[0].concat(codes[1]) : codes[0].slice());
+      const resume = { codes: full ? codes : [codes[0]], full: !!full, at: 0, p: [], m: [], by: {} };
       T.store.set(RS, resume);
       paper(resume, 0);
     }
@@ -310,9 +312,10 @@
       if (pad) { pad.lock(); pad.mark(boxes); }
       totalBox.parentNode.classList.add('is-marked');
       T.ui.countUp(totalBox, score, { from: 0, ms: Math.min(1100, 90 * qs.length + 200), format: function (n) { return n + ' / ' + max; } });
-      const p = (resume.p || []).slice();
+      const p = (resume.p || []).slice(), m = (resume.m || []).slice();
       p[k] = score;
-      const next = Object.assign({}, resume, { p: p, by: by, at: k + 1 });
+      m[k] = max;                                    // the marks this paper really had (a question that did not build is left out)
+      const next = Object.assign({}, resume, { p: p, m: m, by: by, at: k + 1 });
       const more = resume.full && k === 0;
       T.store.set(RS, more ? next : null);
       ctx.zip(score >= need(max) ? 'cheer' : 'happy');
@@ -328,7 +331,10 @@
       if (over) return;
       if (pad) { pad.destroy(); pad = null; }
       const TXT = W().test;
-      const full = !!r.full, tot = full ? total() : T.summit.MARKS;
+      const full = !!r.full, papers = full ? T.summit.PAPERS : 1;
+      // the total: the sum of each paper's real marks (saved when it was marked), not a number written in
+      let tot = 0;
+      for (let k = 0; k < papers; k++) tot += Number((r.m || [])[k]) || T.summit.MARKS;
       const score = (r.p || []).reduce(function (s, x) { return s + (Number(x) || 0); }, 0);
       const reached = score >= need(tot), hasWon = full && reached;
       T.events.log({ s: 0, g: 'X', v: String(score), tot: tot, ok: reached, full: full });
@@ -344,7 +350,7 @@
       const low = Object.keys(r.by || {}).filter(function (s) { return r.by[s][0] * 2 < r.by[s][1]; }).sort(function (a, b) { return a - b; })
         .map(function (s) { return 'Stop ' + s; });
       const lines = [fill(TXT.score, { s: score, t: tot })];
-      if (full) TXT.papers.forEach(function (x, k) { lines.push(fill(x, { n: r.p[k] })); });
+      if (full) TXT.papers.forEach(function (x, k) { lines.push(fill(x, { n: r.p[k], m: Number((r.m || [])[k]) || T.summit.MARKS })); });
       if (full && !hasWon) lines.push(fill(TXT.need, { w: need(tot) }));
       lines.push(low.length ? fill(TXT.practise, { list: low.join(', ') }) : TXT.allStops);
       const zipLine = !full ? TXT.sample : hasWon ? (firstTrophy ? TXT.won : TXT.wonAgain) : TXT.notYet;

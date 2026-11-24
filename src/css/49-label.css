@@ -33,8 +33,7 @@
     background: var(--surface); border-bottom: 1px solid var(--line);
   }
   .school-strip__title { margin: 0; font: 600 1rem/1.2 var(--font-display); color: var(--ink); }
-  .school-strip__school { margin: 0; font: 700 .75rem/1.3 var(--font-body); color: var(--ink-2); }
-  @media (max-width: 420px) { .school-strip__school { font-size: .6875rem; letter-spacing: 0; } }
+  .school-strip__school { margin: 0; font: 700 .875rem/1.3 var(--font-body); color: var(--ink-2); letter-spacing: 0; }   /* 14px: the smallest text on a phone (the school's name, not read by the child) */
   .players__head .howto-open { margin-left: auto; }
 }
 
@@ -53,7 +52,9 @@
 .app-label__title { flex: none; color: var(--ink-2); }
 @media (max-width: 599px) {
   .app-label__title, .app-label__dot { display: none; }
-  .app-label { font-size: .6875rem; min-height: 1.375rem; }
+  /* 14px (it was 11px): the school's whole name does not fit one line at 390 px, so it may take two, broken evenly */
+  .app-label { font-size: .875rem; line-height: 1.2; min-height: 1.5rem; letter-spacing: 0; white-space: normal; padding-top: .125rem; }
+  .app-label > span { text-wrap: balance; }
 }
 /* the label takes the bottom safe area, so the action bar above it does not */
 #app.has-label .actionbar { margin-bottom: 0; padding-bottom: .625rem; }

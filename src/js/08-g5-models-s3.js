@@ -283,7 +283,7 @@ M.snth = function (d) {
   const tb = tableOf(k, c, d.shown, n);
   return {
     q: "Find the <b>" + ord(n) + "</b> [[term]] of this [[sequence]].", sum: t.map(sgn).join(", ") + ", ...",
-    lines: ["{0}"], blanks: [{ len: 5, w: "big" }],
+    lines: ["{0}"], blanks: [{ len: 5, w: "big", neg: true }],
     check(r) {
       const v = r.v[0] === "" ? NaN : +r.v[0];
       if (v === ans) return { ok: true };
@@ -334,7 +334,7 @@ M.stable = function (d) {
   return {
     q: d.say ? "The [[rule]] of a [[sequence]] is: <b>" + text + "</b>. Complete the table." : "Complete the table for this [[sequence]].",
     ui: Object.assign({}, spec, { cells: hide }),
-    blanks: hide.map(() => ({ len: 4, w: "tcell", neg: vals.some(v => v < 0) })), marks: hide.length > 1 ? 2 : 1,
+    blanks: hide.map(() => ({ len: 4, w: "tcell", neg: true })), marks: hide.length > 1 ? 2 : 1,
     check(r) {
       const parts = hide.map((hi, i) => r.v[i] !== "" && +r.v[i] === vals[hi]);
       if (parts.every(Boolean)) return { ok: true, parts: parts };
@@ -443,7 +443,7 @@ M.sqterm = function (d) {
   const tb = { k: "stable", pos: Array.from({ length: d.shown }, (x, i) => i + 1).concat([n]), sq: { s: s, c: c } };
   return {
     q: "This [[sequence]] is made from [[square numbers|square number]]. Find the <b>" + ord(n) + "</b> [[term]].", sum: t.map(sgn).join(", ") + ", ...",
-    lines: ["{0}"], blanks: [{ len: 4, w: "big", neg: t.some(v => v < 0) }],
+    lines: ["{0}"], blanks: [{ len: 4, w: "big", neg: true }],
     check(r) {
       const v = r.v[0] === "" ? NaN : +r.v[0];
       if (v === ans) return { ok: true };
@@ -515,7 +515,7 @@ M.sstory = function (d) {
   const work = steps + " × " + Q.html(ab) + " = " + Q.html(Q.abs(grow)) + ". " + Q.html(a) + (up ? " + " : " − ") + Q.html(Q.abs(grow)) + " = " + Q.html(ans);
   const off = Q.add(a, Q.times(st, d.start === 1 ? n : n - 1));
   return {
-    q: text, lines: ["{0} " + d.unit], blanks: [{ len: 6, w: "big", neg: Q.sign(ans) < 0, dec: dp }],
+    q: text, lines: ["{0} " + d.unit], blanks: [{ len: 6, w: "big", neg: true, dec: dp }],
     check(r) {
       const v = typed(r.v[0]);
       if (v && Q.eq(v, ans)) return { ok: true };

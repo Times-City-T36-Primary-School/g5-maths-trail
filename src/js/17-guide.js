@@ -4,7 +4,8 @@
    T.guide.point(key, target, opts) -> off()
      key      what is being shown: 'hub', 'flip', 'mat-plus', 'numpad' ... (one hand per key, once per child)
      target   an element, or a function that finds it (a tool may draw its buttons again: the hand follows)
-     opts     { at: 0.55 (how far down the target the fingertip goes), delay: 650 ms, ms: 6000 (how long it stays),
+     opts     { at: 0.55 (how far down the target the fingertip goes), small: false (a smaller hand that rests inside
+              a small target), delay: 650 ms, ms: 6000 (how long it stays),
                 scope: 'device' (the start screen: nobody is playing yet, so it is remembered on this device) }
    The hand never takes a tap (pointer-events: none), goes away on the first tap or key press anywhere, after a
    few seconds, when the screen changes, or when its target goes. Only one hand at a time: a second request while
@@ -77,7 +78,7 @@
 
   function show(key, target, opts) {
     const still = T.ui.reducedMotion();
-    const hand = el('span', { class: ['guide-hand', still && 'is-still'], html: '<span class="guide-hand__in">' + HAND + '</span>' });
+    const hand = el('span', { class: ['guide-hand', still && 'is-still', opts.small && 'is-small'], html: '<span class="guide-hand__in">' + HAND + '</span>' });
     const ring = el('span', { class: ['guide-ring', still && 'is-still'] });
     const box = host();
     box.appendChild(ring);

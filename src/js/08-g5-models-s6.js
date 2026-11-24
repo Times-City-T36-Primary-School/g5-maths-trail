@@ -112,7 +112,7 @@ M.pshade = function (d, mode) {
     },
     hint: { step: small ? "All " + T + " parts are 100%." + (s[1] === 1 ? "" : " " + q.html + (q.kind === "f" && q.d === s[1] ? "" : " = " + F(s[0], s[1])) + ": share " + T + " into " + s[1] + " equal groups.") : q.kind === "p" ? "Per cent means out of 100. " + q.h + "% is " + q.h + " squares out of 100." : q.kind === "f" ? "Make the denominator 100: " + q.html + " = " + F("?", 100) + "." : "One small square is 0.01. One column is 0.1." },
     worked: { text: small ? workedSmall : worked100, pic: small ? { k: "pgrid", r: d.r, c: d.c, shade: want } : { k: "hgrid", shade: want, cols: true } },
-    yes: small ? want + " of the " + T + " parts is " + q.text + "." : q.h + " squares out of 100 is " + q.text + ".",
+    yes: small ? want + " of the " + T + (want === 1 ? " parts is " : " parts are ") + q.text + " of the shape." : q.h + " squares out of 100 is " + q.text + ".",
     key: want + (small ? (want === 1 ? " part" : " parts") : " squares")
   };
 };
@@ -153,7 +153,7 @@ M.pshape = function (d) {
       const v = num(r.v[0]);
       if (v === want) return { ok: true };
       if (v === 100 - want) return { ok: false, msg: "That is the part that is " + (d.not ? "shaded" : "not shaded") + ". Read the question again.", parts: [false] };
-      if (v === cnt) return { ok: false, msg: "That is the number of parts. The shape has " + T + " parts, not 100. Make the denominator 100.", parts: [false] };
+      if (v === cnt) return { ok: false, msg: "That is a number of parts, not a percentage. The shape has " + T + " parts, not 100. Make the denominator 100.", parts: [false] };
       if (v === T) return { ok: false, msg: T + " is the number of parts in the whole shape. The whole shape is 100%.", parts: [false] };
       return { ok: false, msg: "Write the fraction " + F(cnt, T) + " first. Then make the denominator 100.", parts: [false] };
     },
@@ -262,6 +262,7 @@ function ofSlip(p, n, typed, rt) {
   const v = D.p(typed), N = n * 1000;
   if (isNaN(v)) return "Write a number.";
   if (v === N) return "That is the whole amount, 100%. Find " + p + "% of it.";
+  if (p === 75 && v * 4 === N) return "That is 25% of " + fmt(n) + " (one quarter). 75% is 3 quarters: 3 × " + D.s(v) + ".";
   if (p !== 10 && v === n * 100) return "That is 10% of " + fmt(n) + ". Now use it to find " + p + "%.";
   if (v === N - rt.ans) return "That is what is left. The question asks for " + p + "% of " + fmt(n) + ".";
   if (v * p === N && p !== 10 && p !== 50 && p !== 25 && p !== 1) return p + "% does not mean ÷ " + p + ". " + rt.first;
@@ -332,10 +333,10 @@ M.pcmp = function (d, mode) {
       const parts = it.map((x, i) => r.v[i] === ans[i]);
       if (parts.every(Boolean)) return { ok: true, parts: parts };
       const i = parts.indexOf(false), x = it[i];
-      return { ok: false, msg: look(i, many) + cmpWhy(x.a, x.b) + " The open side of the sign points to the greater number.", parts: parts };
+      return { ok: false, msg: look(i, many) + cmpWhy(x.a, x.b) + (ans[i] === "=" ? " So write =." : " The open side of the sign points to the greater number."), parts: parts };
     },
     hint: { pic: many || it[0].a.h == null || it[0].b.h == null || d.line ? null : { k: "fdpline", cards: [it[0].a.text, it[0].b.text] },
-      step: (it.every(x => x.a.kind === "f" && x.b.kind === "f") ? "Give both fractions the same denominator." : "Change both numbers into percentages.") + " The open side of the sign points to the greater number." },
+      step: it.map((x, i) => (many ? "(" + "abc"[i] + ") " : "") + (x.a.kind === "f" && x.b.kind === "f" ? "Give both fractions the same denominator." : "Change both numbers into percentages.")).join(" ") + " The open side of the sign points to the greater number." },
     worked: { text: it.map((x, i) => (many ? "(" + "abc"[i] + ") " : "") + cmpWhy(x.a, x.b) + " So " + x.a.html + " " + SYMH[ans[i]] + " " + x.b.html + ".").join(" ") },
     yes: it.map((x, i) => x.a.html + " " + SYMH[ans[i]] + " " + x.b.html).join(" and ") + ".",
     key: ans.map(x => SYMH[x]).join(" ; "), fill: ans

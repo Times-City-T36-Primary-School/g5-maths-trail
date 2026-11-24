@@ -21,9 +21,9 @@
         { id: 'C', title: { en: 'Common factors', vi: 'Ước chung' }, keys: ['common factor', 'highest common factor', 'counter-example'] }
       ],
       items: {
-        'multiple': { art: 'w-multiple', vi: 'bội số', def: 'A number in the times table of another number. 6, 12 and 18 are multiples of 6.' },
+        'multiple': { art: 'w-multiple', vi: 'bội số', def: 'A number in the times table of another number. 4, 8, 12 and 16 are multiples of 4.' },
         'factor': { art: 'w-factor', vi: 'ước số', def: 'A number that divides another number exactly. 3 is a factor of 12, because 12 ÷ 3 = 4.' },
-        'factor pair': { art: 'w-factor-pair', vi: 'cặp ước số', def: 'Two numbers that multiply to make a number. 3 and 4 are a factor pair of 12.' },
+        'factor pair': { art: 'w-factor-pair', vi: 'cặp ước số', def: 'Two numbers that multiply to make a number. 2 and 6 are a factor pair of 12.' },
         'product': { art: 'w-product', vi: 'tích', def: 'The answer when you multiply. The product of 3 and 4 is 12.' },
         'common multiple': { art: 'w-common-multiple', vi: 'bội chung', def: 'A multiple of two numbers at the same time. 12 is a common multiple of 3 and 4.' },
         'lowest common multiple': { art: 'w-lowest-common-multiple', vi: 'bội chung nhỏ nhất', def: 'The smallest number that is a multiple of both numbers. For 6 and 9 it is 18.' },
@@ -37,20 +37,20 @@
     // mark the common factors; then the challenge (the data shape is in 45-see.js).
     see: {
       scenes: [
-        { id: 'multiples', title: { en: 'Lists of multiples', vi: 'Danh sách bội số' }, tool: 'clist', clist: { kind: 'mult', a: 6, b: 9, upto: 36, shown: [1, 1] },
+        { id: 'multiples', title: { en: 'Lists of multiples', vi: 'Danh sách bội số' }, tool: 'clist', clist: { kind: 'mult', a: 8, b: 12, upto: 48, shown: [1, 1] },
           steps: [
             { can: { growA: 3 }, wait: 'grow', until: { na: 3 },
-              zip: { en: 'Count on in sixes. Tap *Next multiple of 6* two times.', vi: 'Đếm cách 6 (mỗi lần thêm 6). Bấm *Next multiple of 6* (Bội số tiếp theo của 6) hai lần.' },
-              then: { en: '6, 12, 18: these are *multiples* of 6.', vi: '6, 12, 18: đây là các *bội số* của 6.' } },
+              zip: { en: 'Count on in eights. Tap *Next multiple of 8* two times.', vi: 'Đếm cách 8 (mỗi lần thêm 8). Bấm *Next multiple of 8* (Bội số tiếp theo của 8) hai lần.' },
+              then: { en: '8, 16, 24: these are *multiples* of 8.', vi: '8, 16, 24: đây là các *bội số* của 8.' } },
             { can: { growB: 2 }, wait: 'grow', until: { nb: 2 },
-              zip: { en: 'Now tap *Next multiple of 9*.', vi: 'Bây giờ bấm *Next multiple of 9* (Bội số tiếp theo của 9).' },
-              then: { en: 'Look! *18* is in *both* lists.', vi: 'Nhìn này! *18* có trong *cả hai* danh sách.' } },
+              zip: { en: 'Now tap *Next multiple of 12*.', vi: 'Bây giờ bấm *Next multiple of 12* (Bội số tiếp theo của 12).' },
+              then: { en: 'Look! *24* is in *both* lists.', vi: 'Nhìn này! *24* có trong *cả hai* danh sách.' } },
             { can: { mark: true }, wait: 'mark', until: { count: 1 },
-              zip: { en: 'Tap *18*, the number in both lists.', vi: 'Bấm vào *18*, số có trong cả hai danh sách.' },
-              then: { en: '18 is a *common multiple* of 6 and 9.', vi: '18 là một *bội chung* của 6 và 9.' } },
+              zip: { en: 'Tap *24*, the number in both lists.', vi: 'Bấm vào *24*, số có trong cả hai danh sách.' },
+              then: { en: '24 is a *common multiple* of 8 and 12.', vi: '24 là một *bội chung* của 8 và 12.' } },
             { can: { growA: 6, growB: 4, mark: true }, wait: 'mark', until: { count: 2 },
               zip: { en: 'Make both lists longer. Find the next common multiple.', vi: 'Kéo dài cả hai danh sách. Tìm bội chung tiếp theo.' },
-              then: { en: '*36* too! *18* is the *lowest common multiple*. Tap *Next*.', vi: 'Cả *36* nữa! *18* là *bội chung nhỏ nhất*. Bấm *Next*.' } }] },
+              then: { en: '*48* too! *24* is the *lowest common multiple*. Tap *Next*.', vi: 'Cả *48* nữa! *24* là *bội chung nhỏ nhất*. Bấm *Next*.' } }] },
         { id: 'factors', title: { en: 'Lists of factors', vi: 'Danh sách ước số' }, tool: 'clist', clist: { kind: 'fact', a: 18, b: 24, shown: [0, 0] },
           steps: [
             { can: { growA: true }, wait: 'grow', until: { na: 6 },
@@ -115,10 +115,10 @@
           { mode: "your", lo: ["6Ni.06"], twm: ["TWM.06"], v: [
             {"type":"csort","kind":"mult","a":3,"b":4,"upto":24,"n":24},
             {"type":"csort","kind":"fact","a":20,"b":30,"n":4},
-            {"type":"csort","kind":"mult","a":6,"b":9,"upto":36,"n":27}] },
+            {"type":"csort","kind":"mult","a":4,"b":10,"upto":40,"n":30}] },
           { mode: "your", lo: ["6Ni.06"], twm: ["TWM.01"], v: [
-            {"type":"lcmstory","a":9,"b":12,"unit":"seconds","tool":true,"names":["Red light flashes (seconds)","Green light flashes (seconds)"],"text":"A red light flashes every <b>9</b> seconds. A green light flashes every <b>12</b> seconds. They flash together now. After how many seconds do they next flash together?"},
-            {"type":"hcfstory","a":18,"b":30,"unit":"bunches","tool":true,"names":["Factors of 18 (roses)","Factors of 30 (tulips)"],"text":"Hoa has <b>18</b> roses and <b>30</b> tulips. She makes bunches of flowers. Every bunch has the same number of roses and the same number of tulips. She uses every flower. What is the greatest number of bunches she can make?"},
+            {"type":"lcmstory","a":4,"b":14,"unit":"seconds","tool":true,"names":["Red light flashes (seconds)","Green light flashes (seconds)"],"text":"A red light flashes every <b>4</b> seconds. A green light flashes every <b>14</b> seconds. They flash together now. After how many seconds do they next flash together?"},
+            {"type":"hcfstory","a":18,"b":30,"unit":"bunches","tool":true,"names":["Factors of 18 (roses)","Factors of 30 (tulips)"],"sumIs":"flowers in each bunch","asks":"how many bunches she can make","text":"Hoa has <b>18</b> roses and <b>30</b> tulips. She makes bunches of flowers. Every bunch has the same number of roses and the same number of tulips. She uses every flower. What is the greatest number of bunches she can make?"},
             {"type":"lcmstory","a":8,"b":12,"unit":"minutes","tool":true,"names":["Bus A leaves (minutes)","Bus B leaves (minutes)"],"text":"Bus A leaves every <b>8</b> minutes. Bus B leaves every <b>12</b> minutes. They leave together at 7 o’clock. After how many minutes do they next leave together?"}] }] }] },
       { id: 's4a', kit: 'model', game: 'a', surface: 'paper', art: 'icon-step-test',
         title: 'Solve it', blurb: { en: 'Answer questions like the test.', vi: 'Trả lời câu hỏi giống bài kiểm tra.' },
@@ -130,7 +130,7 @@
             {"type":"fmrel","x":6,"y":20}] },
           { mode: "your", lo: ["6Ni.06"], twm: ["TWM.05"], v: [
             {"type":"lcm","a":5,"b":8},
-            {"type":"lcm","a":9,"b":15},
+            {"type":"lcm","a":9,"b":24},
             {"type":"lcm","a":10,"b":12}] },
           { mode: "your", lo: ["6Ni.06"], twm: ["TWM.01"], v: [
             {"type":"cmrange","a":3,"b":8,"lo":40,"hi":60},
@@ -153,7 +153,7 @@
           { mode: "your", lo: ["6Ni.06"], twm: ["TWM.07", "TWM.08"], v: [
             {"type":"cfix","who":"Hai","he":true,"kind":"lcm","a":4,"b":18,"slip":"product","at":1},
             {"type":"fmiss","who":"Yen","he":false,"n":40,"shown":4},
-            {"type":"cfix","who":"Tam","he":true,"kind":"hcf","a":24,"b":36,"slip":"low","at":2}] },
+            {"type":"cfix","who":"Tam","he":true,"kind":"hcf","a":24,"b":40,"slip":"low","at":2}] },
           { mode: "your", lo: ["6Ni.06"], twm: ["TWM.07", "TWM.04"], v: [
             {"type":"claim","who":"Linh","ok":true,"at":1,"says":"28 is the lowest common multiple of 4 and 7.","reasons":[{"t":"28 is in both lists, and 7, 14 and 21 are not multiples of 4."},{"t":"14 is a common multiple of 4 and 7, and it is lower.","why":"14 is a multiple of 7, but 14 ÷ 4 is not exact. So 14 is not a common multiple."},{"t":"the lowest common multiple of 4 and 7 is 1.","why":"1 is a common factor. A multiple of 7 is 7 or more."}],"hint":{"pic":{"k":"clist","kind":"mult","a":4,"b":7,"upto":28},"step":"Count on in 7s: 7, 14, 21, 28. Which is the first one that is also a multiple of 4?"},"worked":"Multiples of 7: 7, 14, 21, 28. Multiples of 4: 4, 8, 12, 16, 20, 24, 28. The first number in both lists is 28.","model":"Linh is correct because 28 is the first number that is in both lists."},
             {"type":"claim","who":"Son","ok":false,"at":0,"says":"12 and 16 have exactly two common factors: 2 and 4.","reasons":[{"t":"1 is a common factor too: 12 ÷ 1 = 12 and 16 ÷ 1 = 16."},{"t":"8 is a common factor of 12 and 16 too.","why":"8 is a factor of 16, but 12 ÷ 8 is not exact. So 8 is not a common factor."},{"t":"2 and 4 are the only numbers in both factor lists.","why":"Write both lists from the start. Every factor list begins with 1."}],"hint":{"pic":{"k":"clist","kind":"fact","a":12,"b":16},"step":"List all the factors of 12 and all the factors of 16. Start each list with 1."},"worked":"Factors of 12: 1, 2, 3, 4, 6, 12. Factors of 16: 1, 2, 4, 8, 16. In both lists: 1, 2 and 4. Son forgot 1.","model":"Son is incorrect because 1 is a common factor of 12 and 16 too. There are three common factors."},
@@ -178,8 +178,8 @@
         { en: 'The [[lowest common multiple]] is the first number in both lists. The [[product]] of the two numbers is always a common multiple, but it is not always the lowest.',
           vi: 'Bội chung nhỏ nhất là số đầu tiên có trong cả hai danh sách. Tích của hai số luôn là một bội chung, nhưng không phải lúc nào cũng là bội chung nhỏ nhất.',
           example: ['6 and 9: the lowest common multiple is *18*.', '6 × 9 = 54 is a common multiple too, but it is not the lowest.'],
-          pic: { k: 'clist', kind: 'mult', a: 6, b: 9, upto: 36, marked: 'all', hl: 'low' } },
-        { en: 'A [[common factor]] of two numbers is in both lists of factors. 1 is a common factor of every pair of whole numbers.',
+          pic: { k: 'clist', kind: 'mult', a: 6, b: 9, upto: 18, marked: 'all', hl: 'low' } },
+        { en: 'A [[common factor]] of two numbers is in both lists of factors. 1 is a common factor of every pair of whole numbers (not 0).',
           vi: 'Ước chung của hai số có trong cả hai danh sách ước số. 1 là ước chung của mọi cặp số tự nhiên khác 0.',
           example: ['Factors of 12: *1, 2, 3*, 4, *6*, 12', 'Factors of 30: *1, 2, 3*, 5, *6*, 10, 15, 30', 'The common factors are 1, 2, 3 and 6.'],
           pic: { k: 'venn', kind: 'fact', a: 12, b: 30 } },
@@ -189,8 +189,8 @@
           pic: { k: 'clist', kind: 'fact', a: 16, b: 24, marked: 'all', hl: 'high' } },
         { en: 'Is a rule always true? Test it with numbers. One [[counter-example]] is enough to show that a rule is not always true.',
           vi: 'Một quy tắc có luôn đúng không? Hãy thử với các số. Chỉ cần một phản ví dụ là đủ để chứng tỏ quy tắc không phải lúc nào cũng đúng.',
-          example: ['Rule: “The lowest common multiple is always the product.”', 'Test 4 and 10: the product is 40, but the lowest common multiple is *20*.', 'So the rule is not always true.'],
-          pic: { k: 'clist', kind: 'mult', a: 4, b: 10, upto: 20, marked: 'all', hl: 'low' } }
+          example: ['Rule: “Two even numbers always have 4 as a common factor.”', 'Test 6 and 10: the common factors are *1 and 2*. 4 is not a factor of 6 or of 10.', 'So the rule is not always true.'],
+          pic: { k: 'clist', kind: 'fact', a: 6, b: 10, marked: 'all' } }
       ],
       check: [
         { sentence: 'The fourth multiple of 9 is {36|27|45}.', answer: '36' },
@@ -209,52 +209,52 @@
         { dok: 1, lo: ["6Ni.06"], twm: ["TWM.05"], v: [
           {"type":"mlist","k":8,"n":5},
           {"type":"mlist","k":9,"n":5},
-          {"type":"mlist","k":12,"n":5}
+          {"type":"mlist","k":11,"n":5}
         ] },
         { dok: 1, lo: ["6Ni.06"], twm: ["TWM.05"], v: [
-          {"type":"flist","n":44},
-          {"type":"flist","n":50},
+          {"type":"flist","n":52},
+          {"type":"flist","n":75},
           {"type":"flist","n":63}
         ] },
         { dok: 1, lo: ["6Ni.06"], twm: ["TWM.06"], v: [
-          {"type":"cset","kind":"cm","a":3,"b":10,"at":1,"opts":[[30,60,90],[10,30,60],[30,45,60]]},
-          {"type":"cset","kind":"cf","a":18,"b":24,"at":2,"opts":[[1,2,3,6],[2,3,6],[1,2,3,6,9]]},
-          {"type":"cset","kind":"cm","a":4,"b":10,"at":0,"opts":[[20,40,60],[10,20,40],[8,20,40]]}
+          {"type":"cmis","a":6,"b":7,"n":63,"at":2},
+          {"type":"cmis","a":4,"b":15,"n":60,"at":0},
+          {"type":"cmis","a":9,"b":10,"n":80,"at":1}
         ] },
         { dok: 1, lo: ["6Ni.06"], twm: ["TWM.05"], v: [
-          {"type":"lcm","a":12,"b":15},
-          {"type":"lcm","a":8,"b":20},
-          {"type":"lcm","a":12,"b":16}
+          {"type":"lcm","a":20,"b":25},
+          {"type":"lcm","a":8,"b":18},
+          {"type":"lcm","a":15,"b":18}
         ] },
         { dok: 1, lo: ["6Ni.06"], twm: ["TWM.05"], v: [
-          {"type":"hcf","a":20,"b":28},
-          {"type":"hcf","a":27,"b":36},
-          {"type":"hcf","a":30,"b":45}
+          {"type":"hcf","a":21,"b":35},
+          {"type":"hcf","a":32,"b":40},
+          {"type":"hcf","a":45,"b":60}
         ] },
         { dok: 2, lo: ["6Ni.06"], twm: ["TWM.01"], v: [
-          {"type":"cmrange","a":4,"b":9,"lo":60,"hi":80},
-          {"type":"cmrange","a":5,"b":7,"lo":50,"hi":100},
-          {"type":"cmrange","a":9,"b":12,"lo":90,"hi":120}
+          {"type":"cmrange","a":4,"b":11,"lo":60,"hi":100},
+          {"type":"cmrange","a":5,"b":7,"lo":100,"hi":150},
+          {"type":"cmrange","a":12,"b":14,"lo":70,"hi":100}
         ] },
         { dok: 2, lo: ["6Ni.06"], twm: ["TWM.01"], v: [
-          {"type":"lcmstory","a":10,"b":25,"unit":"seconds","text":"A blue lamp flashes every <b>10</b> seconds. A yellow lamp flashes every <b>25</b> seconds. They flash together now. After how many seconds do they next flash together?"},
-          {"type":"hcfstory","a":32,"b":48,"unit":"cm","text":"Phong has a ribbon <b>32</b> cm long and a ribbon <b>48</b> cm long. He cuts both into pieces. All the pieces have the same length, a whole number of centimetres, and no ribbon is left. What is the greatest length of each piece?"},
-          {"type":"lcmstory","a":15,"b":20,"unit":"minutes","text":"A bell rings every <b>15</b> minutes. A clock chimes every <b>20</b> minutes. They sound together at noon. After how many minutes do they next sound together?"}
+          {"type":"lcmstory","a":10,"b":16,"unit":"seconds","text":"A blue lamp flashes every <b>10</b> seconds. A yellow lamp flashes every <b>16</b> seconds. They flash together now. After how many seconds do they next flash together?"},
+          {"type":"hcfstory","a":36,"b":54,"unit":"cm","sumIs":"pieces","asks":"for the greatest length of each piece","text":"Phong has a ribbon <b>36</b> cm long and a ribbon <b>54</b> cm long. He cuts both into pieces. All the pieces have the same length, a whole number of centimetres, and no ribbon is left. What is the greatest length of each piece?"},
+          {"type":"lcmstory","a":15,"b":20,"unit":"minutes","text":"A school bell rings every <b>15</b> minutes. A clock bell rings every <b>20</b> minutes. They ring together at 12 o’clock. After how many minutes do they next ring together?"}
         ] },
         { dok: 2, lo: ["6Ni.06"], twm: ["TWM.01"], v: [
-          {"type":"twostep","kind":"packs","a":8,"b":10,"unit":"packs","things":["plates","cups"],"text":"Paper plates come in packs of <b>8</b>. Cups come in packs of <b>10</b>. Duc wants the same number of plates and cups. He buys as few packs as he can. How many packs does he buy altogether?"},
-          {"type":"twostep","kind":"each","a":12,"b":20,"unit":"beads","things":["red beads","blue beads"],"groups":"bags","text":"Chi has <b>12</b> red beads and <b>20</b> blue beads. She makes the greatest number of bags she can. Every bag has the same number of red beads and the same number of blue beads. No bead is left. How many beads are in each bag?"},
-          {"type":"twostep","kind":"packs","a":9,"b":6,"unit":"packs","things":["stickers","badges"],"text":"Stickers come in packs of <b>9</b>. Badges come in packs of <b>6</b>. Long wants the same number of stickers and badges. He buys as few packs as he can. How many packs does he buy altogether?"}
+          {"type":"twostep","kind":"packs","a":20,"b":24,"unit":"packs","things":["plates","cups"],"text":"Paper plates come in packs of <b>20</b>. Cups come in packs of <b>24</b>. Duc wants the same number of plates and cups. He buys as few packs as he can. How many packs does he buy altogether?"},
+          {"type":"twostep","kind":"each","a":20,"b":45,"unit":"beads","things":["red beads","blue beads"],"groups":"bags","text":"Chi has <b>20</b> red beads and <b>45</b> blue beads. She makes the greatest number of bags she can. Every bag has the same number of red beads and the same number of blue beads. No bead is left. How many beads are in each bag?"},
+          {"type":"twostep","kind":"packs","a":14,"b":21,"unit":"packs","things":["stickers","badges"],"text":"Stickers come in packs of <b>14</b>. Badges come in packs of <b>21</b>. Long wants the same number of stickers and badges. He buys as few packs as he can. How many packs does he buy altogether?"}
         ] },
         { dok: 2, lo: ["6Ni.06"], twm: ["TWM.07", "TWM.08"], v: [
           {"type":"cfix","who":"Hung","he":true,"kind":"lcm","a":10,"b":35,"slip":"product","at":2},
-          {"type":"cfix","who":"Thu","he":false,"kind":"hcf","a":20,"b":50,"slip":"low","at":0},
-          {"type":"fmiss","who":"Minh","he":true,"n":36,"shown":5}
+          {"type":"cfix","who":"Thu","he":false,"kind":"hcf","a":30,"b":40,"slip":"low","at":0},
+          {"type":"cfix","who":"Minh","he":true,"kind":"hcf","a":36,"b":48,"slip":"low","w":6,"at":1}
         ] },
         { dok: 3, lo: ["6Ni.06"], twm: ["TWM.01", "TWM.04"], v: [
-          {"type":"claim","who":"Giang","ok":false,"at":2,"says":"The lowest common multiple of two numbers is always the two numbers multiplied together.","reasons":[{"t":"for 9 and 15 the product is 135, but 45 is a lower common multiple. One example like this shows the rule is not always true."},{"t":"2 × 3 = 6, and 6 is the lowest common multiple of 2 and 3. So the rule is always true.","why":"One example that fits does not prove the rule. Try 9 and 15."},{"t":"two numbers multiplied together never make a common multiple.","why":"They always do: 9 × 15 = 135 is in both times tables. But it is not always the lowest."}],"hint":{"step":"Test the rule with a pair where one number is not 1 and the two numbers share a factor, like two odd numbers in the 3 times table."},"worked":"9 × 15 = 135. The multiples of 15 are 15, 30, 45 ... 15 and 30 are not multiples of 9, but 45 = 5 × 9. So the lowest common multiple of 9 and 15 is 45, not 135.","model":"Giang is incorrect because for 9 and 15 the product is 135, but the lowest common multiple is 45."},
-          {"type":"claim","who":"Kim","ok":true,"at":0,"says":"1 is a common factor of every pair of whole numbers.","reasons":[{"t":"1 × any number = that number. So 1 divides every whole number exactly."},{"t":"it is only true when both numbers are odd.","why":"Try two even numbers: 8 ÷ 1 = 8 and 14 ÷ 1 = 14. It works for them too."},{"t":"1 is too small to be a factor.","why":"A factor can be small. 1 × 9 = 9, so 1 is a factor of 9."}],"hint":{"pic":{"k":"clist","kind":"fact","a":8,"b":14},"step":"Test the rule. Choose any two numbers, like 8 and 14. Is 1 in both lists of factors?"},"worked":"Factors of 8: 1, 2, 4, 8. Factors of 14: 1, 2, 7, 14. 1 is in both lists. It is in every list of factors, because 1 × a number is that number.","model":"Kim is correct because 1 divides every whole number exactly."},
-          {"type":"claim","who":"Binh","ok":false,"at":1,"says":"The highest common factor of two different numbers is always smaller than both numbers.","reasons":[{"t":"for 5 and 15 the highest common factor is 5, and 5 is one of the two numbers. One example like this shows the rule is not always true."},{"t":"for 8 and 12 the highest common factor is 4, and 4 is smaller than both. So the rule is always true.","why":"That example fits. But one example does not prove “always”. Try 5 and 15."},{"t":"the highest common factor of two numbers is always 1.","why":"1 is always a common factor, but often it is not the highest. For 5 and 15 the highest is 5."}],"hint":{"step":"Test the rule with a pair where one number is a multiple of the other."},"worked":"Factors of 5: 1, 5. Factors of 15: 1, 3, 5, 15. The highest common factor is 5. It is not smaller than 5.","model":"Binh is incorrect because the highest common factor of 5 and 15 is 5, and 5 is not smaller than 5."}
+          {"type":"claim","who":"Giang","ok":false,"at":2,"says":"The lowest common multiple of two numbers is always the two numbers multiplied together.","reasons":[{"t":"for 6 and 14 the product is 84, but 42 is a lower common multiple. One example like this shows the rule is not always true."},{"t":"3 × 11 = 33, and 33 is the lowest common multiple of 3 and 11. So the rule is always true.","why":"One example that fits does not prove the rule. Try 6 and 14."},{"t":"two numbers multiplied together never make a common multiple.","why":"They always do: 6 × 14 = 84 is in both times tables. But it is not always the lowest."}],"hint":{"step":"Test the rule with two numbers that have a common factor bigger than 1, like two numbers in the 2 times table."},"worked":"6 × 14 = 84. The multiples of 14 are 14, 28, 42 ... 14 and 28 are not multiples of 6, but 42 = 7 × 6. So the lowest common multiple of 6 and 14 is 42, not 84.","model":"Giang is incorrect because for 6 and 14 the product is 84, but the lowest common multiple is 42."},
+          {"type":"claim","who":"Kim","ok":true,"at":0,"says":"Two even numbers always have 2 as a common factor.","reasons":[{"t":"every even number is in the 2 times table. So 2 divides both numbers exactly."},{"t":"8 and 28 are even, and their highest common factor is 4, not 2.","why":"The rule does not say “highest”. 8 ÷ 2 = 4 and 28 ÷ 2 = 14, so 2 is a common factor too."},{"t":"an even number can have an odd factor: 5 is a factor of 10.","why":"That is true, but the rule is about 2. 10 ÷ 2 = 5, so 2 is a factor of 10 too."}],"hint":{"pic":{"k":"clist","kind":"fact","a":10,"b":22},"step":"Test the rule. Choose two even numbers, like 10 and 22. Is 2 in both lists of factors?"},"worked":"Factors of 10: 1, 2, 5, 10. Factors of 22: 1, 2, 11, 22. 2 is in both lists. Every even number is in the 2 times table, so 2 divides it exactly.","model":"Kim is correct because every even number divides by 2 exactly, so 2 is always a common factor."},
+          {"type":"claim","who":"Binh","ok":false,"at":1,"says":"The highest common factor of two different numbers is always smaller than both numbers.","reasons":[{"t":"for 5 and 15 the highest common factor is 5, and 5 is one of the two numbers. One example like this shows the rule is not always true."},{"t":"for 16 and 20 the highest common factor is 4, and 4 is smaller than both. So the rule is always true.","why":"That example fits. But one example does not prove “always”. Try 5 and 15."},{"t":"the highest common factor of two numbers is always 1.","why":"1 is always a common factor, but often it is not the highest. For 5 and 15 the highest is 5."}],"hint":{"step":"Test the rule with a pair where one number is a multiple of the other."},"worked":"Factors of 5: 1, 5. Factors of 15: 1, 3, 5, 15. The highest common factor is 5. It is not smaller than 5.","model":"Binh is incorrect because the highest common factor of 5 and 15 is 5, and 5 is not smaller than 5."}
         ] }
       ]
     },
@@ -269,30 +269,30 @@
         ["Lowest common multiple of 12 and 20", ["60", "240", "4"]],
         ["Lowest common multiple of 5 and 8", ["40", "80", "13"]],
         ["Highest common factor of 18 and 27", ["9", "3", "18"]],
-        ["The 5th multiple of 8 is", ["40", "32", "48"]],
-        ["The 6th multiple of 7 is", ["42", "35", "49"]],
+        ["The 3rd multiple of 25 is", ["75", "50", "100"]],
+        ["The 3rd multiple of 13 is", ["39", "26", "52"]],
         ["Highest common factor of 16 and 24", ["8", "4", "16"]],
         ["Lowest common multiple of 3 and 5", ["15", "30", "8"]],
         ["Which is a common multiple of 3 and 8?", ["24", "21", "32"]],
-        ["4 is a ___ of 36", ["factor", "multiple", "neither"]],
+        ["Is 4 a factor or a multiple of 36?", ["factor", "multiple", "neither"]],
         ["A number in two times tables is a common ...", ["multiple", "factor", "product"]],
         ["Lowest common multiple of 3 and 12", ["12", "36", "3"]],
         ["Lowest common multiple of 6 and 9", ["18", "54", "3"]],
         ["Which is NOT a factor of 28?", ["6", "7", "14"]],
-        ["6 is a ___ of 30", ["factor", "multiple", "neither"]],
+        ["Is 6 a factor or a multiple of 30?", ["factor", "multiple", "neither"]],
         ["How many factors does 16 have?", ["5", "4", "3"]],
         ["Factors of 27: 1, 3, ?, 27", ["9", "4", "5"]],
         ["How many factors does 12 have?", ["6", "5", "4"]],
         ["The 4th multiple of 15 is", ["60", "45", "75"]],
         ["How many factors does 20 have?", ["6", "5", "4"]],
-        ["7 is a ___ of 28", ["factor", "multiple", "neither"]],
+        ["Is 7 a factor or a multiple of 28?", ["factor", "multiple", "neither"]],
         ["Lowest common multiple of 5 and 10", ["10", "50", "5"]],
         ["Factors of 44: 1, ?, 4, 11, 22, 44", ["2", "3", "5"]],
         ["Which is a common factor of 16 and 24?", ["2", "16", "6"]],
         ["How many factors does 28 have?", ["6", "5", "4"]],
         ["Which is a common multiple of 3 and 4?", ["24", "21", "28"]],
-        ["8 is a ___ of 40", ["factor", "multiple", "neither"]],
-        ["25 is a ___ of 10", ["neither", "factor", "multiple"]],
+        ["Is 8 a factor or a multiple of 40?", ["factor", "multiple", "neither"]],
+        ["Is 25 a factor or a multiple of 10?", ["neither", "factor", "multiple"]],
         ["Which is a common factor of 18 and 30?", ["6", "9", "5"]],
         ["Lowest common multiple of 2 and 7", ["14", "28", "9"]],
         ["Highest common factor of 12 and 30", ["6", "3", "12"]],
@@ -306,16 +306,16 @@
         ["Which is a common factor of 20 and 30?", ["10", "20", "3"]],
         ["Which is NOT a factor of 24?", ["9", "6", "3"]],
         ["How many factors does 9 have?", ["3", "2", "4"]],
-        ["The 4th multiple of 9 is", ["36", "27", "45"]],
+        ["The 6th multiple of 7 is", ["42", "35", "49"]],
         ["How many factors does 18 have?", ["6", "5", "4"]],
         ["Lowest common multiple of 8 and 10", ["40", "80", "2"]],
-        ["48 is a ___ of 6", ["multiple", "factor", "neither"]],
-        ["60 is a ___ of 12", ["multiple", "factor", "neither"]],
+        ["Is 48 a factor or a multiple of 6?", ["multiple", "factor", "neither"]],
+        ["Is 60 a factor or a multiple of 12?", ["multiple", "factor", "neither"]],
         ["Which is a common multiple of 4 and 10?", ["60", "56", "70"]],
         ["Which is NOT a factor of 32?", ["6", "16", "8"]],
         ["Factors of 50: 1, 2, ?, 10, 25, 50", ["5", "3", "4"]],
         ["12 is divisible by", ["4", "5", "8"]],
-        ["8 is a ___ of 30", ["neither", "factor", "multiple"]],
+        ["Is 8 a factor or a multiple of 30?", ["neither", "factor", "multiple"]],
         ["Which is a common factor of 30 and 45?", ["3", "2", "45"]],
         ["The 7th multiple of 6 is", ["42", "36", "48"]],
         ["Which is a common factor of 20 and 28?", ["2", "5", "7"]],
@@ -324,14 +324,14 @@
         ["Which is a common factor of 27 and 36?", ["3", "27", "12"]],
         ["Lowest common multiple of 4 and 10", ["20", "40", "2"]],
         ["Factors of 45: 1, 3, ?, 9, 15, 45", ["5", "4", "6"]],
-        ["9 is a ___ of 54", ["factor", "multiple", "neither"]],
+        ["Is 9 a factor or a multiple of 54?", ["factor", "multiple", "neither"]],
         ["1 is a common factor of", ["every pair of whole numbers", "odd numbers only", "no numbers"]],
-        ["45 is a ___ of 9", ["multiple", "factor", "neither"]],
+        ["Is 45 a factor or a multiple of 9?", ["multiple", "factor", "neither"]],
         ["Which is a common multiple of 3 and 7?", ["21", "18", "28"]],
-        ["Which is a common factor of 24 and 40?", ["4", "24", "10"]],
+        ["Which is a common factor of 24 and 32?", ["4", "24", "16"]],
         ["Which is NOT a factor of 36?", ["8", "9", "6"]],
         ["Lowest common multiple of 10 and 15", ["30", "150", "5"]],
-        ["The 5th multiple of 11 is", ["55", "44", "66"]],
+        ["The 4th multiple of 20 is", ["80", "60", "100"]],
         ["Highest common factor of 12 and 16", ["4", "2", "12"]],
         ["The first multiple of 9 is", ["9", "18", "1"]],
         ["Lowest common multiple of 9 and 12", ["36", "108", "3"]],
@@ -342,10 +342,10 @@
         ["Factors of 20: 1, 2, ?, 5, 10, 20", ["4", "3", "6"]],
         ["Which is a common multiple of 5 and 6?", ["60", "55", "66"]],
         ["Highest common factor of 24 and 36", ["12", "6", "24"]],
-        ["Which is a common factor of 36 and 48?", ["2", "9", "48"]],
+        ["Which is a common factor of 40 and 60?", ["2", "8", "15"]],
         ["Which is a factor pair of 20?", ["4 and 5", "4 and 6", "2 and 20"]],
-        ["21 is a ___ of 7", ["multiple", "factor", "neither"]],
-        ["32 is a ___ of 8", ["multiple", "factor", "neither"]],
+        ["Is 21 a factor or a multiple of 7?", ["multiple", "factor", "neither"]],
+        ["Is 32 a factor or a multiple of 8?", ["multiple", "factor", "neither"]],
         ["Which is a common multiple of 8 and 12?", ["48", "40", "60"]],
         ["Which is NOT a factor of 40?", ["6", "5", "10"]],
         ["Highest common factor of 20 and 30", ["10", "5", "20"]],
@@ -357,10 +357,10 @@
         ["Which is NOT a factor of 45?", ["6", "5", "3"]],
         ["Which is a common multiple of 2 and 3?", ["18", "16", "21"]],
         ["5 × 8 = 40. So 40 is the ___ of 5 and 8", ["product", "sum", "factor"]],
-        ["Highest common factor of 14 and 21", ["7", "1", "14"]],
+        ["Highest common factor of 14 and 35", ["7", "1", "14"]],
         ["Highest common factor of 8 and 12", ["4", "2", "8"]],
         ["Which is a common factor of 12 and 20?", ["4", "3", "20"]],
-        ["The smallest factor of every whole number is", ["1", "0", "2"]],
+        ["The smallest factor of every whole number (not 0) is", ["1", "0", "2"]],
         ["Lowest common multiple of 9 and 15", ["45", "135", "3"]],
         ["Which is a common multiple of 4 and 5?", ["40", "36", "45"]],
         ["Factors of 32: 1, 2, ?, 8, 16, 32", ["4", "3", "5"]],

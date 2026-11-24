@@ -10,24 +10,30 @@
    cmpick    { a, b, nums }                a ring around all the common multiples of a and b (rings, tool cpick)
    cfpick    { a, b, nums }                a ring around all the common factors of a and b
    csort     { kind: 'mult' | 'fact', a, b, n, upto? }   two rings that cross: where does n go? (A, B, C or D)
-   fmrel     { x, y }                      "x is a ___ of y": factor, multiple, or neither
+   fmrel     { x, y }                      "x is ___ y": a factor of, a multiple of, or not a factor or a multiple of
    mlist     { k, n: 5 }                   write the first n multiples of k (one box each)
    flist     { n }                         write all the factors of n, smallest first (one box each, 10 at most)
    fmiss     { who, he, n, shown }         a factor list that stops too early: write the factors that are missing
+                                           (in any order: the question does not ask for an order)
    lcm       { a, b }                      write the lowest common multiple
    hcf       { a, b }                      write the highest common factor
    cmrange   { a, b, lo, hi }              a number between lo and hi that is a multiple of both a and b
+   cmis      { a, b, n, at }               is n a common multiple of a and b? yes / no with the reason in the options
+                                           (one step; n must be a multiple of a or of b, or of both)
    cset      { kind: 'cm' | 'cf', a, b, opts: [[..], [..], [..]], at }   which list has ONLY common multiples / ALL
                                            the common factors? (opts[0] must be the right list)
    lcmstory  { text, a, b, unit, tool?, names? }   a real-life problem: the answer is the lowest common multiple
                                            tool: the two lists are on the desk as a help (names: their two titles)
-   hcfstory  { text, a, b, unit, tool?, names? }   a real-life problem: the answer is the highest common factor
+   hcfstory  { text, a, b, unit, tool?, names?, sumIs?, asks? }   a real-life problem: the answer is the highest
+                                           common factor. sumIs / asks: what a/HCF + b/HCF counts in the story and
+                                           what the question asks (feedback when the child adds the two shares)
    twostep   { kind: 'packs' | 'each', text, a, b, unit, things: [first, second], groups?: 'bags' }   two steps: packs: how many
                                            packs altogether (LCM / a + LCM / b); each: how many in each group
                                            ((a + b) / HCF)
    cfix      { who, he, kind: 'lcm' | 'hcf', a, b, slip, at }   spot the mistake: (a) tick what went wrong, (b) write
                                            the right answer. slip for lcm: 'product' (wrote a x b), 'hcf' (wrote the
-                                           HCF); for hcf: 'low' (wrote the smallest common factor above 1), 'lcm' */
+                                           HCF); for hcf: 'low' (wrote the smallest common factor above 1, or w: a
+                                           common factor between 1 and the HCF), 'lcm' */
 (function () {
 "use strict";
 const M = MX.M, fmt = MX.fmt, arrange = MX.arrange, cap = MX.cap, LET = MX.LET;
@@ -147,7 +153,8 @@ function pickTask(kind, d) {
   const good = d.nums.filter(isOk).sort((x, y) => x - y), word = mult ? "multiple" : "factor";
   need(good.length > 0 && good.length < d.nums.length, "the numbers must hold some common " + word + "s, not all");
   const why = v => (mult ? notCM(v, a, b) : notCF(v, a, b));
-  const tell = v => (mult ? fmt(v) + " = " + v / a + " " + X + " " + a + " = " + v / b + " " + X + " " + b : a + " " + DIV + " " + v + " = " + a / v + " and " + b + " " + DIV + " " + v + " = " + b / v);
+  const tell = v => (mult ? fmt(v) + " = " + v / a + " " + X + " " + a + ", so it is in the " + a + " times table. " + fmt(v) + " = " + v / b + " " + X + " " + b + ", so it is in the " + b + " times table."
+    : a + " " + DIV + " " + v + " = " + a / v + " and " + b + " " + DIV + " " + v + " = " + b / v + ".");
   return {
     q: "Put a ring around <b>all</b> the [[common " + word + "s|common " + word + "]] of <b>" + a + "</b> and <b>" + b + "</b>.",
     sub: "Tap a number to put a ring around it. Tap it again to rub the ring out.",
@@ -162,7 +169,7 @@ function pickTask(kind, d) {
     },
     hint: { pic: mult ? null : listPic("fact", a, b, 0),
       step: mult ? "Check each number two times. Is it in the " + a + " times table? Is it in the " + b + " times table?" : "A common factor divides " + a + " exactly and divides " + b + " exactly." },
-    worked: { text: (mult ? "A common multiple is in both times tables. " : "A common factor divides both numbers exactly. ") + good.map(tell).join(". ") + ". " + d.nums.filter(v => !isOk(v)).map(why).join(" "),
+    worked: { text: (mult ? "A common multiple is in both times tables. " : "A common factor divides both numbers exactly. ") + good.map(tell).join(" ") + " " + d.nums.filter(v => !isOk(v)).map(why).join(" "),
       pic: mult ? null : listPic("fact", a, b, 0, { marked: "all" }) },
     yes: and(good) + (good.length === 1 ? " is a common " + word : " are common " + word + "s") + " of " + a + " and " + b + ".",
     key: good.join(" ; ")
@@ -180,12 +187,24 @@ M.csort = function (d) {
     : (yes ? k + " " + DIV + " " + n + " = " + k / n + ", so " + n + " is a factor of " + k : k + " " + DIV + " " + n + " is not exact, so " + n + " is not a factor of " + k));
   const facts2 = cap(fits(a, inA)) + ". " + cap(fits(b, inB)) + ".";
   const place = [cap(ring(a)) + " only", "Both rings", cap(ring(b)) + " only", "Outside both rings"];
-  const opts = place.map((t, i) => ({ html: t, ok: i === where, why: i === where ? "" : facts2 }));
+  /* each wrong place has its own slip */
+  const isIn = k => (mult ? "in the " + k + " times table" : "a factor of " + k), notIn = k => (mult ? "not in the " + k + " times table" : "not a factor of " + k);
+  const inBoth = fmt(n) + " is " + isIn(a) + " and " + isIn(b) + ", so it is inside both rings.";
+  const slip = i => {
+    if (i === 0 || i === 2) {
+      const k = i === 0 ? a : b, inK = i === 0 ? inA : inB;
+      return inK ? inBoth : fmt(n) + " is " + notIn(k) + ", so it is not inside the ring for " + ring(k) + ".";
+    }
+    if (i === 1) return !inA && !inB ? fmt(n) + " is " + notIn(a) + " and " + notIn(b) + ", so it is outside both rings."
+      : fmt(n) + " is " + notIn(inA ? b : a) + ", so it cannot go where the two rings cross.";
+    return fmt(n) + " is " + isIn(inA ? a : b) + ", so it is inside the ring for " + ring(inA ? a : b) + ".";
+  };
+  const opts = place.map((t, i) => ({ html: t, ok: i === where, why: i === where ? "" : slip(i) }));
   const upto = mult ? d.upto || span(a, b, MX.lcm(a, b)) : 0;
   return {
     q: "Look at the two rings. Where does <b>" + fmt(n) + "</b> go?", sub: "Tick (✓) one box.", letters: true,
     fig: { k: "venn", kind: mult ? "mult" : "fact", a: a, b: b, upto: upto, letters: true }, opts: opts,
-    check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why + " Now find its place." }; },
+    check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why }; },
     hint: { pic: listPic(mult ? "mult" : "fact", a, b, Math.max(upto, n)),
       step: "Ask two questions. Is " + fmt(n) + " a " + word + " of " + a + "? Is " + fmt(n) + " a " + word + " of " + b + "?" },
     worked: { text: facts2 + " So " + fmt(n) + " goes in " + LET[where] + ": " + ["only in the ring for " + ring(a), "where the two rings cross", "only in the ring for " + ring(b), "outside both rings"][where] + ".",
@@ -205,9 +224,9 @@ M.fmrel = function (d) {
   const whys = [where === 1 ? "A factor of " + y + " is never bigger than " + y + ". " + x + " is in the " + y + " times table." : y + " " + DIV + " " + x + " is not exact. So " + x + " is not a factor of " + y + ".",
     where === 0 ? "A multiple of " + y + " is " + y + " or more: " + list(mults(y, y * 3)) + " ... " + x + " is smaller than " + y + "." : x + " is not in the " + y + " times table: " + list(mults(y, y * 3)) + " ...",
     where === 0 ? x + " " + X + " " + y / x + " = " + y + ". So " + x + " divides " + y + " exactly." : y + " " + X + " " + x / y + " = " + x + ". So " + x + " is in the " + y + " times table."];
-  const opts = ["factor", "multiple", "not a factor and not a multiple"].map((t, i) => ({ html: t, ok: i === where, why: i === where ? "" : whys[i] }));
+  const opts = ["a factor of", "a multiple of", "not a factor or a multiple of"].map((t, i) => ({ html: t, ok: i === where, why: i === where ? "" : whys[i] }));
   return {
-    q: "Choose the word or words that fit. <b>" + x + "</b> is a ______ of <b>" + y + "</b>.", sub: "Tick (✓) one box.", opts: opts,
+    q: "Choose the words that fit. <b>" + x + "</b> is ______ <b>" + y + "</b>.", sub: "Tick (✓) one box.", opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why }; },
     hint: { step: "A factor of " + y + " divides " + y + " exactly. A multiple of " + y + " is in the " + y + " times table: " + list(mults(y, y * 3)) + " ..." },
     worked: { text: tell }, yes: tell, key: opts[where].html
@@ -274,14 +293,16 @@ M.fmiss = function (d) {
     q: d.who + " lists the [[factors|factor]] of <b>" + n + "</b>, smallest first: <b>" + list(shown) + "</b>. " + s + " stops too early. Write the factors that are missing.",
     lines: [boxes(want.length)], blanks: want.map(() => ({ len: 2, w: "s4" })),
     check(r) {
-      const vs = r.v.map(num), parts = want.map((x, i) => vs[i] === x);
-      if (parts.every(Boolean)) return { ok: true, parts: parts };
+      /* any order is right: each box holds a missing factor that no other box holds */
+      const vs = r.v.map(num), parts = vs.map((v, i) => want.indexOf(v) >= 0 && vs.indexOf(v) === i);
+      if (parts.every(Boolean) && parts.length === want.length) return { ok: true, parts: parts };
       const typed = vs.filter(v => !isNaN(v)), notF = typed.filter(v => v < 1 || n % v !== 0)[0], again = typed.filter(v => shown.indexOf(v) >= 0)[0];
       let msg;
       if (notF != null) msg = notF + " is not a factor of " + n + ": " + n + " " + DIV + " " + notF + " is not exact.";
       else if (again != null) msg = again + " is in the list already. Write the factors that are bigger than " + shown[shown.length - 1] + ".";
+      else if (new Set(typed).size < typed.length) msg = "Write each missing factor only once. Every factor in the list has a partner.";
       else if (typed.indexOf(n) < 0) msg = "Do not forget " + n + " itself: 1 " + X + " " + n + " = " + n + ". Every factor in the list has a partner.";
-      else msg = "Every factor has a partner: " + partner(shown[1]) + ". Find the partner of each number in the list. Write them smallest first.";
+      else msg = "Every factor has a partner: " + partner(shown[1]) + ". Find the partner of each number in the list.";
       return { ok: false, msg: msg, parts: parts };
     },
     hint: { pic: { k: "frain", n: n, hide: want }, step: "Every factor has a partner. " + shown.slice(0, 2).map(partner).join(" and ") + ". Find the partner of each number in the list." + (root * root === n ? " " + root + " " + X + " " + root + " = " + n + ", so " + root + " is its own partner." : "") },
@@ -302,7 +323,7 @@ M.lcm = function (d) {
       step: "Count on in " + big + "s. Stop at the first number that is also a multiple of " + small + "." },
     worked: { text: "Multiples of " + a + ": " + list(A) + ". Multiples of " + b + ": " + list(B) + ". The first number in both lists is " + L + "." +
       (a * b !== L ? " (" + a + " " + X + " " + b + " = " + fmt(a * b) + " is a common multiple too, but not the lowest.)" : ""), pic: listPic("mult", a, b, L, { marked: "all", hl: "low" }) },
-    yes: L + " = " + L / a + " " + X + " " + a + " = " + L / b + " " + X + " " + b + ". No smaller number is in both lists.",
+    yes: L + " is the first number in both lists.",
     key: String(L), fill: [String(L)]
   };
 };
@@ -346,6 +367,34 @@ M.cmrange = function (d) {
   };
 };
 
+/* is n a common multiple of a and b? one step: yes / no, with the reason in the options */
+M.cmis = function (d) {
+  const a = d.a, b = d.b, n = d.n, ia = n % a === 0, ib = n % b === 0;
+  LCM(a, b);
+  need(ia || ib, "cmis: n must be a multiple of a or of b");
+  const where = ia && ib ? 0 : ia ? 1 : 2;
+  const inT = k => fmt(n) + " = " + n / k + " " + X + " " + k + ", so it is in the " + k + " times table.";
+  const outT = k => fmt(n) + " " + DIV + " " + k + " is not exact, so it is not in the " + k + " times table.";
+  const say = ["Yes. " + fmt(n) + " is a multiple of " + a + " and a multiple of " + b + ".",
+    "No. " + fmt(n) + " is a multiple of " + a + ", but it is not a multiple of " + b + ".",
+    "No. " + fmt(n) + " is a multiple of " + b + ", but it is not a multiple of " + a + "."];
+  const facts2 = (ia ? inT(a) : outT(a)) + " " + (ib ? inT(b) : outT(b));
+  const order = [where].concat([0, 1, 2].filter(i => i !== where));
+  /* each wrong answer has its own feedback */
+  const why = i => (i === 0 ? (ia ? outT(b) : outT(a)) + " A common multiple must be in both times tables."
+    : where === 0 ? inT(i === 1 ? b : a) + " So it is in both times tables."
+    : "Look again. " + facts2);
+  const opts = arrange(order.map(i => ({ html: say[i], ok: i === where, why: i === where ? "" : why(i) })), d.at);
+  const right = opts.findIndex(o => o.ok);
+  return {
+    q: "Is <b>" + fmt(n) + "</b> a [[common multiple]] of <b>" + a + "</b> and <b>" + b + "</b>?", sub: "Tick (✓) one box.", letters: true, opts: opts,
+    check(r) { const o = opts[r.pick]; return o && o.ok ? { ok: true } : { ok: false, msg: o ? o.why : "Tick one box." }; },
+    hint: { step: "A common multiple is in both times tables. Is " + fmt(n) + " in the " + a + " times table? Is it in the " + b + " times table?" },
+    worked: { text: facts2 + (where === 0 ? " So " + fmt(n) + " is a common multiple of " + a + " and " + b + "." : " So " + fmt(n) + " is not a common multiple of " + a + " and " + b + ".") },
+    yes: facts2, key: LET[right] + ": " + say[where]
+  };
+};
+
 /* which list? only common multiples / all the common factors */
 M.cset = function (d) {
   const a = d.a, b = d.b, cm = d.kind === "cm", key = cm ? LCM(a, b) : HCF(a, b), com = cm ? null : both(facts(a), facts(b));
@@ -369,7 +418,7 @@ M.cset = function (d) {
     worked: { text: cm ? "The lowest common multiple of " + a + " and " + b + " is " + key + ". The common multiples are the multiples of " + key + ": " + list(mults(key, key * 4)) + " ... Only list " + LET[right] + " fits."
       : "Factors of " + a + ": " + list(facts(a)) + ". Factors of " + b + ": " + list(facts(b)) + ". In both lists: " + and(com) + ". That is list " + LET[right] + ".",
       pic: listPic(cm ? "mult" : "fact", a, b, upto, { marked: "all" }) },
-    yes: cm ? and(d.opts[0]) + " are all multiples of " + a + " and of " + b + "." : and(com) + " are the factors of both " + a + " and " + b + ".",
+    yes: cm ? and(d.opts[0]) + " are all multiples of " + a + " and of " + b + "." : and(com) + " are the common factors of " + a + " and " + b + ".",
     key: LET[right] + ": " + list(d.opts[0])
   };
 };
@@ -391,6 +440,7 @@ function storyTask(kind, d) {
       if (v === other && other !== ans) msg = lc ? fmt(v) + " is the highest common factor. Here you need a number in both times tables: a common multiple."
         : fmt(v) + " is the lowest common multiple. Here the answer must divide " + a + " and " + b + ": a common factor.";
       else if (v === a + b || v === Math.abs(a - b)) msg = "Do not add or subtract the two numbers. " + step;
+      else if (!lc && v === a / ans + b / ans && d.sumIs) msg = a / ans + " + " + b / ans + " = " + v + " is the number of " + d.sumIs + ". The question asks " + d.asks + ". " + step;
       else msg = lc ? lcmSlip(a, b, v) : hcfSlip(a, b, v);
       return { ok: false, msg: msg, parts: [false] };
     },
@@ -440,7 +490,7 @@ M.twostep = function (d) {
     check(r) {
       const v = num(r.v[0]);
       if (v === ans) return { ok: true };
-      const msg = v === g ? g + " is the number of " + gs + ". Now share: " + a + " " + DIV + " " + g + " and " + b + " " + DIV + " " + g + ". Then add."
+      const msg = v === g ? g + " is the number of " + gs + ". The question asks how many " + d.unit + " are in each " + one + ". Share: " + a + " " + DIV + " " + g + " and " + b + " " + DIV + " " + g + ". Then add."
         : v === ea || v === eb ? "That is one kind only. Each " + one + " has " + ea + " " + t[0] + " and " + eb + " " + t[1] + ". Add them."
         : v === a + b ? "That is everything together. First find the highest common factor of " + a + " and " + b + "."
         : "Step 1: find the highest common factor of " + a + " and " + b + ". Step 2: divide " + a + " and " + b + " by it. Then add.";
@@ -473,11 +523,12 @@ M.cfix = function (d) {
       { t: w + " is not a factor of " + b + ".", why: b + " " + DIV + " " + w + " = " + b / w + ", so " + w + " is a factor of " + b + ". But the question asks for a multiple." }];
     tell = d.who + " found the highest common factor. Factors divide a number. Multiples are in its times table.";
   } else if (!lc && d.slip === "low") {
-    w = both(facts(a), facts(b))[1]; need(w != null && w < g, "cfix: a common factor between 1 and the HCF is needed");
+    const cf = both(facts(a), facts(b)); w = d.w || cf[1];
+    need(w != null && w > 1 && w < g && cf.indexOf(w) >= 0, "cfix: a common factor between 1 and the HCF is needed");
     rs = [{ t: w + " is a common factor of " + a + " and " + b + ", but it is not the highest." },
       { t: w + " is not a factor of " + b + ".", why: b + " " + DIV + " " + w + " = " + b / w + ", so " + w + " is a factor of " + b + ". But is it the biggest one in both lists?" },
       { t: w + " is a common multiple, not a common factor.", why: w + " divides " + a + " and " + b + " exactly. So it is a common factor. But is it the highest?" }];
-    tell = d.who + " stopped at the first common factor above 1. Go on to the end of both lists.";
+    tell = d.who + (w === cf[1] ? " stopped at the first common factor above 1." : " found a common factor, but not the highest.") + " Go on to the end of both lists.";
   } else if (!lc && d.slip === "lcm") {
     w = L; need(L !== g, "cfix: the LCM must differ from the HCF");
     rs = [{ t: fmt(w) + " is a common multiple of " + a + " and " + b + ", not a common factor." },
@@ -499,7 +550,7 @@ M.cfix = function (d) {
       const o = opts[r.pick], pickOk = !!(o && o.ok), v = num((r.v || [])[0]), vOk = v === ans;
       if (pickOk && vOk) return { ok: true, parts: [true], pickOk: true };
       const msg = !pickOk ? (o && o.why ? o.why : "Read the three sentences again.")
-        : v === w ? "That is " + d.who + "'s answer. " + (lc ? "Look for a lower number in both lists." : "Look for the right kind of number in both lists.")
+        : v === w ? "That is " + d.who + "'s answer. " + (lc ? "Look for a lower number in both lists." : d.slip === "low" ? "Look for a bigger number in both lists." : "Look for the right kind of number in both lists.")
         : "The mistake is right. Now the answer: " + (lc ? lcmSlip(a, b, v) : hcfSlip(a, b, v));
       return { ok: false, msg: msg, parts: [vOk], pickOk: pickOk };
     },

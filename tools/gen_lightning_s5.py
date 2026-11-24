@@ -64,7 +64,7 @@ for n, d, amt in [(5, 3, 12), (3, 5, 20), (7, 7, 20), (9, 8, 40), (2, 3, 18), (6
     add(f'{f(n, d)} of {amt} is ___ {amt}', r, [x for x in ('less than', 'equal to', 'more than') if x != r])
 
 # 6. the biggest number that divides both (the number to divide by in one step)
-for n, d in [(8, 12), (10, 15), (12, 20), (9, 15), (16, 24), (14, 21), (20, 30), (15, 25)]:
+for n, d in [(8, 12), (10, 15), (12, 20), (9, 15), (18, 24), (14, 21), (20, 30), (15, 25)]:
     g = gcd(n, d); p = prime(n, d)
     wrongs = ([str(p)] if p != g else []) + [str(d - n), str(n), str(g * 2)]
     wrongs = [w for w in wrongs if not (n % int(w) == 0 and d % int(w) == 0 and int(w) >= g)]

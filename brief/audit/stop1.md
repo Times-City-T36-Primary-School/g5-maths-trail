@@ -1,0 +1,13 @@
+# Stop 1 audit fix list (skip items about typed fractions, units, decimal commas and 4 decimal places: they cannot be typed)
+
+3. test q10: all variants must test 6Np.02: replace v2 (Chi, "a digit is worth ten times ...", 6Np.01) with a × / ÷ claim, e.g. Kim: "When you multiply a decimal by 100, the answer is always a whole number." (incorrect: 0.305 × 100 = 30.5); lo `6Np.02`.
+4. s1a L3 r2: v1 and v2 are 6Np.01 only; replace v0 (Minh, 6.25 × 10) with a place-value claim, e.g. Minh: "In 5.26 and 5.62 the digit 6 has the same value, because it is the same digit." (incorrect: 0.06 and 0.6); lo `6Np.01`.
+5. test q7 (DOK 2) is the same routine as q2: make it convert values to places, e.g. v0 "My number is between 5 and 6. It has no tenths. Its digit 8 is worth 0.08 and its digit 3 is worth 0.003. Write my number." (5.083); likewise v1 and v2 (v2 with three places and a 0 place holder, as hard as v0 and v1).
+6. test q6 (DOK 2) parts are one step: make them two-step, e.g. v0 `0.92 × {0} = 9.2 × 10` (100), v1 `{0} ÷ 10 = 3.9 ÷ 100` (0.39), v2 `63 ÷ {0} = 6.3 ÷ 100` (1,000) (avoid 0.47 which is in q3 v1).
+7. test q8 v1: "Hoa ties one piece to a bow ..." is unclear: "A ribbon is 36.5 m long. It is cut into 10 equal pieces. Hoa joins one piece to a string that is 0.5 m long. How long are they together?"
+10. Exam overlap (exam P1(11): a digit 6 worth 0.06): test q1 v0 -> the digit 4 in 27.641 (0.04); see q1 v0 -> the digit 2 in 4.628 (0.02); Lightning "The 6 in 9.861 is worth" -> another digit/number (no 6 worth 0.06 anywhere in the stop).
+11. LAYOUT s1r L2 (slide the digits) at 390x800: the answer line "1.92 × 100 = [ ]" is half hidden under the number pad. Make the decimal slider more compact on phones (your CSS) so the answer line sits above the pad; check the screenshots.
+12. LAYOUT s1a L3 r2 v0 at 390x800: the "Level 3 of 3" chip covers the end of the quote after scrolling. Report it if it is in shared CSS (do not edit shared files).
+13. test q8 hints: "Then do the second step: Add the 12 g of the box." -> v0 "Then add the mass of the box, 12 g.", v1 "Then add the 0.5 m of the string.", v2 "Then add the 0.5 mm of the card." (fix the model text so no capital follows a colon).
+14. Practised in advance: q9 v2 "8 ÷ 1,000 = 0.008" is the exact Lightning item -> use "7 ÷ 1,000 = 0.007"; q3 v1 and q6 v1 share 0.47 (fixed by 6); q10 v1 worked example 62 → 0.062 repeats s1a L2 r3 v2 -> use 54 → 5.4 → 0.54 → 0.054.
+15. The digit asked about is too often the last digit: s1r L1 r1 v2 -> the 3 in 6.302 (0.3); see q2 v2 -> the 2 in 53.826 (0.02); in the Lightning generator make the asked digit's place vary (tenths, hundredths, thousandths about equally) and re-run it.

@@ -108,7 +108,7 @@
 .role-tab > .icon, .role-tab > svg { flex: none; font-size: 1.125rem; }
 .role-tab__text { display: flex; flex-direction: column; min-width: 0; }
 .role-tab__en { font: 800 1.0625rem/1.15 var(--font-body); }
-.role-tab__vi { font: 700 .8125rem/1.2 var(--font-body); opacity: .85; }
+.role-tab__vi { font: 700 var(--fs-small)/1.2 var(--font-body); opacity: .85; }
 .role-tab.is-on { background: var(--surface); color: var(--ink); box-shadow: 0 2px 6px rgba(16, 48, 94, .14); }
 .role-tab.is-on > .icon, .role-tab.is-on > svg { color: var(--accent-text); }
 .role-tab:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
@@ -116,7 +116,6 @@
   .role-tab { flex-direction: column; text-align: center; gap: .25rem; min-height: 4.25rem; }
   .role-tab__text { align-items: center; }
   .role-tab__en { font-size: .9375rem; }
-  .role-tab__vi { font-size: .75rem; }
 }
 .visitor-note {
   display: flex; flex-direction: column; gap: .25rem;
@@ -156,7 +155,7 @@
 
 .players__head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
 .howto-open { flex: none; min-height: 2.75rem; padding-top: .25rem; padding-bottom: .25rem; }
-.howto-open .btn__sub { font-size: .8125rem; }
+.howto-open .btn__sub { font-size: var(--fs-small); }
 .players__head .brand { min-width: 0; flex: 1 1 auto; }
 @media (max-width: 420px) {
   .howto-open { padding-left: .625rem; padding-right: .625rem; gap: .375rem; }

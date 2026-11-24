@@ -79,3 +79,13 @@
 /* the slider has seven places: the short names only (Th H T O . t h th), a little bigger */
 .dpv--slider .pv__h b { display: none; }
 .dpv--slider .pv__h i { font-size: .9375rem; }
+/* a phone: a more compact slider, so the answer line under it stays above the number pad (390x800) */
+@media (max-width: 479px) {
+  .wb--dslider:not(.wb--mini) { padding: .375rem; }
+  .wb--dslider:not(.wb--mini) .dpv--slider .pv__h { min-height: 1.875rem; padding: .125rem; }
+  .wb--dslider:not(.wb--mini) .dsl__slot, .wb--dslider:not(.wb--mini) .dsl__tile { height: 2.5rem; margin-top: .125rem; }
+  .wb--dslider:not(.wb--mini) .dsl__pt { margin-top: .125rem; padding-bottom: .25rem; font-size: 2rem; }
+  .wb--dslider:not(.wb--mini) .dsl__now { margin-top: .25rem; }
+  .wb--dslider:not(.wb--mini) .sl__ctl { margin-top: .25rem; }
+  .wb--dslider:not(.wb--mini) .dsl__b { min-height: 2.75rem; }
+}
