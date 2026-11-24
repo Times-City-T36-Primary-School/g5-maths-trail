@@ -1,7 +1,7 @@
 /* 39-g5-tools-s6.js - Grade 5, Stop 6 (fractions, decimals and percentages): the hundred square to shade, the 0 to 1
    number line for fractions, decimals and percentages, the cards to put in order, and their small pictures.
    Flat, on the light art plate (39-g5-tools-s6.css; every class starts with s6-). A quantity is text: '3/5', '0.45',
-   '70%' (MX.Q, 08-g5-models-s6.js: exact, as a numerator and a denominator).
+   '70%' (MX.Q6, 08-g5-models-s6.js: exact, as a numerator and a denominator).
 
    T.tools.pgrid(host, spec)     a hundred square: − 10, − 1, + 1, + 10 shade the squares column by column (a tap on
        a square shades up to it). The fraction, the decimal and the percentage show together.
@@ -47,7 +47,7 @@
   function tbtn(label, cls, onClick, aria) {
     return el('button', { type: 'button', class: ['btn', 'btn--quiet', 's6-btn', cls], onclick: onClick, 'aria-label': aria || null }, el('span', { class: 'btn__label' }, label));
   }
-  const Q = function (x) { return window.MX.Q(x); };
+  const Q = function (x) { return window.MX.Q6(x); };
   const D = function () { return window.MX.D; };
   const decOf = function (h) { return D().s(h * 10); };
   const gcd = function (a, b) { return window.MX.gcd(a, b); };

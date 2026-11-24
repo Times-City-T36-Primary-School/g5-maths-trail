@@ -483,7 +483,7 @@ M.sqpos = function (d) {
       return { ok: false, msg: "Which number times itself makes " + fmt(x) + "?", parts: [false] };
     },
     hint: { pic: { k: "stable", pos: t.map((x, i) => i + 1), sq: { s: s, c: c } }, step: find + " Which number times itself makes " + fmt(x) + "?" },
-    worked: { text: find + " Work backwards: " + back + ". So " + fmt(T0) + " is the " + ord(ans) + " term. Check: " + sqWork(s, c, ans) + ".", pic: Object.assign({}, tb, { hl: d.shown }) },
+    worked: { text: find + " Work backwards: " + back + ". So " + fmt(T0) + " is the " + ord(ans) + " term." + (s || c ? " Check: " + sqWork(s, c, ans) + "." : ""), pic: Object.assign({}, tb, { hl: d.shown }) },
     yes: fmt(T0) + " is the " + ord(ans) + " term: " + sqWork(s, c, ans) + ".",
     key: String(ans), fill: [String(ans)]
   };

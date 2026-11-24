@@ -143,18 +143,18 @@
             {"type":"crd","items":[{"d":"15"},{"r":"4.5"}],"unit":"cm"},
             {"type":"crd","items":[{"r":"12.5"},{"d":"30"}],"unit":"mm"}] },
           { mode: "your", lo: ["6Gg.11"], twm: ["TWM.02"], v: [
-            {"type":"cset","d":"13","unit":"cm","who":"Hoa"},
-            {"type":"cset","r":"5.5","unit":"cm","who":"Duc"},
-            {"type":"cset","d":"90","unit":"mm","to":"cm","who":"Linh"}] },
+            {"type":"ccset","d":"13","unit":"cm","who":"Hoa"},
+            {"type":"ccset","r":"5.5","unit":"cm","who":"Duc"},
+            {"type":"ccset","d":"90","unit":"mm","to":"cm","who":"Linh"}] },
           { mode: "your", lo: ["6Gg.02"], twm: ["TWM.01"], v: [
             {"type":"crow","n":6,"r":"5","give":"r","ask":"len","unit":"cm","text":"{n} round plates touch in a row on a shelf. Each plate has a radius of {r}. How long is the row of plates?"},
             {"type":"csq","r":"7.5","give":"r","ask":"perim","unit":"cm"},
             {"type":"crow","n":5,"r":"3.5","give":"r","ask":"r","unit":"cm"}] }] },
       { title: { en: "Who is correct?", vi: "Ai đúng?" }, rounds: [
           { mode: "your", lo: ["6Gg.11", "6Gg.02"], twm: ["TWM.07", "TWM.08"], v: [
-            {"type":"cfix","who":"Hung","kind":"set","d":"11","unit":"cm","at":1},
-            {"type":"cfix","who":"Kim","kind":"halved","r":"14","unit":"cm","text":"The radius of a round wall clock is {r}. {who} says the clock is {half} across.","at":0},
-            {"type":"cfix","who":"Giang","kind":"set","d":"15","unit":"cm","at":2}] },
+            {"type":"ccfix","who":"Hung","kind":"set","d":"11","unit":"cm","at":1},
+            {"type":"ccfix","who":"Kim","kind":"halved","r":"14","unit":"cm","text":"The radius of a round wall clock is {r}. {who} says the clock is {half} across.","at":0},
+            {"type":"ccfix","who":"Giang","kind":"set","d":"15","unit":"cm","at":2}] },
           { mode: "your", lo: ["6Gg.02"], twm: ["TWM.07", "TWM.04"], v: [
             {"type":"claim","who":"Minh","ok":true,"at":1,"says":"All the radii of one circle are the same length.","reasons":[{"t":"every point on the circumference is the same distance from the centre."},{"t":"a radius that goes up is longer than a radius that goes to the side.","why":"Turn the page and the circle looks the same. Measure the two radii: they are equal."},{"t":"it is only true for small circles.","why":"It is true for every circle. The compasses stay open the same distance all the way round."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":20},{"t":"r","a":140},{"t":"r","a":260}]},"step":"Think how compasses draw a circle. Does the opening change when the pencil goes round?"},"worked":"The compasses stay open the same distance all the way round. So every point on the circumference is the same distance from the centre, and every radius has the same length.","model":"Minh is correct because every point on the circumference is the same distance from the centre."},
             {"type":"claim","who":"Trang","ok":false,"at":0,"fig":{"k":"circle","plain":true,"lines":[{"t":"c","a":250}]},"says":"This line goes from one side of the circle to the other side. So it is a diameter.","reasons":[{"t":"the line does not pass through the centre. A diameter must pass through the centre."},{"t":"the line is straight and it touches the circumference two times.","why":"That is true, but it is not enough. A diameter also passes through the centre."},{"t":"a diameter must start at the centre.","why":"A line that starts at the centre is a radius. A diameter goes through the centre, from side to side."}],"hint":{"pic":{"k":"circle","lines":[{"t":"d","a":0,"lab":"diameter"}]},"step":"Find the centre of the circle. Does the line pass through it?"},"worked":"The line goes from side to side, but it misses the centre. A diameter always passes through the centre. So this line is not a diameter.","model":"Trang is incorrect because the line does not pass through the centre of the circle."},
@@ -223,14 +223,14 @@
           {"type":"cline","ask":"none","lines":["d","r","c","r"]}
         ] },
         { dok: 1, lo: ["6Gg.11"], twm: ["TWM.02"], v: [
-          {"type":"cset","r":"7.5","unit":"cm","who":"Linh"},
-          {"type":"cset","r":"3.5","unit":"cm","who":"Son"},
-          {"type":"cset","r":"5","unit":"cm","who":"Yen"}
+          {"type":"ccset","r":"7.5","unit":"cm","who":"Linh"},
+          {"type":"ccset","r":"3.5","unit":"cm","who":"Son"},
+          {"type":"ccset","r":"5","unit":"cm","who":"Yen"}
         ] },
         { dok: 2, lo: ["6Gg.11"], twm: ["TWM.02"], v: [
-          {"type":"cset","d":"15","unit":"cm","who":"Binh"},
-          {"type":"cset","d":"11","unit":"cm","who":"Hanh"},
-          {"type":"cset","d":"70","unit":"mm","to":"cm","who":"Tam"}
+          {"type":"ccset","d":"15","unit":"cm","who":"Binh"},
+          {"type":"ccset","d":"11","unit":"cm","who":"Hanh"},
+          {"type":"ccset","d":"70","unit":"mm","to":"cm","who":"Tam"}
         ] },
         { dok: 2, lo: ["6Gg.02"], twm: ["TWM.01"], v: [
           {"type":"crow","n":4,"r":"2.5","give":"r","ask":"len","unit":"cm","box":true,"text":"{n} round biscuits touch in a row in a box. Each biscuit has a radius of {r}. How long is the row of biscuits?"},
@@ -238,9 +238,9 @@
           {"type":"crow","n":5,"r":"1.5","give":"r","ask":"len","unit":"m","text":"{n} round flower beds touch in a row in a park. Each flower bed has a radius of {r}. How long is the row of flower beds?"}
         ] },
         { dok: 2, lo: ["6Gg.11"], twm: ["TWM.07"], v: [
-          {"type":"cfix","who":"Dung","kind":"set","d":"5","unit":"cm","at":2},
-          {"type":"cfix","who":"Hai","kind":"set","d":"7","unit":"cm","at":0},
-          {"type":"cfix","who":"Chi","kind":"set","d":"9","unit":"cm","at":1}
+          {"type":"ccfix","who":"Dung","kind":"set","d":"5","unit":"cm","at":2},
+          {"type":"ccfix","who":"Hai","kind":"set","d":"7","unit":"cm","at":0},
+          {"type":"ccfix","who":"Chi","kind":"set","d":"9","unit":"cm","at":1}
         ] },
         { dok: 2, lo: ["6Gg.02", "6Gg.11"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Long","ok":false,"at":1,"says":"A circle has a diameter of 11 cm. So its radius is 22 cm.","reasons":[{"t":"the radius is half of the diameter: 11 ÷ 2 = 5.5 cm."},{"t":"the radius is double the diameter: 11 × 2 = 22 cm.","why":"The radius is the shorter one. It goes only from the centre to the circumference."},{"t":"the radius and the diameter of a circle are always the same length.","why":"The diameter is 2 radii long. It goes all the way across the circle."}],"hint":{"pic":{"k":"circle","lines":[{"t":"d","a":0,"lab":"11 cm"},{"t":"r","a":125,"lab":"?"}]},"step":"Which is longer, the radius or the diameter? Halve or double?"},"worked":"The radius goes from the centre to the circumference: half of the diameter. 11 ÷ 2 = 5.5. So the radius is 5.5 cm, not 22 cm.","model":"Long is incorrect because the radius is half of the diameter: 11 ÷ 2 = 5.5 cm."},

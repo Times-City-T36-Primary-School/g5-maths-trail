@@ -13,7 +13,7 @@
                                                   short). tap: answered on the circle tool (cparts), else tick a box
    crd     { items: [{ r: '3.5' } | { d: '9' }, ...], unit: 'cm', fig?: true, text? }    radius <-> diameter (typed);
                                                   text: a real-life sentence for ONE item, with {r} or {d} for the length
-   cset    { r | d, unit: 'cm', who?, to?: 'cm' } the opening of the compasses for this circle (to: give the answer in
+   ccset   { r | d, unit: 'cm', who?, to?: 'cm' } the opening of the compasses for this circle (to: give the answer in
                                                   another unit: mm, cm, m)
    cdraw   { r | d, at: 'P', pts?: [['P', 5, 5], ['M', 3, 7]] }      draw the circle with the compasses tool (cm, halves)
    cwhich  { r | d, wrong: ['5', '1.5'], size?: 10, at }   which circle on the centimetre grid? (wrong: the radii of the others)
@@ -22,7 +22,7 @@
                                                   tells; text: with {n} {r} {d} {len}
    csq     { r, give: 'r' | 'd' | 'side', ask: 'side' | 'perim' | 'r' | 'd', unit, text? }   a circle that fits exactly
                                                   inside a square; text: with {r} {d} {side}
-   cfix    { who, kind: 'set' | 'halved', d | r, unit, text?, at }   spot the mistake (tick), then write the right length.
+   ccfix   { who, kind: 'set' | 'halved', d | r, unit, text?, at }   spot the mistake (tick), then write the right length.
                                                   set: the compasses were opened to the diameter (give d);
                                                   halved: the radius was halved to find the distance across (give r;
                                                   text with {who} {r} {half})
@@ -192,7 +192,7 @@ M.crd = function (d) {
 };
 
 /* ---------- the compasses ---------- */
-M.cset = function (d) {
+M.ccset = function (d) {
   const u = d.unit || "cm", to = d.to || u, c = rd(d), ans = conv(c.r, u, to), dia = conv(c.d, u, to);
   const NM = c.from === "r" ? "radius" : "diameter";
   const half = c.from === "d" ? "Radius = " + D.s(c.d) + " ÷ 2 = " + L(c.r, u) + "." : "The radius is given: " + L(c.r, u) + ".";
@@ -353,11 +353,11 @@ M.csq = function (d) {
 };
 
 /* ---------- spot the mistake ---------- */
-M.cfix = function (d) {
+M.ccfix = function (d) {
   const u = d.unit || "cm", who = d.who, c = rd(d), kind = d.kind || "set";
   let story, reasons, abAsk, ans, fig = null, step, work, line, wrongV;
   if (kind === "set") {
-    if (c.from !== "d") throw new Error("cfix set: give d");
+    if (c.from !== "d") throw new Error("ccfix set: give d");
     ans = c.r; wrongV = c.d; line = "{0} " + u;
     story = who + " must draw a circle with a <b>diameter</b> of <b>" + L(c.d, u) + "</b>. " + who + " opens the compasses to <b>" + L(c.d, u) + "</b> and draws the circle. The circle is wrong.";
     reasons = [
@@ -369,7 +369,7 @@ M.cfix = function (d) {
     step = "The opening of the compasses is the radius of the circle. What is the radius when the diameter is " + L(c.d, u) + "?";
     work = "The opening of the compasses is the radius. " + who + "'s circle has a radius of " + L(c.d, u) + ", so it is " + L(2 * c.d, u) + " across. The right opening is " + D.s(c.d) + " ÷ 2 = " + L(c.r, u) + ".";
   } else {
-    if (c.from !== "r" || c.r % 2) throw new Error("cfix halved: give r, with an exact half");
+    if (c.from !== "r" || c.r % 2) throw new Error("ccfix halved: give r, with an exact half");
     ans = c.d; wrongV = c.r / 2; line = "{0} " + u;
     const o = { who: who, r: L(c.r, u), half: L(wrongV, u) };
     story = tpl(d.text || "The radius of a circle is {r}. {who} says the circle is {half} across.", o) + " That is wrong.";

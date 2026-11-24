@@ -1,9 +1,9 @@
 /* 08-g5-models-s6.js - Grade 5 question models for Stop 6: fractions, decimals and percentages with equal values
    (6Nf.04), percentages of shapes and of whole numbers (6Nf.07), comparing and ordering them (6Nf.08).
    Every answer is worked out here from the numbers in the data. A quantity is written in the data as text:
-   '3/5' (a fraction), '0.45' (a decimal with one or two decimal places) or '70%' (a percentage). MX.Q(text) keeps it
+   '3/5' (a fraction), '0.45' (a decimal with one or two decimal places) or '70%' (a percentage). MX.Q6(text) keeps it
    exact as a numerator and a denominator ({ kind: 'f' | 'd' | 'p', n, d, h: hundredths or null, text, html });
-   two quantities are compared by cross-multiplying (MX.Q.cmp). No floating point anywhere.
+   two quantities are compared by cross-multiplying (MX.Q6.cmp). No floating point anywhere.
 
    pshade   { v: '35%', r?: 4, c?: 5 }                      shade v of the hundred square (tool pgrid), or of a small
                                                             shape with r rows and c columns (tool pcells: tap the parts)
@@ -42,7 +42,7 @@ function Q(x) {
   return { kind: kind, n: n, d: d, h: (n * 100) % d === 0 ? n * 100 / d : null, text: text, html: kind === "f" ? F(n, d) : text };
 }
 Q.cmp = (a, b) => Math.sign(a.n * b.d - b.n * a.d);
-MX.Q = Q;
+MX.Q6 = Q;
 const need = q => { if (q.h == null) throw new Error("Q: " + q.text + " is not a whole number of hundredths"); return q; };
 const decOf = h => D.s(h * 10);                                   /* 60 -> '0.6', 7 -> '0.07' */
 const simp = (n, d) => { const g = gcd(n, d) || 1; return [n / g, d / g]; };

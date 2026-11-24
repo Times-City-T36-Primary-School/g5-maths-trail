@@ -142,7 +142,7 @@
           { mode: "your", lo: ["6Nc.04"], twm: ["TWM.02"], v: [
             {"type":"sqterm","s":0,"c":0,"n":9,"shown":4},
             {"type":"sqrule","s":0,"c":2,"shown":4,"at":2},
-            {"type":"sqterm","s":2,"c":0,"n":8,"shown":4}] }] },
+            {"type":"sqterm","s":3,"c":0,"n":8,"shown":4}] }] },
       { title: { en: "Who is correct?", vi: "Ai đúng?" }, rounds: [
           { mode: "your", lo: ["6Nc.03"], twm: ["TWM.04", "TWM.01"], v: [
             {"type":"sisin","k":7,"c":3,"target":73,"shown":4,"at":1},
@@ -238,7 +238,7 @@
         { dok: 2, lo: ["6Nc.04"], twm: ["TWM.02"], v: [
           {"type":"sqterm","s":0,"c":3,"n":8,"shown":4},
           {"type":"sqterm","s":0,"c":-1,"n":9,"shown":4},
-          {"type":"sqterm","s":2,"c":0,"n":9,"shown":4}
+          {"type":"sqterm","s":3,"c":0,"n":9,"shown":4}
         ] },
         { dok: 2, lo: ["6Nc.03"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Hoa","ok":false,"at":1,"says":"The sequence 2, 7, 12, 17, ... goes up in 5s. So the 20th term is 20 × 5 = 100.","reasons":[{"t":"the rule is: multiply the position by 5, then subtract 3. The 20th term is 20 × 5 − 3 = 97."},{"t":"20 × 5 = 100, and the terms go up in 5s.","why":"Check with position 1: 1 × 5 = 5, but the 1st term is 2. Each term is 3 less than a multiple of 5."},{"t":"the 20th term is 17 + 5 = 22.","why":"17 + 5 = 22 is the 5th term, the next one. The 20th term is much further on."}],"hint":{"pic":{"k":"stable","pos":[1,2,3,4,20],"rule":{"k":5,"c":-3},"hide":[4]},"step":"Test Hoa's rule with position 1. Does 1 × 5 give the 1st term?"},"worked":"Position 1: 1 × 5 = 5, but the 1st term is 2. Each term is 3 less than a multiple of 5. So the rule is: multiply the position by 5, then subtract 3. 20 × 5 − 3 = 97.","model":"Hoa is incorrect because each term is 3 less than a multiple of 5: the 20th term is 97."},
