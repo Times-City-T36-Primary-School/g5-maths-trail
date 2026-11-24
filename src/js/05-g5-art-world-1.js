@@ -128,12 +128,12 @@
     shelf(712, 292, 96) + jar(736, 292, '#F58FB4') + jar(770, 292, '#8CCBF5') +
     // bubbles over the pink flask
     '<g fill="#F58FB4">' + '<circle cx="34" cy="204" r="3" ' + c('bub') + '/><circle cx="38" cy="200" r="2.2" ' + c('bub bub-b') + '/><circle cx="31" cy="198" r="2.6" ' + c('bub bub-c') + '/></g>';
-  // three hanging lamps; at night each throws a cone of light
+  // two hanging lamps; at night each throws a cone of light
   let lamps = '', glow = '';
   [[196, 44], [604, 44]].forEach(function (p) {
     const x = p[0], y = p[1];
     glow += path('M' + (x - 22) + ' ' + (y + 22) + 'L' + (x - 96) + ' 318H' + (x + 96) + 'L' + (x + 22) + ' ' + (y + 22) + 'Z', '', 'fill="#FFE38A" opacity=".13"') +
-      circ(x, y + 26, 30, '', 'fill="#FFE38A" opacity=".35"');
+      circ(x, y + 26, 26, '', 'fill="#FFE38A" opacity=".22"');
     lamps += path('M' + x + ' 0V' + y, '', c('o')) + circ(x, y + 24, 9, 'lb') +
       path('M' + (x - 9) + ' ' + y + 'h18l15 24h-48z', 'lp', c('o'));
   });
@@ -250,7 +250,7 @@
     'A tray holds one whole square, a tenth strip and a tiny hundredth square. Zip wears goggles and a lab coat.';
 
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" class="art" data-art="' + ID +
-    '" data-view="0 0 800 500" data-safe="130,150,580,220" data-band="222,334" role="img" aria-label="' + label +
+    '" data-view="0 0 800 500" data-safe="130,150,580,220" data-band="140,318" role="img" aria-label="' + label +
     '" fill="none" stroke-linejoin="round" stroke-linecap="round"><style>' + css + '</style>' + defs +
     '<g data-layer="sky">' + sky + '</g>' +
     '<g data-layer="building">' + building + '</g>' +

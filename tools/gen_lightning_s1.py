@@ -33,9 +33,9 @@ for by, k in ((10, 8), (100, 8), (1000, 6)):
         a = div(n, by)
         if -a.as_tuple().exponent > 3: continue
         others = [b for b in (10, 100, 1000) if b != by]
-        w = [div(n, o) for o in others]
-        w = [x for x in w if -x.as_tuple().exponent <= 4]
-        if len(w) < 2: w.append(mul(n, by))
+        w = [x for x in (div(n, o) for o in others) if -x.as_tuple().exponent <= 3]
+        if len(w) < 2: w.append(mul(n, by))            # the slip of going the wrong way
+        if len(w) < 2: w.append(mul(n, 10))
         if add(f'{n} ÷ {by:,}', s(a), [s(x) for x in w]): c += 1
 # the value of a digit
 PL = [('tenths', Dc('0.1')), ('hundredths', Dc('0.01')), ('thousandths', Dc('0.001'))]
@@ -59,7 +59,7 @@ while c < 8:
     kind = R.randrange(3)
     if kind == 0: add(f'{o} + 0.{a} + 0.00{b}', f'{o}.{a}0{b}', [f'{o}.{a}{b}', f'{o}.0{a}{b}']) and (c := c + 1)
     elif kind == 1: add(f'{o} + 0.0{a} + 0.00{b}', f'{o}.0{a}{b}', [f'{o}.{a}{b}', f'{o}.{a}0{b}']) and (c := c + 1)
-    else: add(f'{o} ones and {a} hundredths =', f'{o}.0{a}', [f'{o}.{a}', f'{o}.00{a}']) and (c := c + 1)
+    else: add(f'{o} ones and {a} hundredth{"" if a == 1 else "s"} =', f'{o}.0{a}', [f'{o}.{a}', f'{o}.00{a}']) and (c := c + 1)
 for n, w in ((10, 'hundredths make 1 tenth'), (10, 'thousandths make 1 hundredth'), (10, 'tenths make 1 whole'), (100, 'hundredths make 1 whole'), (100, 'thousandths make 1 tenth'), (1000, 'thousandths make 1 whole')):
     add('How many ' + w + '?', f'{n:,}', [x for x in ('10', '100', '1,000') if x != f'{n:,}'])
 for a, b in (('7 tenths', '0.7'), ('3 hundredths', '0.03'), ('9 thousandths', '0.009'), ('15 hundredths', '0.15'), ('24 tenths', '2.4'), ('60 thousandths', '0.06')):
@@ -74,3 +74,9 @@ for q, o in items:
         assert abs((f * by if op == '×' else f / by) - float(o[0].replace(',', ''))) < 1e-9, q
 print(len(items))
 open('tools/lightning_s1.txt', 'w', encoding='utf8').write(',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items))
+
+import re
+P='src/js/22-pack-stop1.js'; t=open(P,encoding='utf8').read()
+i=t.index('      items: [', t.index('lightning: {')); j=t.index('\n      ]', i)
+t=t[:i]+'      items: [\n'+open('tools/lightning_s1.txt',encoding='utf8').read()+t[j:]
+open(P,'w',encoding='utf8').write(t)

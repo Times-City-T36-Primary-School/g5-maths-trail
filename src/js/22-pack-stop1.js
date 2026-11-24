@@ -22,14 +22,14 @@
       items: {
         'decimal': { art: 'w-decimal', vi: 'số thập phân', def: 'A number with a decimal point. 3.75 is a decimal. It is more than 3 and less than 4.' },
         'decimal point': { art: 'w-decimal-point', vi: 'dấu thập phân', def: 'The dot in a decimal. It comes after the ones. In 3.75 it is between the 3 and the 7.' },
-        'tenth': { art: 'w-tenth', vi: 'một phần mười', def: 'One of 10 equal parts of one whole. We write 0.1. The first place after the decimal point.' },
-        'hundredth': { art: 'w-hundredth', vi: 'một phần trăm', def: 'One of 100 equal parts of one whole. We write 0.01. The second place after the decimal point.' },
-        'thousandth': { art: 'w-thousandth', vi: 'một phần nghìn', def: 'One of 1,000 equal parts of one whole. We write 0.001. The third place after the decimal point.' },
+        'tenth': { art: 'w-tenth', vi: 'một phần mười', def: 'One of 10 equal parts of one whole. We write 0.1. The tenths place is the first place after the decimal point.' },
+        'hundredth': { art: 'w-hundredth', vi: 'một phần trăm', def: 'One of 100 equal parts of one whole. We write 0.01. The hundredths place is the second place after the decimal point.' },
+        'thousandth': { art: 'w-thousandth', vi: 'một phần nghìn', def: 'One of 1,000 equal parts of one whole. We write 0.001. The thousandths place is the third place after the decimal point.' },
         'digit': { art: 'w-digit', vi: 'chữ số', def: 'One of the ten symbols 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. The number 3.75 has three digits.' },
         'value': { art: 'w-value', vi: 'giá trị', def: 'How much a digit is worth. In 3.75 the value of the 7 is 0.7, or 7 tenths.' },
         'place value': { art: 'w-place-value', vi: 'giá trị theo vị trí của chữ số', def: 'The value a digit has because of its place in the number.' },
         'decimal place': { art: 'w-decimal-place', vi: 'chữ số thập phân (hàng thập phân)', def: 'A place after the decimal point. 3.75 has two decimal places. 3.758 has three.' },
-        'multiply': { art: 'w-multiply', vi: 'nhân', def: 'To make a number so many times as big. 3.75 × 10 = 37.5.' },
+        'multiply': { art: 'w-multiply', vi: 'nhân', def: 'To find many lots of a number. 3.75 × 10 means 10 lots of 3.75. 3.75 × 10 = 37.5.' },
         'divide': { art: 'w-divide', vi: 'chia', def: 'To share into equal parts. 37.5 ÷ 10 = 3.75.' },
         'place holder': { art: 'w-place-holder', vi: 'chữ số 0 giữ chỗ', def: 'A zero that keeps a place when there is nothing in it. In 6.049 the 0 holds the tenths place.' }
       }
@@ -48,7 +48,7 @@
               then: { en: 'One small square is *1 hundredth = 0.01*.', vi: 'Một ô vuông nhỏ là *1 phần trăm = 0.01*.' } },
             { can: { cut: true }, wait: 'cut', until: { level: 3 },
               zip: { en: 'Cut one more time. Look closely!', vi: 'Cắt thêm một lần nữa. Nhìn kỹ nhé!' },
-              then: { en: '*1 thousandth = 0.001*. Each cut is 10 times smaller. Tap *Next*.', vi: '*1 phần nghìn = 0.001*. Mỗi lần cắt nhỏ đi 10 lần. Bấm *Next*.' } }] },
+              then: { en: '*1 thousandth = 0.001*. Each part is a tenth of the last.', vi: '*1 phần nghìn = 0.001*. Mỗi phần mới bằng một phần mười phần trước.' } }] },
         { id: 'slide', title: { en: 'Slide the digits', vi: 'Trượt các chữ số' }, tool: 'dslider', dslider: { n: '3.75', zeros: true },
           steps: [
             { can: { slide: true }, wait: 'slide', until: { shift: 1 },
@@ -67,8 +67,8 @@
             rounds: [
           { mode: "our", lo: ["6Np.01"], v: [
             {"type":"dvalue","n":"4.268","d":6},
-            {"type":"dvalue","n":"7.931","d":3},
-            {"type":"dvalue","n":"2.584","d":8}] },
+            {"type":"dvalue","n":"7.931","d":9},
+            {"type":"dvalue","n":"2.584","d":4}] },
           { mode: "your", lo: ["6Np.01"], v: [
             {"type":"dvalue","n":"16.395","d":5},
             {"type":"dvalue","n":"20.714","d":7},
@@ -133,7 +133,7 @@
           { mode: "your", lo: ["6Np.01"], twm: ["TWM.01"], v: [
             {"type":"dclue","whole":3,"te":6,"hu":0,"ths":2,"order":[1,2,0]},
             {"type":"dclue","whole":9,"te":0,"hu":4,"ths":7,"order":[2,0,1]},
-            {"type":"dclue","whole":14,"te":8,"hu":1,"ths":0,"order":[0,2,1]}] }] },
+            {"type":"dclue","whole":14,"te":0,"hu":8,"ths":1,"order":[0,2,1]}] }] },
       { title: { en: "Calculate", vi: "Tính" }, rounds: [
           { mode: "your", lo: ["6Np.02"], twm: ["TWM.02"], v: [
             {"type":"dcalc","items":[{"n":"6.07","op":"x","by":100},{"n":"83","op":"d","by":10}]},
@@ -169,8 +169,8 @@
           vi: 'Vị trí của một chữ số cho biết giá trị của nó. Tìm hàng của chữ số, rồi nói chữ số đó có giá trị bao nhiêu.',
           example: ['In 5.384 the 8 is in the hundredths place.', 'So the 8 is worth *0.08*, or 8 hundredths.'],
           pic: { k: 'dchart', n: '5.384', hl: 'hu', vals: true } },
-        { en: 'Zero is a [[place holder]]. When a [[decimal place]] has nothing in it, write 0 there.',
-          vi: 'Số 0 là chữ số giữ chỗ. Khi một hàng thập phân không có gì, hãy viết số 0 vào hàng đó.',
+        { en: 'Zero is a [[place holder]]. When a [[decimal place]] between two digits has nothing in it, write 0 there.',
+          vi: 'Số 0 là chữ số giữ chỗ. Khi một hàng thập phân ở giữa các chữ số không có gì, hãy viết số 0 vào hàng đó.',
           example: ['6 ones, no tenths, 4 hundredths and 9 thousandths.', 'Write *6.049*. The 0 holds the tenths place.'],
           pic: { k: 'dchart', n: '6.049', hl: 'te' } },
         { en: 'Each place is worth 10 times the place on its right. 10 hundredths make 1 tenth. 10 tenths make 1 whole.',
@@ -222,7 +222,7 @@
         { dok: 1, lo: ["6Np.01"], twm: ["TWM.05"], v: [
           {"type":"dexp","n":"7.042"},
           {"type":"dexp","n":"30.605"},
-          {"type":"dexp","n":"9.18"}
+          {"type":"dexp","n":"9.108"}
         ] },
         { dok: 2, lo: ["6Np.02"], twm: ["TWM.02"], v: [
           {"type":"dmissing","items":[{"a":"0.92","op":"x","by":100,"hide":"by"}]},
@@ -235,19 +235,19 @@
           {"type":"dclue","whole":7,"te":1,"hu":5,"order":[1,0]}
         ] },
         { dok: 2, lo: ["6Np.02"], twm: ["TWM.02"], v: [
-          {"type":"dscale","n":"0.85","op":"x","by":100,"unit":"g","text":"One paper clip has a mass of <b>0.85</b> g. What is the mass of <b>100</b> paper clips?"},
-          {"type":"dscale","n":"36.5","op":"d","by":10,"unit":"m","text":"A ribbon is <b>36.5</b> m long. It is cut into <b>10</b> equal pieces. How long is one piece?"},
-          {"type":"dscale","n":"94","op":"d","by":1000,"unit":"mm","text":"<b>1,000</b> sheets of paper make a pile <b>94</b> mm high. How thick is one sheet?"}
+          {"type":"dscale","n":"0.85","op":"x","by":100,"unit":"g","plus":"12","plusSay":"Add the 12 g of the box.","text":"One paper clip has a mass of <b>0.85</b> g. An empty box has a mass of <b>12</b> g. What is the mass of the box with <b>100</b> paper clips in it?"},
+          {"type":"dscale","n":"36.5","op":"d","by":10,"unit":"m","plus":"0.5","plusSay":"Add the 0.5 m of the bow.","text":"A ribbon is <b>36.5</b> m long. It is cut into <b>10</b> equal pieces. Hoa ties one piece to a bow that is <b>0.5</b> m long. How long are the piece and the bow together?"},
+          {"type":"dscale","n":"94","op":"d","by":1000,"unit":"mm","plus":"0.5","plusSay":"Add the 0.5 mm of the card.","text":"<b>1,000</b> sheets of paper make a pile <b>94</b> mm high. A card is <b>0.5</b> mm thick. How thick are one sheet of paper and one card together?"}
         ] },
         { dok: 2, lo: ["6Np.02"], twm: ["TWM.07", "TWM.04"], v: [
-          {"type":"claim","who":"Trang","ok":true,"at":1,"says":"45 ÷ 100 = 0.45","reasons":[{"t":"÷ 100 moves every digit two places to the right. The 4 goes to the tenths and the 5 to the hundredths."},{"t":"45 ÷ 100 = 4.5, because the digits move one place.","why":"÷ 100 is two places, not one. 45 ÷ 10 = 4.5."},{"t":"you cannot divide 45 by 100, because 45 is smaller than 100.","why":"You can. The answer is smaller than 1: a decimal."}],"hint":{"pic":{"k":"dslider","n":"45","cap":"45 ÷ 100"},"step":"Move the digits of 45 two places to the right."},"worked":"The 4 moves from the tens to the tenths. The 5 moves from the ones to the hundredths. 45 ÷ 100 = 0.45.","model":"Trang is correct because every digit of 45 moves two places to the right: 0.45."},
-          {"type":"claim","who":"Phong","ok":false,"at":0,"says":"0.36 × 100 = 0.3600","reasons":[{"t":"× 100 moves every digit two places to the left. 0.36 × 100 = 36."},{"t":"0.3600 is 100 times as big as 0.36.","why":"0.3600 and 0.36 are the same number. Zeros at the end of a decimal change nothing."},{"t":"× 100 moves the digits two places to the right.","why":"Multiplying makes this number bigger. The digits move to the left."}],"hint":{"pic":{"k":"dslider","n":"0.36","cap":"0.36 × 100"},"step":"Zeros at the end of a decimal do not change it. Move the digits two places to the left."},"worked":"0.3600 is the same as 0.36. To multiply by 100, move each digit two places to the left: 0.36 × 100 = 36.","model":"Phong is incorrect because 0.36 × 100 = 36. The number 0.3600 is still 0.36."},
-          {"type":"claim","who":"Thu","ok":true,"at":2,"says":"8 ÷ 1,000 = 0.008","reasons":[{"t":"÷ 1,000 moves the 8 three places to the right, into the thousandths place."},{"t":"8 ÷ 1,000 = 0.08, because the 8 moves two places.","why":"Two places is ÷ 100: 8 ÷ 100 = 0.08. ÷ 1,000 is three places."},{"t":"the answer must be bigger than 8.","why":"Dividing by 1,000 makes the number smaller."}],"hint":{"pic":{"k":"dslider","n":"8","cap":"8 ÷ 1,000"},"step":"Move the 8 three places to the right. Which place is it in now?"},"worked":"The 8 moves from the ones to the thousandths. Zeros hold the ones, tenths and hundredths places: 0.008.","model":"Thu is correct because the 8 moves three places to the right: 8 ÷ 1,000 = 0.008."}
+          {"type":"claim","who":"Trang","ok":true,"at":1,"says":"45 ÷ 100 = 0.45.","reasons":[{"t":"÷ 100 moves every digit two places to the right. The 4 goes to the tenths and the 5 to the hundredths."},{"t":"45 ÷ 100 = 4.5, because the digits move one place.","why":"÷ 100 is two places, not one. 45 ÷ 10 = 4.5."},{"t":"you cannot divide 45 by 100, because 45 is smaller than 100.","why":"You can. The answer is smaller than 1: a decimal."}],"hint":{"pic":{"k":"dslider","n":"45","cap":"45 ÷ 100"},"step":"Move the digits of 45 two places to the right."},"worked":"The 4 moves from the tens to the tenths. The 5 moves from the ones to the hundredths. 45 ÷ 100 = 0.45.","model":"Trang is correct because every digit of 45 moves two places to the right: 0.45."},
+          {"type":"claim","who":"Phong","ok":false,"at":0,"says":"0.36 × 100 = 0.3600.","reasons":[{"t":"× 100 moves every digit two places to the left. 0.36 × 100 = 36."},{"t":"0.3600 is 100 times as big as 0.36.","why":"0.3600 and 0.36 are the same number. Zeros at the end of a decimal change nothing."},{"t":"× 100 moves the digits two places to the right.","why":"Multiplying makes this number bigger. The digits move to the left."}],"hint":{"pic":{"k":"dslider","n":"0.36","cap":"0.36 × 100"},"step":"Zeros at the end of a decimal do not change it. Move the digits two places to the left."},"worked":"0.3600 is the same as 0.36. To multiply by 100, move each digit two places to the left: 0.36 × 100 = 36.","model":"Phong is incorrect because 0.36 × 100 = 36. The number 0.3600 is still 0.36."},
+          {"type":"claim","who":"Thu","ok":true,"at":2,"says":"8 ÷ 1,000 = 0.008.","reasons":[{"t":"÷ 1,000 moves the 8 three places to the right, into the thousandths place."},{"t":"8 ÷ 1,000 = 0.08, because the 8 moves two places.","why":"Two places is ÷ 100: 8 ÷ 100 = 0.08. ÷ 1,000 is three places."},{"t":"the answer must be bigger than 8.","why":"Dividing by 1,000 makes the number smaller."}],"hint":{"pic":{"k":"dslider","n":"8","cap":"8 ÷ 1,000"},"step":"Move the 8 three places to the right. Which place is it in now?"},"worked":"The 8 moves from the ones to the thousandths. Zeros hold the ones, tenths and hundredths places: 0.008.","model":"Thu is correct because the 8 moves three places to the right: 8 ÷ 1,000 = 0.008."}
         ] },
         { dok: 3, lo: ["6Np.02", "6Np.01"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Ngoc","ok":false,"at":2,"says":"When you divide a whole number by 10, the answer is always a decimal.","reasons":[{"t":"70 ÷ 10 = 7, and 7 is a whole number. One example like this shows the rule is not always true."},{"t":"dividing always makes a decimal, like 23 ÷ 10 = 2.3.","why":"That example fits. But try a number that ends in 0, like 70."},{"t":"you cannot divide a whole number by 10.","why":"You can: move every digit one place to the right."}],"hint":{"pic":{"k":"dslider","n":"70","cap":"70 ÷ 10"},"step":"Test the rule. Try 23 ÷ 10. Then try a number that ends in 0, like 70 ÷ 10."},"worked":"23 ÷ 10 = 2.3 is a decimal. But 70 ÷ 10 = 7 is a whole number. So the rule is not always true.","model":"Ngoc is incorrect because 70 ÷ 10 = 7, and 7 is a whole number."},
           {"type":"claim","who":"Long","ok":true,"at":0,"says":"Dividing a number by 10, then by 10 again, then by 10 again is the same as dividing it by 1,000.","reasons":[{"t":"each ÷ 10 moves the digits one place to the right. Three moves of one place are the same as one move of three places."},{"t":"10 + 10 + 10 = 30, so it is the same as dividing by 30.","why":"Dividing three times is not adding. Try 62: 6.2, then 0.62, then 0.062."},{"t":"it only works for numbers that end in three zeros.","why":"Try 62. 62 ÷ 10 ÷ 10 ÷ 10 = 0.062, and 62 ÷ 1,000 = 0.062."}],"hint":{"pic":{"k":"dslider","n":"62","cap":"62 ÷ 10 ÷ 10 ÷ 10"},"step":"Try it with a number, like 62. Divide by 10 three times. Then work out 62 ÷ 1,000."},"worked":"62 ÷ 10 = 6.2. 6.2 ÷ 10 = 0.62. 0.62 ÷ 10 = 0.062. And 62 ÷ 1,000 = 0.062 too.","model":"Long is correct because three moves of one place are the same as one move of three places."},
-          {"type":"claim","who":"Chi","ok":true,"at":1,"says":"In the number 4.444, each 4 is worth ten times as much as the 4 on its right.","reasons":[{"t":"the values are 4, 0.4, 0.04 and 0.004. Each place is worth ten times the place on its right."},{"t":"all the 4s are worth the same, because they are the same digit.","why":"The same digit in a different place has a different value. Find the value of each 4."},{"t":"each 4 is worth ten times as much as the 4 on its left.","why":"Places get smaller as you go to the right: 0.4 is smaller than 4."}],"hint":{"pic":{"k":"dchart","n":"4.444","vals":true},"step":"Write the value of each 4. Then compare each one with its neighbour on the right."},"worked":"The values are 4, 0.4, 0.04 and 0.004. 4 = 10 × 0.4, 0.4 = 10 × 0.04 and 0.04 = 10 × 0.004.","model":"Chi is correct because each place is worth ten times the place on its right."}
+          {"type":"claim","who":"Chi","ok":true,"at":1,"says":"A digit is always worth ten times as much as the same digit one place to its right.","reasons":[{"t":"in 4.444 the values are 4, 0.4, 0.04 and 0.004. Each place is worth ten times the place on its right."},{"t":"all the 4s are worth the same, because they are the same digit.","why":"The same digit in a different place has a different value. Find the value of each 4."},{"t":"each 4 is worth ten times as much as the 4 on its left.","why":"Places get smaller as you go to the right: 0.4 is smaller than 4."}],"hint":{"pic":{"k":"dchart","n":"4.444","vals":true},"step":"Test the rule with a number like 4.444. Write the value of each 4. Then compare each one with its neighbour on the right."},"worked":"In 4.444 the values are 4, 0.4, 0.04 and 0.004. 4 = 10 × 0.4, 0.4 = 10 × 0.04 and 0.04 = 10 × 0.004.","model":"Chi is correct because each place is worth ten times the place on its right."}
         ] }
       ]
     },
@@ -280,28 +280,28 @@
         ["The 6 in 9.861 is worth", ["0.06", "0.6", "0.006"]],
         ["0.07 × 10", ["0.7", "7", "70"]],
         ["4.18 × 1,000", ["4,180", "41.8", "418"]],
-        ["3.8 ÷ 10", ["0.38", "0.038", "0.0038"]],
-        ["0.9 ÷ 10", ["0.09", "0.009", "0.0009"]],
+        ["3.8 ÷ 10", ["0.38", "0.038", "38"]],
+        ["0.9 ÷ 10", ["0.09", "0.009", "9"]],
         ["23.4 × 100", ["2,340", "234", "23,400"]],
         ["Which digit is in the hundredths place in 7.938?", ["3", "9", "8"]],
         ["How many hundredths make 1 whole?", ["100", "10", "1,000"]],
         ["3 hundredths =", ["0.03", "0.3", "0.003"]],
         ["The 5 in 9.145 is worth", ["0.005", "0.5", "0.05"]],
         ["Which digit is in the hundredths place in 7.318?", ["1", "3", "8"]],
-        ["5 ones and 1 hundredths =", ["5.01", "5.1", "5.001"]],
+        ["5 ones and 1 hundredth =", ["5.01", "5.1", "5.001"]],
         ["8 ÷ 1,000", ["0.008", "0.8", "0.08"]],
         ["The 3 in 9.253 is worth", ["0.003", "0.3", "0.03"]],
         ["360 ÷ 10", ["36", "3.6", "0.36"]],
         ["6.3 × 100", ["630", "63", "6,300"]],
         ["60 thousandths =", ["0.06", "6", "0.6"]],
         ["360 ÷ 100", ["3.6", "36", "0.36"]],
-        ["0.9 ÷ 100", ["0.009", "0.09", "0.0009"]],
+        ["0.9 ÷ 100", ["0.009", "0.09", "90"]],
         ["The 9 in 8.925 is worth", ["0.9", "0.09", "0.009"]],
         ["9.1 × 10", ["91", "910", "9,100"]],
         ["The 6 in 3.647 is worth", ["0.6", "0.06", "0.006"]],
         ["512 ÷ 100", ["5.12", "51.2", "0.512"]],
         ["0.9 × 100", ["90", "9", "900"]],
-        ["73.5 ÷ 10", ["7.35", "0.735", "0.0735"]],
+        ["73.5 ÷ 10", ["7.35", "0.735", "735"]],
         ["512 ÷ 10", ["51.2", "5.12", "0.512"]],
         ["How many hundredths make 1 tenth?", ["10", "100", "1,000"]],
         ["Which digit is in the thousandths place in 2.586?", ["6", "5", "8"]],
@@ -310,7 +310,7 @@
         ["204 ÷ 1,000", ["0.204", "20.4", "2.04"]],
         ["9.1 × 100", ["910", "91", "9,100"]],
         ["2.7 × 100", ["270", "27", "2,700"]],
-        ["73.5 ÷ 100", ["0.735", "7.35", "0.0735"]],
+        ["73.5 ÷ 100", ["0.735", "7.35", "7,350"]],
         ["How many thousandths make 1 whole?", ["1,000", "10", "100"]],
         ["150 ÷ 100", ["1.5", "15", "0.15"]],
         ["12.5 × 1,000", ["12,500", "125", "1,250"]],

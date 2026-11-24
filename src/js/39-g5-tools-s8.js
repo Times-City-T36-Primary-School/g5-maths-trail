@@ -95,6 +95,7 @@
         const len = ln.t === 's' ? .6 * R : R;
         x1 = cx; y1 = cy; x2 = cx + len * ux; y2 = cy + len * uy;
         lx = cx + .55 * len * ux; ly = cy + .55 * len * uy; tx = lx; ty = ly;
+        if (ln.t === 's') { tx = lx + nx * 11; ty = ly + ny * 11; }             // the short line stays in view: its letter sits beside it
       }
       const cls = 'c8-ln' + (spec.plain ? '' : ' c8-ln--' + ln.t) + (ln.hl ? ' is-hl' : '') + (ln.dim ? ' is-dim' : '') + (ln.dash ? ' is-dash' : '');
       g.appendChild(svg('line', { x1: f1(x1), y1: f1(y1), x2: f1(x2), y2: f1(y2), class: cls }));
@@ -104,7 +105,8 @@
         // the length sits beside the line (above it when it can), far enough away for the words to clear the line
         const wide = String(ln.lab).length * 3.1, side = ln.side || (ny < -0.01 || (Math.abs(ny) <= 0.01 && nx > 0) ? 1 : -1);
         const gap = 6 + Math.abs(nx) * wide + Math.abs(ny) * 5;
-        const ox = ln.t === 'c' ? ux * (6 + Math.abs(ux) * wide + Math.abs(uy) * 5) : nx * side * gap, oy = ln.t === 'c' ? uy * (6 + Math.abs(ux) * wide + Math.abs(uy) * 5) : ny * side * gap;
+        const back = 6 + Math.abs(ux) * wide + Math.abs(uy) * 5;                 // a line that misses the centre: its words sit on the centre side
+        const ox = ln.t === 'c' ? -ux * back : nx * side * gap, oy = ln.t === 'c' ? -uy * back : ny * side * gap;
         labels.push(text(lx + ox, ly + oy + 4, ln.lab, 'c8-t c8-t--' + (spec.plain ? 'ink' : ln.t) + (ln.lab === '?' ? ' is-ask' : '')));
       }
     });
@@ -114,10 +116,15 @@
       if (spec.dotLab) labels.push(text(cx - 9, cy + 15, spec.dotLab, 'c8-t' + (spec.dotLab === '?' ? ' c8-t--hl is-ask' : '')));
     }
     if (spec.ringLab) {
-      // a label outside the circle, at the top right, with a short pointer to the line
-      const a = rad(48), px = cx + R * Math.cos(a), py = cy - R * Math.sin(a);
-      g.appendChild(svg('line', { x1: f1(px + 2), y1: f1(py - 2), x2: f1(px + 12), y2: f1(py - 11), class: 'c8-lead' }));
-      labels.push(text(px + 17, py - 12, spec.ringLab, 'c8-t c8-t--ring' + (spec.ringLab === '?' ? ' is-ask' : ''), spec.ringLab.length > 2 ? 'start' : 'middle'));
+      // a label outside the circle: "?" at the top right with a short pointer; a word above the circle, in the middle
+      if (spec.ringLab.length > 2) {
+        g.appendChild(svg('line', { x1: cx, y1: cy - R - 2, x2: cx, y2: cy - R - 7, class: 'c8-lead' }));
+        labels.push(text(cx, cy - R - 10, spec.ringLab, 'c8-t c8-t--ring'));
+      } else {
+        const a = rad(48), px = cx + R * Math.cos(a), py = cy - R * Math.sin(a);
+        g.appendChild(svg('line', { x1: f1(px + 2), y1: f1(py - 2), x2: f1(px + 12), y2: f1(py - 11), class: 'c8-lead' }));
+        labels.push(text(px + 17, py - 12, spec.ringLab, 'c8-t c8-t--ring' + (spec.ringLab === '?' ? ' is-ask' : '')));
+      }
     }
     labels.forEach(function (n) { g.appendChild(n); });
     return g;
@@ -132,7 +139,7 @@
   /* ---------- n equal circles that touch, in a row (a picture) ---------- */
 
   function rowSvg(spec) {
-    const n = Math.max(1, Math.min(6, spec.n || 3)), R = 20, x0 = 10, cy = spec.lab ? 46 : 28, W = n * 2 * R + 2 * x0, H = cy + R + (spec.box ? 10 : 6);
+    const n = Math.max(1, Math.min(6, spec.n || 3)), R = 20, x0 = 10, cy = spec.lab ? 46 : 28, W = n * 2 * R + 2 * x0, H = cy + R + (spec.r || spec.d ? 19 : spec.box ? 10 : 6);
     const g = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'c8-svg', role: 'img',
       'aria-label': spec.alt || (n + ' equal circles in a row. They touch.' + (spec.r ? ' The radius of one circle is ' + spec.r + '.' : '') + (spec.d ? ' The diameter of one circle is ' + spec.d + '.' : '') + (spec.lab ? ' The length of the row is ' + spec.lab + '.' : '')) });
     if (spec.box) g.appendChild(svg('rect', { x: x0, y: cy - R, width: n * 2 * R, height: 2 * R, class: 'c8-sq' }));
@@ -145,11 +152,11 @@
     const c0 = x0 + R;
     if (spec.r) {
       g.appendChild(svg('line', { x1: c0, y1: cy, x2: c0 + R, y2: cy, class: 'c8-ln c8-ln--r' }));
-      g.appendChild(text(c0 + (n === 1 ? 0 : R), cy + 13, spec.r, 'c8-t c8-t--r c8-t--sm'));
+      g.appendChild(text(Math.max(c0, 21), cy + R + 14, spec.r, 'c8-t c8-t--r c8-t--sm' + (spec.r === '?' ? ' is-ask' : '')));
     }
     if (spec.d) {
       g.appendChild(svg('line', { x1: c0 - R, y1: cy, x2: c0 + R, y2: cy, class: 'c8-ln c8-ln--d' }));
-      g.appendChild(text(c0 + (n === 1 ? 0 : R), cy + 13, spec.d, 'c8-t c8-t--d c8-t--sm'));
+      g.appendChild(text(Math.max(c0, 21), cy + R + 14, spec.d, 'c8-t c8-t--d c8-t--sm' + (spec.d === '?' ? ' is-ask' : '')));
     }
     if (spec.lab) {
       g.appendChild(svg('path', { d: 'M' + x0 + ' 18h' + n * 2 * R + 'M' + x0 + ' 13v10M' + (x0 + n * 2 * R) + ' 13v10', class: 'c8-dim' }));
@@ -222,7 +229,7 @@
     g.appendChild(layer);
     pts.forEach(function (p) {
       g.appendChild(svg('circle', { cx: p.x * U, cy: p.y * U, r: 1.7, class: 'c8-pt__dot' }));
-      g.appendChild(text(p.x * U - 5.5, p.y * U - 3.5, p.id, 'c8-pt__t'));
+      g.appendChild(text(p.x * U - 7, p.y * U - 5.5, p.id, 'c8-pt__t'));
     });
     board.appendChild(g);
     const ptBtns = pts.map(function (p) {
@@ -240,8 +247,10 @@
     const drawBtn = el('button', { type: 'button', class: 'btn btn--quiet sl__b c8-b c8-b--draw', onclick: draw }, T.ui.icon('pencil'), el('span', 'Draw'));
     const acrossBtn = spec.measure ? el('button', { type: 'button', class: 'btn btn--quiet sl__b c8-b', onclick: measure }, el('span', 'Measure across')) : null;
     const say = el('p', { class: 'c8-say', 'aria-live': 'polite' });
-    const side = el('div', { class: 'c8-side' }, el('div', { class: 'c8-set' }, minus, rulerBox, plus), now, el('div', { class: 'c8-go' }, drawBtn, acrossBtn), say);
-    const root = el('div', { class: ['wb', 'c8', 'c8-compass'] }, board, side);
+    const setBox = el('div', { class: 'c8-setbox' }, el('div', { class: 'c8-set' }, minus, rulerBox, plus), now);
+    const goBox = el('div', { class: 'c8-gobox' }, el('div', { class: 'c8-go' }, drawBtn, acrossBtn), say);
+    // in the order of the work: the opening, the grid with the point, then Draw (side by side on a wide screen)
+    const root = el('div', { class: ['wb', 'c8', 'c8-compass'] }, setBox, board, goBox);
 
     const ptOf = function (id) { return pts.filter(function (p) { return p.id === id; })[0] || null; };
 

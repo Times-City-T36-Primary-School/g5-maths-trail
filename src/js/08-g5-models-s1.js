@@ -14,7 +14,8 @@
    dmissing  { items: [{ a, op, by, hide: 'a' | 'by' }] }     a missing number in a x or / by 10, 100, 1000
    dsame     { n, op, by, opts: [{ n, op, by } x 3], at }     which calculation has the same answer? (opts[0] must match)
    dchain    { start: '0.48', ops: [['x', 100], ['d', 10]], give: 0 }   a chain of boxes (the v2 chain, with decimals)
-   dscale    { text, n, op, by, unit, pic? }                  a real-life problem with one x or / by 10, 100 or 1000 */
+   dscale    { text, n, op, by, unit, plus?, plusSay? }       a real-life problem: x or / by 10, 100 or 1000; with plus
+                                                             ('12'), a second step: add it (plusSay: "Add the box.") */
 (function () {
 "use strict";
 const M = MX.M, D = MX.D, PL = D.PL, PLK = D.PLK, fmt = MX.fmt, arrange = MX.arrange, cap = MX.cap, F = MX.F;
@@ -33,6 +34,13 @@ function placeOf(n, d, p) {
 }
 const asFrac = (d, p) => (p.fr ? F(d, fmt(p.fr)) : String(d * p.v / 1000));
 const rule = (op, by) => SYM[op] + " " + fmt(by) + ": move every digit " + pl(K(by)) + " to the " + (op === "x" ? "left" : "right") + ".";
+
+/* a zero that appears in the answer: it holds an empty place (7.4 x 100 = 740, 8 / 100 = 0.08) */
+function zeroNote(n, ans) {
+  const zeros = s => (String(s).replace(/,/g, "").replace(/^0\./, ".").match(/0/g) || []).length;
+  const more = zeros(show(ans)) - zeros(n);
+  return more > 1 ? "Zeros hold the empty places. " : more === 1 ? "A zero holds the empty place. " : "";
+}
 
 /* what went wrong in n x by or n / by */
 function slip(n, op, by, typed) {
@@ -100,7 +108,7 @@ M.dfracval = function (d) {
     hint: { pic: { k: "dchart", n: n }, step: "Tenths are parts out of 10. Hundredths are parts out of 100. Thousandths are parts out of 1,000." },
     worked: { text: "The " + d.d + " is in the " + p.many + " place. " + D.val(d.d, p.k) + " is " + d.d + " " + p.many + ": " + d.d + " out of " + fmt(p.fr) + ".", pic: { k: "dchart", n: n, hl: p.k, vals: true } },
     yes: D.val(d.d, p.k) + " = " + d.d + " " + (d.d === 1 ? p.one : p.many) + ".",
-    key: d.d + "/" + p.fr
+    key: d.d + "/" + fmt(p.fr)
   };
 };
 
@@ -121,7 +129,7 @@ M.dmake = function (d) {
   const base = {
     q: d.cells ? "Write the number in the chart." : "Write the [[decimal]] number.", sum: cap(sayParts(d.parts)),
     hint: { pic: { k: "dchart", from: PL[m.i0].k, to: PL[m.i1].k, ask: true }, step: z ? "There are no " + z.many + ". Write 0 in the " + z.many + " place." : "Put each digit in its own place. The decimal point comes after the ones." },
-    worked: { text: cap(sayParts(d.parts)) + " make " + m.text + "." + (z ? " The 0 holds the " + z.many + " place." : ""), pic: { k: "dchart", n: m.text, from: PL[m.i0].k, to: PL[m.i1].k } },
+    worked: { text: cap(sayParts(d.parts)) + " make " + m.text + "." + (m.empty.length > 1 ? " The zeros hold the " + m.empty.map(p => p.many).join(" and the ") + " places." : z ? " The 0 holds the " + z.many + " place." : ""), pic: { k: "dchart", n: m.text, from: PL[m.i0].k, to: PL[m.i1].k } },
     yes: cap(sayParts(d.parts)) + " make " + m.text + ".", key: m.text
   };
   if (d.cells) {
@@ -158,7 +166,7 @@ M.dclue = function (d) {
   const order = d.order ? d.order.map(i => clues[i]) : clues;
   const line = x => "the digit <b>" + x[1] + "</b> in the " + PL[PLK[x[0]]].many + " place";
   return {
-    q: "My number is between <b>" + d.whole + "</b> and <b>" + (d.whole + 1) + "</b>. It has " + order.map(line).join(order.length > 2 ? ", " : " and ").replace(/, ([^,]*)$/, " and $1") + ". Write my number.",
+    q: "My number is between <b>" + d.whole + "</b> and <b>" + (d.whole + 1) + "</b>. " + (dp === 2 ? "It has two decimal places. " : "") + "It has " + order.map(line).join(order.length > 2 ? ", " : " and ").replace(/, ([^,]*)$/, " and $1") + ". Write my number.",
     lines: ["{0}"], blanks: [{ len: 6, w: "big", dec: 3 }],
     check(r) {
       const v = D.p(r.v[0]);
@@ -167,7 +175,7 @@ M.dclue = function (d) {
       const bad = clues.find(x => isNaN(v) || D.digit(v, x[0]) !== x[1]);
       return { ok: false, msg: bad ? "Check the " + PL[PLK[bad[0]]].many + " place. It must be " + bad[1] + "." : "Read each clue again.", parts: [false] };
     },
-    hint: { pic: { k: "dchart", from: d.whole >= 10 ? "t" : "o", to: dp === 3 ? "ths" : "hu", ask: true }, step: "Between " + d.whole + " and " + (d.whole + 1) + " means the whole part is " + d.whole + ". Then fill the tenths, hundredths" + (dp === 3 ? " and thousandths." : ".") },
+    hint: { pic: { k: "dchart", from: d.whole >= 10 ? "t" : "o", to: dp === 3 ? "ths" : "hu", ask: true }, step: "Between " + d.whole + " and " + (d.whole + 1) + " means the whole part is " + d.whole + ". Then fill the tenths" + (dp === 3 ? ", hundredths and thousandths." : " and hundredths.") },
     worked: { text: "The whole part is " + d.whole + ". " + clues.map(x => cap(PL[PLK[x[0]]].many) + ": " + x[1]).join(". ") + ". The number is " + text + ".", pic: { k: "dchart", n: text, to: dp === 3 ? "ths" : "hu" } },
     yes: text + " is between " + d.whole + " and " + (d.whole + 1) + ".", key: text, fill: [text]
   };
@@ -215,7 +223,7 @@ M.dslide = function (d, mode) {
     lines: [n + " " + SYM[op] + " " + fmt(by) + " = {0}"], blanks: [{ len: 7, w: "big", dec: 3 }],
     check(r) { return D.eq(r.v[0], ans) ? { ok: true } : { ok: false, msg: slip(n, op, by, r.v[0]), parts: [false] }; },
     hint: { pic: { k: "drule", op: op, by: by }, step: rule(op, by) + " The decimal point stays where it is." },
-    worked: { text: "Every digit moves " + pl(k) + " to the " + dir + ". " + n + " " + SYM[op] + " " + fmt(by) + " = " + a + ".", pic: { k: "dslider", n: n, shift: op === "x" ? k : -k } },
+    worked: { text: "Every digit moves " + pl(k) + " to the " + dir + ". " + zeroNote(n, ans) + n + " " + SYM[op] + " " + fmt(by) + " = " + a + ".", pic: { k: "dslider", n: n, shift: op === "x" ? k : -k } },
     yes: n + " " + SYM[op] + " " + fmt(by) + " = " + a + ". The digits moved " + pl(k) + " to the " + dir + ".",
     key: a, fill: [a.replace(/,/g, "")]
   };
@@ -260,10 +268,10 @@ M.dmissing = function (d) {
       const i = parts.indexOf(false);
       return { ok: false, msg: (it.length > 1 ? "Look at (" + "abc"[i] + "). " : "") + it[i].tip, parts: parts };
     },
-    hint: { pic: it.map(x => x.pic), step: it.map(x => x.tip).join(" ") },
+    hint: { pic: it.map(x => x.pic), step: it.map((x, i) => (it.length > 1 ? "(" + "abc"[i] + ") " : "") + x.tip).join(" ") },
     worked: { text: it.map(x => x.tell).join(". ") + "." },
     yes: it.map(x => x.tell).join(" and ") + ".",
-    key: it.map(x => x.ans).join(" ; "), fill: it.map(x => x.ans)
+    key: it.map(x => (x.dec ? x.ans : fmt(+x.ans))).join(" ; "), fill: it.map(x => x.ans)
   };
 };
 
@@ -314,13 +322,14 @@ M.dchain = function (d) {
 
 /* a real-life problem with one multiplication or division by 10, 100 or 1000 */
 M.dscale = function (d) {
-  const ans = calc(d.n, d.op, d.by), a = show(ans), work = d.n + " " + SYM[d.op] + " " + fmt(d.by) + " = " + a;
+  const first = calc(d.n, d.op, d.by), ans = first + (d.plus ? D.p(d.plus) : 0), a = show(ans);
+  const work = d.n + " " + SYM[d.op] + " " + fmt(d.by) + " = " + show(first) + (d.plus ? ". " + show(first) + " + " + d.plus + " = " + a : "");
   const step = (d.op === "x" ? "Multiply " : "Divide ") + d.n + " by " + fmt(d.by) + ". " + rule(d.op, d.by);
   return {
     q: d.text, real: d.pic || "",
     lines: ["{0} " + d.unit], blanks: [{ len: 7, w: "big", dec: 3 }],
-    check(r) { return D.eq(r.v[0], ans) ? { ok: true } : { ok: false, msg: D.eq(r.v[0], calc(d.n, OPP[d.op], d.by)) ? (d.op === "x" ? "You divided. Here the answer must be bigger than " + d.n + "." : "You multiplied. Here the answer must be smaller than " + d.n + ".") : slip(d.n, d.op, d.by, r.v[0]), parts: [false] }; },
-    hint: { pic: { k: "drule", op: d.op, by: d.by }, step: step },
+    check(r) { return D.eq(r.v[0], ans) ? { ok: true } : { ok: false, msg: d.plus && D.eq(r.v[0], first) ? "That is the first step. " + (d.plusSay || "Now add " + d.plus + ".") : D.eq(r.v[0], calc(d.n, OPP[d.op], d.by)) ? (d.op === "x" ? "You divided. Here the answer must be bigger than " + d.n + "." : "You multiplied. Here the answer must be smaller than " + d.n + ".") : slip(d.n, d.op, d.by, r.v[0]), parts: [false] }; },
+    hint: { pic: { k: "drule", op: d.op, by: d.by }, step: step + (d.plus ? " Then do the second step: " + (d.plusSay || "add " + d.plus + ".") : "") },
     worked: { text: work + ". The answer is " + a + " " + d.unit + ".", pic: { k: "dslider", n: d.n, shift: d.op === "x" ? K(d.by) : -K(d.by) } },
     yes: work + ".", key: a, fill: [a.replace(/,/g, "")]
   };

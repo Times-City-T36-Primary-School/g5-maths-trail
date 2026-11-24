@@ -139,10 +139,10 @@
     crown([[20, 20, 62], [96, 10, 54], [150, 60, 40], [-10, 88, 44], [70, 60, 40]], 'p2') + crown([[136, 104, 22]], 'tc');
   // the apple tree on the right: 12 apples in 3 equal rows of 4
   let apples = '';
-  for (let row = 0; row < 3; row++) for (let i = 0; i < 4; i++) apples += use('ff-ap', 614 + i * 25, 100 + row * 27);
-  const appleTree = path('M642 180C646 240 644 280 630 306h60C676 280 674 240 678 180Z', 'tk ob') +
-    path('M660 214q4 40-2 76', '', 'stroke="var(--ff-tk2)" stroke-width="3"') +
-    crown([[651, 124, 70], [590, 152, 38], [714, 156, 44], [604, 84, 40], [698, 76, 44], [651, 176, 38]], 'tc') + apples;
+  for (let row = 0; row < 3; row++) for (let i = 0; i < 4; i++) apples += use('ff-ap', 600 + i * 25, 102 + row * 27);
+  const appleTree = path('M628 180C632 240 630 280 616 306h60C662 280 660 240 664 180Z', 'tk ob') +
+    path('M646 214q4 40-2 76', '', 'stroke="var(--ff-tk2)" stroke-width="3"') +
+    crown([[638, 126, 70], [578, 152, 38], [702, 156, 44], [592, 86, 40], [686, 78, 44], [638, 178, 38]], 'tc') + apples;
 
   /* ---------- floor: the grass clearing and the stream that widens into a pool ---------- */
   const POOL = 'M562 208C558 224 548 230 520 232C440 222 290 224 222 242C182 254 162 288 136 330C108 380 60 430 0 452V500H170' +
@@ -196,7 +196,7 @@
     text(VX, VY + 4, '12', 'nv') + text(VX + 35, VY - 6, '4', 'nv') + text(VX + 35, VY + 14, '8', 'nv');
 
   // Zip the forest ranger, on the bank by the stone 12 (a ranger hat with a band; the antenna pokes through)
-  const zip = '<g ' + c('zip') + '><g transform="translate(506 266) scale(.58)">' +
+  const zip = '<g ' + c('zip') + '><g transform="translate(493 275) scale(.51)">' +
     '<rect x="9" y="46" width="12" height="22" rx="6" fill="#F7B53C" stroke="#B8770E" stroke-width="2.5"/><rect x="99" y="46" width="12" height="22" rx="6" fill="#F7B53C" stroke="#B8770E" stroke-width="2.5"/>' +
     '<rect x="34" y="92" width="52" height="30" rx="13" fill="#5AB4EE" stroke="#1E5D9F" stroke-width="3"/><circle cx="60" cy="107" r="6" fill="#E5404A"/>' +
     '<path d="M36 100Q13 103 6 75" fill="none" stroke="#1E5D9F" stroke-width="7" stroke-linecap="round"/><circle cx="6" cy="72" r="6.5" fill="#5AB4EE" stroke="#1E5D9F" stroke-width="3"/>' +
@@ -222,10 +222,10 @@
   const log = path('M560 410h110a14 14 0 0 1 0 28H560a14 14 0 0 1 0-28z', 'tk ob') + ell(560, 424, 9, 14, 'bd ob') + ell(560, 424, 4, 7, '', 'stroke="var(--ff-tk2)" stroke-width="2"') +
     path('M590 418h40M600 430h50', '', 'stroke="var(--ff-tk2)" stroke-width="2.4"');
   let flies = '';
-  [[176, 226], [300, 196], [452, 206], [530, 300], [620, 240], [246, 380], [700, 330], [392, 394], [110, 330], [596, 190]].forEach(function (p, i) {
+  [[176, 226], [300, 196], [452, 206], [690, 250], [560, 366], [246, 380], [700, 330], [392, 394], [110, 330], [596, 190]].forEach(function (p, i) {
     flies += '<g ' + c('fly' + (i % 2 ? ' fly-b' : '')) + '>' + circ(p[0], p[1], 9, '', 'fill="#FFF08A" opacity=".35"') + circ(p[0], p[1], 3, '', 'fill="#FFF8C4"') + '</g>';
   });
-  const small = mush(612, 346, 1) + mush(636, 352, .7) + mush(592, 352, .6) + mush(118, 300, .9) + mush(96, 306, .6) + mush(338, 440, 1.2) + mush(370, 446, .8) + mush(736, 452, 1.1) +
+  const small = mush(600, 350, 1) + mush(624, 356, .7) + mush(580, 356, .6) + mush(118, 300, .9) + mush(96, 306, .6) + mush(338, 440, 1.2) + mush(370, 446, .8) + mush(736, 452, 1.1) +
     use('ff-fl', 684, 372) + use('ff-fl', 706, 384) + use('ff-fl', 208, 440) + use('ff-fl', 470, 420) + use('ff-fl', 492, 430) + use('ff-fl', 136, 262) + use('ff-fl', 770, 352) +
     reeds(190, 262) + reeds(486, 388) + reeds(70, 452) + log + mush(662, 412, .6);
 

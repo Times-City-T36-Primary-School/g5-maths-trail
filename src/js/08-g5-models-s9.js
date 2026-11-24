@@ -326,10 +326,11 @@ M.scompare = function (d) {
     { html: "They are the same", ok: false, why: "Work out the " + by + " of each data set. They are not equal." }], d.at);
   const work = { mean: meanWork, median: medWork, range: rangeWork }[by], slip = { mean: meanSlip, median: medSlip, range: rangeSlip }[by];
   return {
-    q: d.q, sum: d.a.name + ": " + list(A.nums) + "<br>" + d.b.name + ": " + list(B.nums), marks: 2, ab: true,
+    q: d.q, marks: 2, ab: true,
+    fig: { k: "ddata", rows: [{ name: d.a.name, nums: A.nums }, { name: d.b.name, nums: B.nums }] },
     sub: "Tick (✓) one box.", opts: opts,
     abAsk: "Write the " + by + " of each data set.",
-    lines: [d.a.name + ": " + by + " = {0}" + u, d.b.name + ": " + by + " = {1}" + u],
+    lines: [d.a.name + ": {0}", d.b.name + ": {1}"],
     blanks: [0, 1].map(() => ({ len: 5, w: "big", dec: by === "range" ? 0 : 1 })),
     ready: r => r.pick >= 0 && Array.isArray(r.v) && r.v.every(x => x !== "" && x != null),
     check(r) {
@@ -407,7 +408,7 @@ M.sspot = function (d) {
   const opts = arrange(reasons.map((x, i) => ({ html: x.t, ok: i === 0, why: x.why || "" })), d.at);
   const slip = { median: medSlip, mean: meanSlip, range: rangeSlip }[kind];
   return {
-    q: d.who + " finds the <b>" + kind + "</b> of this data. " + cap(p.his) + " answer is wrong.", sum: list(s.nums), marks: 2, ab: true,
+    q: d.who + " finds the <b>" + kind + "</b> of <b>" + list(s.nums) + "</b>. " + cap(p.his) + " answer is wrong.", marks: 2, ab: true,
     fig: { k: "dsay", who: d.who, text: says },
     sub: "What is " + p.his + " mistake? Tick (✓) one box.", letters: true, opts: opts,
     abAsk: "Write the correct " + kind + ".",

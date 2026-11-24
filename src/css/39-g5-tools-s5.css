@@ -3,9 +3,12 @@
    written here once: shaded parts are bakery amber, lines and frames are the plate's ink blue. */
 
 .s5-ask { color: #7B4E00; background: #FFF1CF; border-radius: .375rem; padding: 0 .375em; box-shadow: inset 0 0 0 2px #C17B08; }
+.s5-not { text-decoration: underline; text-decoration-thickness: .12em; text-underline-offset: .18em; text-transform: uppercase; }
 .s5-ctl { flex-wrap: wrap; }
 .s5-b { min-height: 3rem; min-width: 3.5rem; }
 .s5-b[hidden] { display: none; }
+.s5-b.tl__btn { padding: .5rem .875rem; }
+@media (max-width: 479px) { .s5-fb__again .btn__label { display: none; } }
 
 /* a fraction with one number given and one answer box (the equal fractions question) */
 .s5-fn { display: block; text-align: center; font: 600 1.5rem/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
@@ -17,7 +20,7 @@
 .s5-fb__f { text-align: center; font: 600 1.375rem/1 var(--font-display); color: var(--plate-ink); }
 .s5-fb__row.is-start .s5-fb__f { color: var(--plate-ink-2); }
 .s5-fb__bar { min-width: 0; }
-.s5-fb__svg { display: block; width: 100%; height: 3rem; overflow: visible; }
+.s5-fb__svg { display: block; width: 100%; height: 2.75rem; overflow: visible; }
 .s5-fb__svg.is-new { animation: s5-in var(--dur-slow) var(--ease-out) both; }
 @keyframes s5-in { from { opacity: .3; transform: scale(.97); } to { opacity: 1; transform: none; } }
 .s5-fb__p { fill: #FFFFFF; }
@@ -61,12 +64,24 @@
 .s5-am__say .fr { font-size: 1.0625rem; }
 .wb--mini.s5-am { max-width: 22rem; }
 .wb--mini .s5-am__p { height: 2.25rem; font-size: 1rem; }
-.wb--mini .s5-am__whole { font-size: .9375rem; height: 1.5rem; }
+.wb--mini .s5-am__whole { font-size: .9375rem; height: 1.25rem; margin-top: .375rem; }
 .wb--mini .s5-am__say { min-height: 0; margin-top: .375rem; }
 @media (max-width: 479px) { .s5-am__p { font-size: 1rem; } }
 
 /* ---------- See it: the tool takes the width of the desk and sits in the middle of the scene ---------- */
 .see-hands__desk:has(> .s5-fb, > .s5-am) { margin-top: auto; margin-bottom: auto; align-self: center; }
 .see-hands__desk > .s5-fb, .see-hands__desk > .s5-am { flex: 1 1 auto; }
+
+/* ---------- Notes: the picture keeps its own size on a phone (the notes zoom small pictures, 65-notes.css) ---------- */
+.nt-pic--tool > .s5-fb, .nt-pic--tool > .s5-am { zoom: 1; width: 100%; }
+.nt-pic--tool .s5-am__bars { gap: .25rem; }
+@media (max-width: 699px) {
+  .nt-pic--tool:has(> .s5-am) { padding: .375rem; }
+  .nt-pic--tool .s5-am__p { height: 1.875rem; }
+  .nt-pic--tool .s5-am__whole { height: 1rem; margin-top: .5rem; margin-bottom: .125rem; }
+  .nt-pic--tool .s5-am__say { margin-top: .125rem; }
+}
+@media (min-width: 700px) { .nt-pic--tool > .s5-fb, .nt-pic--tool > .s5-am { zoom: 1.3; } }
+@media (min-width: 1200px) and (min-height: 760px) { .nt-pic--tool > .s5-fb, .nt-pic--tool > .s5-am { zoom: 1.6; } }
 
 @media (prefers-reduced-motion: reduce) { .s5-fb__svg.is-new, .s5-am__p.is-new, .s5-am__bars.is-cut .s5-am__row { animation: none; } }

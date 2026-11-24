@@ -70,11 +70,11 @@
     const rows = el('div', { class: 's5-fb__rows' });
     const say = el('p', { class: 's5-fb__say', 'aria-live': 'polite' });
     const btns = by.map(function (p) {
-      return el('button', { type: 'button', class: 'btn btn--quiet sl__b s5-b s5-fb__m', dataset: { by: p }, 'aria-label': 'Divide both numbers by ' + p,
-        onclick: function () { merge(p); } }, el('span', '÷ ' + p));
+      return el('button', { type: 'button', class: 'btn tl__btn s5-b s5-fb__m', dataset: { by: p }, 'aria-label': 'Divide both numbers by ' + p,
+        onclick: function () { merge(p); } }, el('span', { class: 'btn__label' }, '÷ ' + p));
     });
-    const again = el('button', { type: 'button', class: 'btn btn--quiet sl__b s5-b s5-fb__again', onclick: function () { if (!locked && mayReset()) { restart(); sfx('pop'); ev.emit('change', get()); ev.emit('trade', { act: 'reset' }); } } },
-      T.ui.icon('replay'), el('span', 'Start again'));
+    const again = el('button', { type: 'button', class: 'btn tl__btn s5-b s5-fb__again', 'aria-label': 'Start again', onclick: function () { if (!locked && mayReset()) { restart(); sfx('pop'); ev.emit('change', get()); ev.emit('trade', { act: 'reset' }); } } },
+      T.ui.icon('replay'), el('span', { class: 'btn__label' }, 'Start again'));
     const ctl = fixed ? null : el('div', { class: 'sl__ctl s5-ctl' }, btns, again);
     const root = el('div', { class: ['wb', 's5-fb', spec.mini && 'wb--mini'] }, rows, fixed ? null : say, ctl);
     if (spec.cap) root.appendChild(el('p', { class: 'wb__cap', html: spec.cap }));
@@ -156,9 +156,9 @@
     const fits = String(each).length * 10 + 10 <= 300 / d;
     const bars = el('div', { class: 's5-am__bars' });
     const say = el('p', { class: 's5-am__say', 'aria-live': 'polite' });
-    const bShare = el('button', { type: 'button', class: 'btn btn--quiet sl__b s5-b s5-am__share', onclick: share }, el('span', 'Share into ' + d));
-    const bLess = el('button', { type: 'button', class: 'btn btn--quiet sl__b s5-b s5-am__less', 'aria-label': 'Take one part fewer', onclick: function () { take(-1); } }, T.ui.icon('minus'), el('span', '1 part'));
-    const bMore = el('button', { type: 'button', class: 'btn btn--quiet sl__b s5-b s5-am__more', 'aria-label': 'Take one more part', onclick: function () { take(1); } }, T.ui.icon('plus'), el('span', '1 part'));
+    const bShare = el('button', { type: 'button', class: 'btn tl__btn s5-b s5-am__share', onclick: share }, el('span', { class: 'btn__label' }, 'Share into ' + d));
+    const bLess = el('button', { type: 'button', class: 'btn tl__btn s5-b s5-am__less', 'aria-label': 'Take one part fewer', onclick: function () { take(-1); } }, T.ui.icon('minus'), el('span', { class: 'btn__label' }, '1 part'));
+    const bMore = el('button', { type: 'button', class: 'btn tl__btn s5-b s5-am__more', 'aria-label': 'Take one more part', onclick: function () { take(1); } }, T.ui.icon('plus'), el('span', { class: 'btn__label' }, '1 part'));
     const ctl = fixed ? null : el('div', { class: 'sl__ctl s5-ctl' }, bShare, bLess, bMore);
     const root = el('div', { class: ['wb', 's5-am', spec.mini && 'wb--mini'] }, bars, say, ctl);
     if (spec.cap) root.appendChild(el('p', { class: 'wb__cap', html: spec.cap }));

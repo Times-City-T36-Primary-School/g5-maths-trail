@@ -38,7 +38,8 @@
   "75-lightning.css",
   "78-selfcheck.css",
   "80-devkit.css",
-  "80-polish.css"
+  "80-polish.css",
+  "81-g5-polish.css"
  ],
  "js": [
   "00-core.js",

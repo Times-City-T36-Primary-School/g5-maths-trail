@@ -67,18 +67,18 @@
   // a pair of compasses: hinge h, needle point n, pencil point p
   function compasses(h, n, p) {
     const cut = function (a, b, back) { const L = Math.hypot(b[0] - a[0], b[1] - a[1]); return [b[0] - (b[0] - a[0]) / L * back, b[1] - (b[1] - a[1]) / L * back]; };
-    const leg = function (a, b) { return line(a, b, INK, 17) + line(a, b, '#B8C4D2', 11); };
-    const n1 = cut(h, n, 30), p1 = cut(h, p, 58), p2 = cut(h, p, 16);
+    const leg = function (a, b) { return line(a, b, INK, 21) + line(a, b, '#B8C4D2', 15); };
+    const n1 = cut(h, n, 34), p1 = cut(h, p, 74), p2 = cut(h, p, 22);
     const ux = (p[0] - h[0]) / Math.hypot(p[0] - h[0], p[1] - h[1]), uy = (p[1] - h[1]) / Math.hypot(p[0] - h[0], p[1] - h[1]);
     const side = function (q, k) { return f(q[0] - uy * k) + ' ' + f(q[1] + ux * k); };
     const up = [h[0] - (n[0] + p[0] - 2 * h[0]) / Math.hypot(n[0] + p[0] - 2 * h[0], n[1] + p[1] - 2 * h[1]) * 34,
       h[1] - (n[1] + p[1] - 2 * h[1]) / Math.hypot(n[0] + p[0] - 2 * h[0], n[1] + p[1] - 2 * h[1]) * 34];
-    return line(h, up, INK, 15) + line(h, up, MAG, 9) +
-      leg(h, n1) + line(n1, n, INK, 5) +
+    return line(h, up, INK, 19) + line(h, up, MAG, 13) +
+      leg(h, n1) + line(n1, n, INK, 6) +
       leg(h, p1) +
-      '<path d="M' + side(p1, 9) + 'L' + side(p2, 9) + 'L' + f(p[0]) + ' ' + f(p[1]) + 'L' + side(p2, -9) + 'L' + side(p1, -9) + 'z" fill="' + AMBER + '" ' + o + '/>' +
-      '<path d="M' + side(p2, 9) + 'L' + f(p[0]) + ' ' + f(p[1]) + 'L' + side(p2, -9) + 'z" fill="#FBE3B4" ' + o + '/>' +
-      '<circle cx="' + f(h[0]) + '" cy="' + f(h[1]) + '" r="15" fill="' + MAG + '" ' + o + '/><circle cx="' + f(h[0]) + '" cy="' + f(h[1]) + '" r="5" fill="#FFFFFF"/>';
+      '<path d="M' + side(p1, 12) + 'L' + side(p2, 12) + 'L' + f(p[0]) + ' ' + f(p[1]) + 'L' + side(p2, -12) + 'L' + side(p1, -12) + 'z" fill="' + AMBER + '" ' + o + '/>' +
+      '<path d="M' + side(p2, 12) + 'L' + f(p[0]) + ' ' + f(p[1]) + 'L' + side(p2, -12) + 'z" fill="#FBE3B4" ' + o + '/>' +
+      '<circle cx="' + f(h[0]) + '" cy="' + f(h[1]) + '" r="19" fill="' + MAG + '" ' + o + '/><circle cx="' + f(h[0]) + '" cy="' + f(h[1]) + '" r="6" fill="#FFFFFF"/>';
   }
 
   // a measured line from x to x + cm * 40 on the line y, with a small tick at every centimetre
@@ -127,18 +127,17 @@
 
   ART['w-compasses'] = word('w-compasses', 'A drawing tool with two legs joined at the top: one leg has a sharp point and the other leg holds a pencil.',
     '<ellipse cx="200" cy="270" rx="120" ry="10" fill="' + MAG_L + '"/>' +
-    compasses([200, 62], [118, 268], [282, 268]));
+    compasses([200, 66], [112, 272], [288, 272]));
 
   ART['w-construct'] = word('w-construct', 'The drawing tool with a point and a pencil is in the middle of drawing an exact curve. A ruler lies beside it.',
     (function () {
-      const n = [150, 214], r = 112, a = -14, p = [n[0] + r * Math.cos(a * RAD), n[1] + r * Math.sin(a * RAD)];
+      const n = [120, 220], r = 170, a = -9, p = [n[0] + r * Math.cos(a * RAD), n[1] + r * Math.sin(a * RAD)];
       const m = [(n[0] + p[0]) / 2, (n[1] + p[1]) / 2], L = Math.hypot(p[0] - n[0], p[1] - n[1]);
-      const h = [m[0] + (p[1] - n[1]) / L * 150, m[1] - (p[0] - n[0]) / L * 150];
-      const s0 = [n[0] + r * Math.cos(-172 * RAD), n[1] + r * Math.sin(-172 * RAD)];
+      const h = [m[0] + (p[1] - n[1]) / L * 104, m[1] - (p[0] - n[0]) / L * 104];
+      const s0 = [n[0] + r * Math.cos(-118 * RAD), n[1] + r * Math.sin(-118 * RAD)];
       let ruler = '<rect x="24" y="246" width="352" height="42" rx="6" fill="#FBE3B4" ' + o + '/>';
       for (let i = 0; i <= 16; i++) ruler += '<path d="M' + (40 + i * 20) + ' 246v' + (i % 2 ? 10 : 18) + '" ' + o + '/>';
-      return '<circle cx="' + n[0] + '" cy="' + n[1] + '" r="' + r + '" stroke="' + INK + '" stroke-width="3" stroke-dasharray="3 11" opacity=".4"/>' +
-        ruler +
+      return ruler +
         '<path d="M' + f(s0[0]) + ' ' + f(s0[1]) + 'A' + r + ' ' + r + ' 0 0 1 ' + f(p[0]) + ' ' + f(p[1]) + '" stroke="' + GOLD + '" stroke-width="9"/>' +
         compasses(h, n, p) + dot(n, 6);
     })());

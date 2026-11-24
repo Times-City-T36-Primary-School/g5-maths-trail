@@ -23,6 +23,7 @@
        extras: allow(can), tip(), solve({ level: true }), restart(), lock()
    Pictures (T.tools.pic): { k: 'dcards', nums, sorted, show, cap }, { k: 'dtowers', nums, level, line, cap },
    { k: 'dfreq', head: ['Shoe size', 'Frequency'], vals, freqs, hl } a frequency table (hl: the row to light up),
+   { k: 'ddata', rows: [{ name, nums }] } the values of two data sets, one row each,
    { k: 'dsay', who, text } what a child wrote (for "spot the mistake"). */
 (function (T) {
   'use strict';
@@ -62,7 +63,8 @@
     views.forEach(function (k) { viewBtns[k] = toolBtn(VIEW[k], null, 'dc__view', function () { setView(k, true); }); viewBtns[k].setAttribute('aria-pressed', 'false'); });
     const root = el('div', { class: ['wb', 'wb--dcards', spec.mini && 'wb--mini', fixed && 'is-fixed'] });
     const showTray = !fixed || start === 0;
-    if (showTray) root.appendChild(el('div', { class: 'dc__zone' }, fixed ? null : el('p', { class: 'dc__lab' }, 'The data'), tray));
+    const trayZone = el('div', { class: 'dc__zone' }, fixed ? null : el('p', { class: 'dc__lab' }, 'The data'), tray);
+    if (showTray) root.appendChild(trayZone);
     if (!fixed || start > 0) root.appendChild(el('div', { class: 'dc__zone' }, fixed ? null : el('p', { class: 'dc__lab' }, 'In order: smallest to largest'), row));
     if (!fixed) { root.appendChild(note); root.appendChild(ctl); }
     if (fixed) { root.setAttribute('role', 'img'); root.setAttribute('aria-label', (start > 0 ? 'The data in order: ' : 'The data: ') + (start > 0 ? sortedVals : nums).join(', ') + '.'); }
@@ -128,6 +130,7 @@
       drawRow();
       fresh = -1;
       if (fixed) return;
+      trayZone.hidden = sorted();                      // every card is in the row: the empty tray goes away
       note.textContent = say();
       T.ui.empty(ctl);
       if (!sorted()) return;
@@ -217,9 +220,9 @@
     spec = spec || {};
     const nums = (spec.nums || []).slice(), n = nums.length, ev = T.tools.emitter(), fixed = !!spec.fixed;
     const total = nums.reduce(function (s, x) { return s + x; }, 0), mean = total % n === 0 ? total / n : null;
-    const top = Math.max.apply(null, nums.concat([1]));
     const labels = spec.labels || [];
     let h = spec.level && mean != null ? nums.map(function () { return mean; }) : nums.slice();
+    const top = Math.max.apply(null, (fixed ? h : nums).concat([1]));           // the height of the field, in blocks
     let hand = -1, moves = 0, can = spec.can, locked = fixed, fresh = -1;
 
     const field = el('div', { class: 'dt__field', style: '--dt-top:' + top });
@@ -327,6 +330,12 @@
     const box = el('div', { class: 'wb wb--mini dfq' }, table);
     if (spec.cap) box.appendChild(el('p', { class: 'wb__cap', html: spec.cap }));
     return box;
+  };
+  // two (or more) data sets, one row each: the name, then the values
+  kinds.ddata = function (spec) {
+    return el('div', { class: 'wb wb--mini dfq' }, el('table', { class: 'dfq__t dfq__t--rows' }, el('tbody', null, (spec.rows || []).map(function (r) {
+      return el('tr', null, el('th', { scope: 'row' }, r.name), el('td', null, r.nums.map(fmt).join(', ')));
+    }))));
   };
   // what a child wrote (spot the mistake)
   kinds.dsay = function (spec) {

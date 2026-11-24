@@ -63,7 +63,7 @@
     live + 'lamp{animation:' + ID + '-sway 5.2s ease-in-out infinite alternate}' +
     live + 'lamp-b{animation-delay:-2.6s}' +
     live + 'zip{animation:' + ID + '-bob 3.2s ease-in-out infinite alternate}' +
-    live + 'stars{animation:' + ID + '-tw 3.4s ease-in-out infinite alternate}' +
+    live + 'tw{animation:' + ID + '-tw 3.4s ease-in-out infinite alternate}' +
     live + 'spin{animation:' + ID + '-turn 7s ease-in-out infinite}' +
     '@keyframes ' + ID + '-drift{0%{transform:translateX(-8px)}100%{transform:translateX(10px)}}' +
     '@keyframes ' + ID + '-sway{0%{transform:rotate(-2.5deg)}100%{transform:rotate(2.5deg)}}' +
@@ -116,7 +116,7 @@
   });
   const sky = rect(0, 0, 800, FLOOR, 'wl') + rect(0, 292, 800, FLOOR - 292, 'wl2') + path('M0 292H800', 'rl') +
     rect(WX, WY, WW, WH, '', 'fill="url(#ss7-sky)"') +
-    '<g ' + c('stars') + '>' + stars + '</g>' +
+    '<g ' + c('stars') + '><g ' + c('tw') + '>' + stars + '</g></g>' +
     circle(178, 104, 22, c('su')) + '<path d="M186 84a22 22 0 1 0 6 36 19 19 0 1 1-6-36z" ' + c('mo') + '/>' +
     '<g ' + c('clouds') + '><g ' + c('cloud-a') + '>' + use('ss7-cloud', 62, 122, c('cld')) + '</g>' +
     '<g ' + c('cloud-b') + '>' + use('ss7-cloud', 128, 170, c('cld')) + '</g></g>' +
@@ -196,13 +196,13 @@
     '<line x1="62" y1="5" x2="64" y2="-3" stroke="#0E2B58" stroke-width="4" stroke-linecap="round"/><circle cx="64" cy="-5" r="6" fill="#F7B53C" stroke="#B8770E" stroke-width="2.5"/></g></g>';
 
   // the heart: the easel, and on its canvas a kite: two pairs of equal sides next to each other (one tick, two ticks)
-  const EX = 400, K = [[EX, 246], [EX + 27, 270], [EX, 324], [EX - 27, 270]];
+  const EX = 400, K = [[EX, 250], [EX + 27, 273], [EX, 326], [EX - 27, 273]];
   const easel =
     path('M' + (EX - 24) + ' 212L' + (EX - 54) + ' 404M' + (EX + 24) + ' 212L' + (EX + 54) + ' 404M' + EX + ' 206V392', '', 'stroke="var(--ss7-wdl)" stroke-width="9"') +
     path('M' + (EX - 24) + ' 212L' + (EX - 54) + ' 404M' + (EX + 24) + ' 212L' + (EX + 54) + ' 404M' + EX + ' 206V392', '', 'stroke="var(--ss7-wd)" stroke-width="5"') +
     rect(EX - 30, 208, 60, 9, 'wd ow', ' rx="3"') + rect(EX - 60, 332, 120, 10, 'wd ow', ' rx="3"') +
     '<g data-heart="kite">' + rect(EX - 50, 222, 100, 110, 'cv ow', ' rx="3"') +
-    path('M' + EX + ' 246V324M' + (EX - 27) + ' 270H' + (EX + 27), '', 'stroke="#C98A12" stroke-width="1.6" stroke-dasharray="4 4"') +
+    path('M' + EX + ' 250V326M' + (EX - 27) + ' 273H' + (EX + 27), '', 'stroke="#C98A12" stroke-width="1.6" stroke-dasharray="4 4"') +
     path(poly(K), 'ink', 'fill="#F7B23B" fill-opacity=".9"') +
     path(marks(K[0], K[1], 1) + marks(K[3], K[0], 1) + marks(K[1], K[2], 2) + marks(K[2], K[3], 2), 'mk', 'style="stroke-width:2.2"') + '</g>';
 
@@ -239,7 +239,7 @@
     'A pinwheel with 4 identical arms has a quarter-turn arrow. Zip the painter wears a beret and holds a brush.';
 
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" class="art" data-art="' + ID +
-    '" data-view="0 0 800 500" data-safe="150,150,500,210" data-band="222,334" role="img" aria-label="' + label +
+    '" data-view="0 0 800 500" data-safe="150,150,500,210" data-band="222,330" role="img" aria-label="' + label +
     '" fill="none" stroke-linejoin="round" stroke-linecap="round"><style>' + css + '</style>' + defs +
     '<g data-layer="sky">' + sky + '</g>' +
     '<g data-layer="building"><g ' + c('glow') + '>' + glow + '</g>' + lamps + pictures + '</g>' +

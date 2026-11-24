@@ -113,7 +113,7 @@
     line(40, 360, 172, 10) +
     '<path d="M264 160V78" stroke="#C2356E" stroke-width="3.5"/><circle cx="264" cy="172" r="11" fill="' + PC.d + '" ' + o + '/>' +
     pill(264, 52, 104, 50, '#FFFFFF', PC.d) + txt(264, 65, 36, '4.37', '#C2356E') +
-    txt(46, 240, 40, '4.3', '#7B8494') + pill(346, 226, 96, 58, SOFT, GOLD) + txt(346, 240, 40, '4.4'));
+    txt(54, 240, 40, '4.3', '#7B8494') + pill(338, 228, 100, 58, SOFT, GOLD) + txt(338, 242, 40, '4.4'));
 
   ART['w-halfway'] = word('w-halfway', 'A number line from 4.3 to 4.4. A gold flag stands on 4.35, in the middle. The two hops to the ends are the same length.',
     hopArc(200, 40, 160, 38, '#17A2B0', 6) + hopArc(200, 360, 160, 38, '#17A2B0', 6) +
@@ -124,7 +124,7 @@
 
   /* ---------- kinds of number, rough answers ---------- */
 
-  ART['w-whole-number'] = word('w-whole-number', 'Four cards, 0, 1, 2 and 3, each with a green tick. Below, two cards, 2.5 and 0.7, are crossed out in red.',
+  ART['w-whole-number'] = word('w-whole-number', 'Four cards, 0, 1, 2 and 3, each with a green tick. Below, two grey cards, 2.5 and 0.7, each with a red cross.',
     (function () {
       let s = '';
       ['0', '1', '2', '3'].forEach(function (d, i) {
@@ -134,7 +134,7 @@
       });
       [['2.5', 62], ['0.7', 222]].forEach(function (c) {
         s += '<rect x="' + c[1] + '" y="176" width="116" height="84" rx="12" fill="#F1F3F7" stroke="#AEB6C4" stroke-width="5"/>' + txt(c[1] + 58, 237, 52, c[0], '#7B8494') +
-          '<path d="M' + (c[1] + 8) + ' 184l100 68M' + (c[1] + 108) + ' 184l-100 68" stroke="#E5404A" stroke-width="7"/>';
+          '<circle cx="' + (c[1] + 110) + '" cy="182" r="17" fill="#E5404A" stroke="#FFFFFF" stroke-width="3"/><path d="M' + (c[1] + 103) + ' 175l14 14M' + (c[1] + 117) + ' 175l-14 14" stroke="#FFFFFF" stroke-width="4.5"/>';
       });
       return s;
     })());
@@ -190,12 +190,12 @@
     })());
 
   ART['w-working'] = word('w-working', 'A sheet of paper with a pencil. On it, step by step: 5.2 minus 1.9, equals 5.2 minus 2 plus 0.1, equals 3.2 plus 0.1, equals 3.3.',
-    '<rect x="34" y="16" width="270" height="268" rx="10" fill="#FFFFFF" ' + o + '/>' +
-    '<path d="M34 82h270M34 142h270M34 202h270" stroke="#B8D4EA" stroke-width="2"/>' +
-    txt(54, 64, 32, '5.2 − 1.9', INK, 'start') + txt(54, 124, 32, '= 5.2 − 2 + 0.1', '#5C6472', 'start') +
-    txt(54, 184, 32, '= 3.2 + 0.1', '#5C6472', 'start') +
-    '<rect x="88" y="214" width="92" height="52" rx="12" fill="' + SOFT + '" stroke="' + GOLD + '" stroke-width="4"/>' + txt(54, 252, 36, '=', INK, 'start') + txt(134, 253, 38, '3.3') +
-    '<g transform="rotate(28 340 150)"><rect x="326" y="50" width="28" height="150" fill="#F5C24A" ' + o + '/><rect x="326" y="36" width="28" height="22" rx="5" fill="#F7889B" ' + o + '/>' +
+    '<rect x="30" y="16" width="262" height="268" rx="10" fill="#FFFFFF" ' + o + '/>' +
+    '<path d="M30 82h262M30 142h262M30 202h262" stroke="#B8D4EA" stroke-width="2"/>' +
+    txt(48, 64, 32, '5.2 − 1.9', INK, 'start') + txt(48, 124, 32, '= 5.2 − 2 + 0.1', '#5C6472', 'start') +
+    txt(48, 184, 32, '= 3.2 + 0.1', '#5C6472', 'start') +
+    '<rect x="88" y="214" width="92" height="52" rx="12" fill="' + SOFT + '" stroke="' + GOLD + '" stroke-width="4"/>' + txt(48, 252, 36, '=', INK, 'start') + txt(134, 253, 38, '3.3') +
+    '<g transform="rotate(28 326 150) translate(-14 0)"><rect x="326" y="50" width="28" height="150" fill="#F5C24A" ' + o + '/><rect x="326" y="36" width="28" height="22" rx="5" fill="#F7889B" ' + o + '/>' +
     '<path d="M326 200h28l-14 34z" fill="#F2D9B8" ' + o + '/><path d="M335 222h10l-5 12z" fill="' + INK + '"/><path d="M340 58v142" ' + thin + '/></g>');
 
   window.T_ART = Object.assign(window.T_ART || {}, ART);
