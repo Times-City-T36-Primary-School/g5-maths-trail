@@ -43,7 +43,7 @@ while c < 3:
     a = [R.randint(1, 9) for _ in range(6)]
     md = modes(a)
     if len(md) != 2 or len(set(a)) < 3 or not ok(a): continue
-    if add(f'Modes of {lst(a)}', f'{md[0]} and {md[1]}', [f'{md[0]} only', 'no mode'], ('modes', a)): c += 1
+    if add(f'Mode of {lst(a)}', f'{md[0]} and {md[1]}', [f'{md[0]} only', 'no mode'], ('modes', a)): c += 1
 c = 0
 while c < 3:
     a = R.sample(range(1, 13), 5)

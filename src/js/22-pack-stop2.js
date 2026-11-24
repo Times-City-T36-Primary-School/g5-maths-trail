@@ -68,12 +68,12 @@
             rounds: [
           { mode: "our", lo: ["6Np.04"], v: [
             {"type":"drline","n":"4.72","to":"whole"},
-            {"type":"drline","n":"9.36","to":"whole"},
+            {"type":"drline","n":"8.34","to":"whole"},
             {"type":"drline","n":"2.81","to":"whole"}] },
           { mode: "your", lo: ["6Np.04"], v: [
-            {"type":"drline","n":"5.28","to":"tenth"},
-            {"type":"drline","n":"7.63","to":"tenth"},
-            {"type":"drline","n":"1.45","to":"tenth"}] },
+            {"type":"drline","n":"5.28","to":"tenth","mid":true},
+            {"type":"drline","n":"7.63","to":"tenth","mid":true},
+            {"type":"drline","n":"1.45","to":"tenth","mid":true}] },
           { mode: "your", lo: ["6Np.04"], v: [
             {"type":"droundto","n":"4.96","to":"tenth","at":1,"line":true},
             {"type":"droundto","n":"12.75","to":"whole","at":2,"line":true},
@@ -151,7 +151,7 @@
       { title: { en: "Who is correct?", vi: "Ai đúng?" }, rounds: [
           { mode: "your", lo: ["6Nf.09"], twm: ["TWM.07"], v: [
             {"type":"dcolfix","who":"Duc","a":"3.4","b":"2.15","op":"+","slip":"right","at":1},
-            {"type":"dcolfix","who":"Trang","a":"6.2","b":"3.48","op":"-","slip":"nozero","at":0},
+            {"type":"dcolfix","who":"Trang","pro":"she","a":"6.2","b":"3.48","op":"-","slip":"nozero","at":0},
             {"type":"dcolfix","who":"Son","a":"5.31","b":"2.74","op":"-","slip":"noex","at":2}] },
           { mode: "your", lo: ["6Np.04", "6Nf.09"], twm: ["TWM.07", "TWM.04"], v: [
             {"type":"claim","who":"Phong","ok":true,"at":1,"says":"7.96 rounded to the nearest tenth is 8.0.","reasons":[{"t":"7.96 is between 7.9 and 8.0. The hundredths digit is 6, so it rounds up to 8.0."},{"t":"the tenths digit must stay 9, so the answer is 7.9.","why":"The hundredths digit is 6, so round up. 9 tenths and 1 more tenth make 10 tenths: one more whole."},{"t":"the tenth after 7.9 is 7.10, so the answer is 7.10.","why":"7.10 is the same as 7.1. Ten tenths make 1 whole, so the tenth after 7.9 is 8.0."}],"hint":{"pic":{"k":"dround","n":"7.96","to":"tenth","mid":true},"step":"7.96 is between 7.9 and 8.0. Look at the hundredths digit."},"worked":"7.96 is between 7.9 and 8.0. Halfway is 7.95. 7.96 is past halfway, so it rounds up to 8.0.","model":"Phong is correct because 7.96 is nearer to 8.0 than to 7.9."},
@@ -166,8 +166,8 @@
           vi: 'Để làm tròn một số, hãy tìm hai số mà nó nằm giữa. Rồi chọn số gần nhất.',
           example: ['4.73 is between 4.7 and 4.8.', 'It is nearer to 4.7. So 4.73 rounds to *4.7*.'],
           pic: { k: 'dround', n: '4.73', to: 'tenth', show: true } },
-        { en: 'Look at the next digit. Less than 5: round down. 5 or more: round up. A [[halfway]] number rounds up.',
-          vi: 'Nhìn chữ số tiếp theo. Bé hơn 5: làm tròn xuống. Từ 5 trở lên: làm tròn lên. Số ở chính giữa thì làm tròn lên.',
+        { en: 'Look at the digit to the right of the place you are rounding to. Less than 5: round down. 5 or more: round up. A [[halfway]] number rounds up.',
+          vi: 'Nhìn chữ số ở bên phải hàng em cần làm tròn đến. Bé hơn 5: làm tròn xuống. Từ 5 trở lên: làm tròn lên. Số ở chính giữa thì làm tròn lên.',
           example: ['2.85 is halfway between 2.8 and 2.9.', 'So 2.85 rounds *up* to 2.9.'],
           pic: { k: 'dround', n: '2.85', to: 'tenth', mid: true, show: true } },
         { en: 'To the nearest [[tenth]], look at the hundredths digit. To the nearest [[whole number]], look at the tenths digit.',
@@ -242,13 +242,13 @@
         ] },
         { dok: 2, lo: ["6Nf.09"], twm: ["TWM.07"], v: [
           {"type":"dcolfix","who":"Hai","a":"4.7","b":"1.32","op":"+","slip":"right","at":0},
-          {"type":"dcolfix","who":"Kim","a":"8.5","b":"2.36","op":"-","slip":"nozero","at":2},
+          {"type":"dcolfix","who":"Kim","pro":"she","a":"8.5","b":"2.36","op":"-","slip":"nozero","at":2},
           {"type":"dcolfix","who":"Tam","a":"7.24","b":"4.58","op":"-","slip":"noex","at":1}
         ] },
         { dok: 3, lo: ["6Np.04", "6Nf.09"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Giang","ok":false,"at":1,"says":"When you round a decimal to the nearest whole number, the answer is always bigger than the decimal.","reasons":[{"t":"4.3 rounds to 4, and 4 is smaller than 4.3. One example like this shows the rule is not always true."},{"t":"rounding always goes up, like 4.7 rounds to 5.","why":"That example fits. But try a number with a small tenths digit, like 4.3."},{"t":"a rounded number is always equal to the decimal.","why":"4.7 rounds to 5, and 5 is not equal to 4.7."}],"hint":{"pic":{"k":"dround","n":"4.3","to":"whole","mid":true},"step":"Test the rule. Try 4.7. Then try a number with a small tenths digit, like 4.3."},"worked":"4.7 rounds up to 5, which is bigger. But 4.3 rounds down to 4, which is smaller than 4.3. So the rule is not always true.","model":"Giang is incorrect because 4.3 rounds to 4, and 4 is smaller than 4.3."},
           {"type":"claim","who":"Dung","ok":false,"at":2,"says":"When you add two decimals, the sum is never a whole number.","reasons":[{"t":"2.5 + 3.5 = 6, and 6 is a whole number. One example like this shows that “never” is wrong."},{"t":"a decimal plus a decimal is always a decimal, like 2.4 + 3.1 = 5.5.","why":"That example fits. But try 2.5 + 3.5. The tenths make one more whole."},{"t":"the sum of two decimals is always less than 1.","why":"2.4 + 3.1 = 5.5, and 5.5 is more than 1."}],"hint":{"pic":{"k":"dcol","a":"2.5","b":"3.5","op":"+"},"step":"Test the rule. Try 2.4 + 3.1. Then try two numbers whose tenths make 10 tenths, like 2.5 + 3.5."},"worked":"2.4 + 3.1 = 5.5 is a decimal. But 2.5 + 3.5 = 6.0, and that is the whole number 6. So “never” is wrong.","model":"Dung is incorrect because 2.5 + 3.5 = 6, and 6 is a whole number."},
-          {"type":"claim","who":"Hanh","ok":true,"at":0,"says":"A number with 2 decimal places that rounds to 5, to the nearest whole number, is always less than 5.5.","reasons":[{"t":"5.5 is halfway between 5 and 6, and halfway rounds up to 6. So the numbers that round to 5 stop at 5.49."},{"t":"5.5 rounds to 5, so the number can be 5.5.","why":"5.5 is exactly halfway between 5 and 6. Halfway rounds up, to 6."},{"t":"only the number 5.00 rounds to 5.","why":"Try 4.8 and 5.3. They round to 5 too."}],"hint":{"pic":{"k":"dround","from":"5","to":"whole","mid":true},"step":"Test the rule. Round 5.49, then 5.5, then 5.51 to the nearest whole number."},"worked":"5.49 rounds down to 5. 5.5 is halfway, so it rounds up to 6, and so does every bigger number. So the numbers that round to 5 are all less than 5.5.","model":"Hanh is correct because 5.5 and every number above it rounds up to 6."}
+          {"type":"claim","who":"Hanh","ok":true,"at":0,"says":"A number with 2 decimal places that rounds to 5, to the nearest whole number, is always less than 5.5.","reasons":[{"t":"5.5 is halfway between 5 and 6, and halfway rounds up to 6. So the numbers that round to 5 stop at 5.49."},{"t":"5.5 rounds to 5, so the number can be 5.5.","why":"5.5 is exactly halfway between 5 and 6. Halfway rounds up, to 6."},{"t":"only the number 5.00 rounds to 5.","why":"Try 4.87 and 5.32. They round to 5 too."}],"hint":{"pic":{"k":"dround","from":"5","to":"whole","mid":true},"step":"Round 5.49, then 5.50, then 5.51 to the nearest whole number."},"worked":"5.49 rounds down to 5. 5.5 is halfway, so it rounds up to 6. Every number bigger than 5.5 rounds to 6 or more. So the numbers that round to 5 are all less than 5.5.","model":"Hanh is correct because 5.5 rounds up to 6, so a number that rounds to 5 must be less than 5.5."}
         ] }
       ]
     },
@@ -264,14 +264,14 @@
         ["17.06 to the nearest tenth", ["17.1", "17.0", "17"]],
         ["6.5 − 3.12", ["3.38", "3.42", "2.47"]],
         ["4.59 + 5.9", ["10.49", "5.18", "9.49"]],
-        ["My 2-decimal-place number rounds to 7.6. Largest it can be?", ["7.64", "7.65", "7.69"]],
+        ["Largest 2-decimal-place number that rounds to 7.6?", ["7.64", "7.65", "7.69"]],
         ["Which number rounds to 8.3 (nearest tenth)?", ["8.28", "8.35", "8.24"]],
         ["13.57 to the nearest whole number", ["14", "13", "13.6"]],
         ["5.69 to the nearest whole number", ["6", "5", "5.7"]],
         ["6.97 + 2.8", ["9.77", "7.25", "8.77"]],
         ["4.6 − 1.57", ["3.03", "3.17", "1.11"]],
-        ["My 2-decimal-place number rounds to 7.7. Largest it can be?", ["7.74", "7.75", "7.79"]],
-        ["My 2-decimal-place number rounds to 3.1. Largest it can be?", ["3.14", "3.15", "3.19"]],
+        ["Largest 2-decimal-place number that rounds to 7.7?", ["7.74", "7.75", "7.79"]],
+        ["Largest 2-decimal-place number that rounds to 3.1?", ["3.14", "3.15", "3.19"]],
         ["Halfway between 5.4 and 5.5", ["5.45", "5.5", "5.9"]],
         ["6.25 to the nearest tenth", ["6.3", "6.2", "6"]],
         ["9.22 to the nearest tenth", ["9.2", "9.3", "9"]],
@@ -293,15 +293,15 @@
         ["4.7 − 2.97", ["1.73", "1.87", "2.5"]],
         ["13.46 to the nearest tenth", ["13.5", "13.4", "13"]],
         ["Estimate: 9.2 − 3.98 is about", ["5", "6", "4"]],
-        ["My number rounds to 6.1. What is the smallest it can be?", ["6.05", "6.06", "6.04"]],
-        ["My number rounds to 8.5. What is the smallest it can be?", ["8.45", "8.46", "8.44"]],
+        ["Smallest 2-decimal-place number that rounds to 6.1?", ["6.05", "6.06", "6.04"]],
+        ["Smallest 2-decimal-place number that rounds to 8.5?", ["8.45", "8.46", "8.44"]],
         ["19.24 to the nearest tenth", ["19.2", "19.3", "19"]],
         ["6 − 3.58", ["2.42", "3.42", "3.58"]],
         ["6.34 + 6.5", ["12.84", "6.99", "12.94"]],
         ["8.3 + 1.94", ["10.24", "2.77", "9.24"]],
         ["10.51 to the nearest whole number", ["11", "10", "10.5"]],
         ["4.08 to the nearest whole number", ["4", "5", "4.1"]],
-        ["My number rounds to 7.2. What is the smallest it can be?", ["7.15", "7.16", "7.14"]],
+        ["Smallest 2-decimal-place number that rounds to 7.2?", ["7.15", "7.16", "7.14"]],
         ["Halfway between 2.3 and 2.4", ["2.35", "2.4", "2.8"]],
         ["Estimate: 5.1 − 2.52 is about", ["2", "3", "1"]],
         ["10.36 to the nearest whole number", ["10", "11", "10.4"]],
@@ -312,11 +312,11 @@
         ["12.71 to the nearest tenth", ["12.7", "12.8", "13"]],
         ["7.6 − 3.14", ["4.46", "4.54", "2.38"]],
         ["Estimate: 7.1 + 4.54 is about", ["12", "11", "13"]],
-        ["My number rounds to 2.7. What is the smallest it can be?", ["2.65", "2.66", "2.64"]],
+        ["Smallest 2-decimal-place number that rounds to 2.7?", ["2.65", "2.66", "2.64"]],
         ["8.9 − 2.14", ["6.76", "6.84", "1.25"]],
         ["Halfway between 7.1 and 7.2", ["7.15", "7.2", "7.6"]],
         ["1.5 to the nearest whole number", ["2", "1", "1.5"]],
-        ["My 2-decimal-place number rounds to 4.3. Largest it can be?", ["4.34", "4.35", "4.39"]],
+        ["Largest 2-decimal-place number that rounds to 4.3?", ["4.34", "4.35", "4.39"]],
         ["5.62 + 5.8", ["11.42", "6.2", "10.42"]],
         ["6 − 1.19", ["4.81", "5.81", "5.19"]],
         ["8.75 to the nearest tenth", ["8.8", "8.7", "9"]],

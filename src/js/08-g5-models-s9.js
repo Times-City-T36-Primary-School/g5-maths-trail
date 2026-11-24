@@ -14,7 +14,8 @@
    srange     { nums, unit?, tool? }                         write the range
    sall       { nums, unit?, which?: ['mode', 'median', 'mean', 'range'] }   several measures of one data set
    sfreq      { head: ['Shoe size', 'Frequency'], vals, freqs, ask?: 'mode' | 'count' }   read a frequency table
-   smissmean  { known: [..], mean, what?, unit? }            the mean and all values but one are given: find the last one
+   smissmean  { known: [..], mean, what?, unit?, short? }    the mean and all values but one are given: find the last one
+                                                             (short: "The mean time is 14 minutes." for a measure)
    smissrange { known: [..], range, end: 'max' | 'min', unit? }   the range is given: find the largest / smallest value
    scompare   { a: { name, nums }, b: { name, nums }, by: 'mean' | 'median' | 'range', ask: 'greater' | 'smaller',
                 q, unit?, at }                               two data sets: (a) who ..., (b) write the two values
@@ -124,6 +125,13 @@ const TIP = {
   mean: "Add all the values to find the total. Then divide the total by the number of values.",
   range: "Find the largest value and the smallest value. The range is largest − smallest."
 };
+const SHORT = {
+  mode: "The mode is the value that appears most often.",
+  median: "The median is the middle value. With two middle values, it is halfway between them.",
+  mean: "For the mean, divide the total by the number of values.",
+  range: "The range is largest − smallest."
+};
+const withUnit = (text, u) => (u ? text.replace(/\.$/, u + ".") : text);          /* "The median is 139." -> "The median is 139 cm." */
 const cards = (s, show_, capText) => ({ k: "dcards", nums: s.nums, sorted: true, show: show_, cap: capText || "" });
 
 /* a question with one answer box for one measure */
@@ -151,7 +159,7 @@ function single(d, mode, kind) {
     lines: [kind + " = {0}" + u], blanks: [{ len: 5, w: "big", dec: kind === "median" || kind === "mean" ? 1 : 0 }],
     check(r) { return D.eq(r.v[0], want) ? { ok: true } : { ok: false, msg: slip(s, r.v[0]), parts: [false] }; },
     hint: { pic: d.tool ? null : kind === "mean" ? null : { k: "dcards", nums: s.nums, sorted: true, cap: "The data in order" }, step: TIP[kind] },
-    worked: { text: work, pic: pic },
+    worked: { text: withUnit(work, u), pic: pic },
     yes: kind === "mean" ? fmt(s.total) + " ÷ " + s.n + " = " + a + ". The mean is " + a + u + "." : "The " + kind + " is " + a + u + ".",
     key: a + u, fill: [raw(want)]
   };
@@ -173,7 +181,7 @@ M.smodes = function (d, mode) {
   const wrong = [];
   const add = (html, why) => { if (wrong.length < 2 && html !== right.html && !wrong.some(o => o.html === html)) wrong.push({ html: html, why: why }); };
   if (k === 2) {
-    add(fmt(m[1]) + " only", fmt(m[0]) + " appears " + times(s.maxF) + " too. Two values can both be the mode.");
+    add(fmt(m[0]) + " only", fmt(m[1]) + " appears " + times(s.maxF) + " too. Two values can both be the mode.");
     add("No mode", "Look again: " + fmt(m[0]) + " and " + fmt(m[1]) + " appear more often than the other values.");
   } else if (k === 1) {
     const other = s.vals.filter(v => v !== m[0]).sort((a, b) => s.freq[b] - s.freq[a] || b - a)[0];
@@ -191,7 +199,7 @@ M.smodes = function (d, mode) {
     q: "What is the <b>[[mode]]</b>" + (d.tool ? " of the data?" : "?"), sub: "Tick (✓) one box.", opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why }; },
     hint: { pic: d.tool ? null : { k: "dcards", nums: s.nums, sorted: true, cap: "The data in order" }, step: TIP.mode + " Two values can both be the mode. If every value appears 1 time, there is no mode." },
-    worked: { text: "In order: " + list(s.sorted) + ". " + modeWork(s), pic: cards(s, "mode", k === 0 ? "no mode" : (k === 2 ? "modes: " : "mode = ") + modeText(s)) },
+    worked: { text: "In order: " + list(s.sorted) + ". " + (k === 1 ? withUnit(modeWork(s), U(d)) : modeWork(s)), pic: cards(s, "mode", k === 0 ? "no mode" : (k === 2 ? "modes: " : "mode = ") + modeText(s)) },
     yes: modeWork(s), key: cap(modeText(s))
   };
   if (d.tool) {
@@ -219,10 +227,10 @@ M.sall = function (d) {
       const i = parts.indexOf(false);
       return { ok: false, msg: "Look at the " + which[i] + ". " + slip[which[i]](s, r.v[i]), parts: parts };
     },
-    hint: { pic: { k: "dcards", nums: s.nums, sorted: true, cap: "The data in order" }, step: "First write the data in order. " + which.map(k => TIP[k].split(". ").slice(-1)[0]).join(" ") },
-    worked: { text: which.map(k => work[k](s)).join(" "), pic: cards(s, which.indexOf("median") >= 0 ? "median" : which[0], "") },
-    yes: which.map(k => cap(k) + " " + show(want[k])).join(". ") + ".",
-    key: which.map(k => k + " " + show(want[k])).join(" ; "), fill: which.map(k => raw(want[k]))
+    hint: { pic: { k: "dcards", nums: s.nums, sorted: true, cap: "The data in order" }, step: "First write the data in order. " + which.map(k => SHORT[k]).join(" ") },
+    worked: { text: which.map(k => withUnit(work[k](s), u)).join(" "), pic: cards(s, which.indexOf("median") >= 0 ? "median" : which[0], "") },
+    yes: which.map(k => cap(k) + " " + show(want[k]) + u).join(". ") + ".",
+    key: which.map(k => k + " " + show(want[k]) + u).join(" ; "), fill: which.map(k => raw(want[k]))
   };
 };
 
@@ -265,20 +273,21 @@ M.smissmean = function (d) {
   const what = d.what || "number", u = U(d);
   const kmean = sum * 1000 / known.length;
   return {
-    q: "The <b>[[mean]]</b> of <b>" + n + "</b> " + what + "s is <b>" + fmt(d.mean) + "</b>" + u + ". " + cap(numWord(known.length)) + " of the " + what + "s are shown. Find the missing " + what + ".",
+    q: (d.short ? "The <b>[[mean]]</b> " + what + " is <b>" + fmt(d.mean) + "</b>" + u + ". "
+      : "The <b>[[mean]]</b> of the <b>" + n + "</b> " + what + "s is <b>" + fmt(d.mean) + "</b>" + u + ". ") + cap(numWord(known.length)) + " of the " + what + "s are shown. Find the missing " + what + ".",
     sum: list(known) + ", <span class=\"s9-q\">?</span>",
     lines: ["missing " + what + " = {0}" + u], blanks: [{ len: 5, w: "big" }],
     check(r) {
       if (D.eq(r.v[0], ans * 1000)) return { ok: true };
       const t = typed(r.v[0]);
-      if (t === total * 1000) return { ok: false, msg: fmt(total) + " is the total of all " + n + " " + what + "s. Now take away the " + known.length + " you know.", parts: [false] };
+      if (t === total * 1000) return { ok: false, msg: fmt(total) + " is the total of all " + n + " values. Now take away the " + known.length + " you know.", parts: [false] };
       if (t === d.mean * 1000) return { ok: false, msg: fmt(d.mean) + " is the mean. The missing " + what + " does not have to be the mean. First find the total: " + fmt(d.mean) + " × " + n + ".", parts: [false] };
-      if (t === sum * 1000) return { ok: false, msg: fmt(sum) + " is the total of the " + known.length + " " + what + "s you know. The total of all " + n + " is " + fmt(d.mean) + " × " + n + ".", parts: [false] };
-      if (t === (d.mean * known.length - sum) * 1000) return { ok: false, msg: "There are " + n + " " + what + "s, not " + known.length + ". The total is " + fmt(d.mean) + " × " + n + ".", parts: [false] };
-      if (t === kmean) return { ok: false, msg: "That is the mean of the " + known.length + " " + what + "s you know. Use the mean of all " + n + ".", parts: [false] };
+      if (t === sum * 1000) return { ok: false, msg: fmt(sum) + " is the total of the " + known.length + " values you know. The total of all " + n + " is " + fmt(d.mean) + " × " + n + ".", parts: [false] };
+      if (t === (d.mean * known.length - sum) * 1000) return { ok: false, msg: "There are " + n + " values, not " + known.length + ". The total is " + fmt(d.mean) + " × " + n + ".", parts: [false] };
+      if (t === kmean) return { ok: false, msg: "That is the mean of the " + known.length + " values you know. Use the mean of all " + n + ".", parts: [false] };
       return { ok: false, msg: "Go backwards. Mean × number of values = total. Then take away the values you know.", parts: [false] };
     },
-    hint: { step: "Go backwards. The mean is the total ÷ " + n + ", so the total is " + fmt(d.mean) + " × " + n + ". Then take away the " + what + "s you know." },
+    hint: { step: "Go backwards. The mean is the total ÷ " + n + ", so the total is " + fmt(d.mean) + " × " + n + ". Then take away the values you know." },
     worked: { text: "Total of all " + n + ": " + fmt(d.mean) + " × " + n + " = " + fmt(total) + ". The " + known.length + " you know: " + plus(known) + " = " + fmt(sum) + ". " + fmt(total) + " − " + fmt(sum) + " = " + fmt(ans) + ". The missing " + what + " is " + fmt(ans) + u + "." },
     yes: fmt(d.mean) + " × " + n + " = " + fmt(total) + " and " + fmt(total) + " − " + fmt(sum) + " = " + fmt(ans) + ".",
     key: fmt(ans) + u, fill: [String(ans)]
@@ -306,7 +315,7 @@ M.smissrange = function (d) {
       return { ok: false, msg: "Largest − smallest = " + fmt(d.range) + ". The " + other + " value is " + fmt(ov) + ".", parts: [false] };
     },
     hint: { pic: { k: "dcards", nums: known, sorted: true, cap: "The values you know, in order" }, step: "Largest − smallest = range. Find the " + other + " value in the list. Then " + (isMax ? "add" : "take away") + " the range." },
-    worked: { text: "The " + other + " value is " + fmt(ov) + ". The range is " + fmt(d.range) + ". " + fmt(ov) + (isMax ? " + " : " − ") + fmt(d.range) + " = " + fmt(ans) + ". Check: " + fmt(isMax ? ans : mx) + " − " + fmt(isMax ? mn : ans) + " = " + fmt(d.range) + "." },
+    worked: { text: "The " + other + " value is " + fmt(ov) + ". The range is " + fmt(d.range) + ". " + fmt(ov) + (isMax ? " + " : " − ") + fmt(d.range) + " = " + fmt(ans) + ". Check: " + fmt(isMax ? ans : mx) + " − " + fmt(isMax ? mn : ans) + " = " + fmt(d.range) + ". The missing value is " + fmt(ans) + u + "." },
     yes: fmt(isMax ? ans : mx) + " − " + fmt(isMax ? mn : ans) + " = " + fmt(d.range) + ".",
     key: fmt(ans) + u, fill: [String(ans)]
   };
@@ -342,7 +351,7 @@ M.scompare = function (d) {
       return { ok: false, msg: msg, parts: parts, pickOk: pickOk };
     },
     hint: { step: TIP[by] + " Do this for each data set. Then compare." },
-    worked: { text: d.a.name + ". " + work(A) + " " + d.b.name + ". " + work(B) + " " + show(aWins ? va : vb) + " is " + d.ask + " than " + show(aWins ? vb : va) + ", so the answer is " + win + "." },
+    worked: { text: d.a.name + ". " + withUnit(work(A), u) + " " + d.b.name + ". " + withUnit(work(B), u) + " " + show(aWins ? va : vb) + " is " + d.ask + " than " + show(aWins ? vb : va) + ", so the answer is " + win + "." },
     yes: tell, key: win + " ; " + show(va) + " ; " + show(vb), fill: [raw(va), raw(vb)]
   };
 };
@@ -408,9 +417,9 @@ M.sspot = function (d) {
   const opts = arrange(reasons.map((x, i) => ({ html: x.t, ok: i === 0, why: x.why || "" })), d.at);
   const slip = { median: medSlip, mean: meanSlip, range: rangeSlip }[kind];
   return {
-    q: d.who + " finds the <b>" + kind + "</b> of <b>" + list(s.nums) + "</b>. " + cap(p.his) + " answer is wrong.", marks: 2, ab: true,
+    q: d.who + " finds the <b>" + kind + "</b> of <b>" + list(s.nums) + "</b>. " + cap(p.his) + " answer is wrong. What is " + p.his + " mistake? Then find the correct " + kind + ".", marks: 2, ab: true,
     fig: { k: "dsay", who: d.who, text: says },
-    sub: "What is " + p.his + " mistake? Tick (✓) one box.", letters: true, opts: opts,
+    sub: "Tick (✓) one box.", letters: true, opts: opts,
     abAsk: "Write the correct " + kind + ".",
     lines: [kind + " = {0}" + u], blanks: [{ len: 5, w: "big", dec: kind === "range" ? 0 : 1 }],
     ready: r => r.pick >= 0 && Array.isArray(r.v) && r.v.every(x => x !== "" && x != null),

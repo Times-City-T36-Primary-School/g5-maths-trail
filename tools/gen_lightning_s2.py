@@ -50,16 +50,17 @@ while c < 5:
     lo = Dc(R.randint(1, 9)) + Dc(R.randint(0, 8)) / 10
     if add(f'Halfway between {s(lo, 1)} and {s(lo + TEN, 1)}', s(lo + Dc("0.05"), 2), [s(lo + TEN, 1), s(lo + Dc("0.5"), 1)], ('half', str(lo), 1)): c += 1
 # 4. the smallest and the largest number with 2 decimal places that rounds to a tenth (the smallest number of all
-#    that rounds to 6.8 is 6.75, with any number of decimal places; the largest needs "2 decimal places")
+#    that rounds to 6.8 is 6.75, with any number of decimal places; the largest needs "2 decimal places"). One wording
+#    for both: the target has 1 decimal place, so it is rounded to the nearest tenth
 c = 0
 while c < 4:
     t = Dc(R.randint(1, 9)) + Dc(R.randint(1, 8)) / 10
     if t in (Dc('6.9'), Dc('6.8')): continue                                       # the number of the real test
-    if add(f'My number rounds to {s(t, 1)}. What is the smallest it can be?', s(t - Dc("0.05"), 2), [s(t - Dc("0.04"), 2), s(t - Dc("0.06"), 2)], ('min', str(t), 1)): c += 1
+    if add(f'Smallest 2-decimal-place number that rounds to {s(t, 1)}?', s(t - Dc("0.05"), 2), [s(t - Dc("0.04"), 2), s(t - Dc("0.06"), 2)], ('min', str(t), 1)): c += 1
 c = 0
 while c < 4:
     t = Dc(R.randint(1, 9)) + Dc(R.randint(1, 8)) / 10
-    if add(f'My 2-decimal-place number rounds to {s(t, 1)}. Largest it can be?', s(t + Dc("0.04"), 2), [s(t + Dc("0.05"), 2), s(t + Dc("0.09"), 2)], ('max', str(t), 1)): c += 1
+    if add(f'Largest 2-decimal-place number that rounds to {s(t, 1)}?', s(t + Dc("0.04"), 2), [s(t + Dc("0.05"), 2), s(t + Dc("0.09"), 2)], ('max', str(t), 1)): c += 1
 # 5. estimate with whole numbers
 c = 0
 while c < 8:

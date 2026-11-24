@@ -2,7 +2,7 @@
 # Every right answer is worked out with exact fractions, then checked again a second way (see the end).
 # The wrong answers are real slips: a wrong sign, one step too many, adding instead of multiplying, 2 x n for n x n ...
 # Number sets of the EOS1 papers are kept out (BAN).
-import random, json
+import random, json, re
 from fractions import Fraction as Fr
 from decimal import Decimal as Dc
 R = random.Random(303)
@@ -107,10 +107,15 @@ while c < 6:
     cc = R.choice([1, 2, 3, -1]); n = R.randint(6, 10)
     t = [i * i + cc for i in range(1, 5)]
     if n * n + cc in (64, 65): continue
+    if (cc, n) == (3, 8): n = 9               # 4, 7, 12, 19 ...: ask for the 9th term (84), not the 8th
     if add(', '.join(map(str, t)) + f', ... The {ordn(n)} term is', s(n * n + cc), [s(n * n), s((n - 1) * (n - 1) + cc)], ('sq', 0, cc, n)): c += 1
-for sft, n in ((2, 8), (2, 10), (3, 6), (3, 8)):
+# no sequence that starts 9, 16, 25 (a run of the exam's 4, 9, 16, 25)
+for sft, n in ((3, 10), (3, 6), (3, 8)):
     t = [(i + sft) ** 2 for i in range(1, 5)]
     add(', '.join(map(str, t)) + f', ... The {ordn(n)} term is', s((n + sft) ** 2), [s(n * n), s((n + sft - 1) ** 2)], ('sq', sft, 0, n))
+for cc, n in ((1, 7),):                      # 2, 5, 10, 17 ... the 7th term
+    t = [i * i + cc for i in range(1, 5)]
+    add(', '.join(map(str, t)) + f', ... The {ordn(n)} term is', s(n * n + cc), [s(n * n), s((n - 1) * (n - 1) + cc)], ('sq', 0, cc, n))
 
 # 10. words
 add('In 5, 8, 11, 14, ... the term in position 3 is', '11', ['8', '3'])
@@ -156,5 +161,6 @@ for (q, o), ch in zip(items, checks):
         total = sum(n + sft for _ in range(n + sft)) + cc     # n lots of n, by adding
         assert int(num(o[0])) == total, q
         assert all(int(num(w)) != total for w in o[1:]), q
+assert not any(re.search(r'4, 9, 16, 25|9, 16, 25', q) for q, o in items)
 print(len(items), 'items')
 open('tools/lightning_s3.txt', 'w', encoding='utf8').write(',\n'.join('        ' + json.dumps(i, ensure_ascii=False) for i in items))

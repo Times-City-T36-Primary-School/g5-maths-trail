@@ -24,7 +24,7 @@
         'data set': { art: 'w-data-set', vi: 'bộ dữ liệu', def: 'A group of data about one thing. 3, 5, 5, 8 is a data set with four values.' },
         'total': { art: 'w-total', vi: 'tổng', def: 'The answer when you add all the values. The total of 3, 5, 5 and 8 is 21.' },
         'frequency': { art: 'w-frequency', vi: 'tần số', def: 'How many times a value appears. In 3, 5, 5, 8 the frequency of 5 is 2.' },
-        'average': { art: 'w-average', vi: 'số trung bình (giá trị đại diện)', def: 'One value that describes a whole data set. The mode, the median and the mean are averages.' },
+        'average': { art: 'w-average', vi: 'giá trị đại diện (số đo trung tâm)', def: 'One value that describes a whole data set. The mode, the median and the mean are averages.' },
         'mode': { art: 'w-mode', vi: 'mốt', def: 'The value that appears most often. The mode of 3, 5, 5, 8 is 5.' },
         'bimodal': { art: 'w-bimodal', vi: 'có hai mốt', def: 'With two modes. The data set 2, 2, 6, 9, 9 is bimodal: the modes are 2 and 9.' },
         'median': { art: 'w-median', vi: 'trung vị', def: 'The middle value when the data is in order. The median of 2, 4, 9 is 4.' },
@@ -68,7 +68,7 @@
             rounds: [
           { mode: "our", lo: ["6Ss.03"], v: [
             {"type":"smedian","tool":true,"nums":[7,2,9,4,6]},
-            {"type":"smedian","tool":true,"nums":[12,5,8,15,10]},
+            {"type":"smedian","tool":true,"nums":[12,5,8,16,10]},
             {"type":"smedian","tool":true,"nums":[3,11,9,6,4]}] },
           { mode: "your", lo: ["6Ss.03"], v: [
             {"type":"smodes","tool":true,"nums":[4,7,4,2,7,4],"at":1},
@@ -79,13 +79,13 @@
             {"type":"srange","tool":true,"nums":[25,12,30,18,21]},
             {"type":"srange","tool":true,"nums":[9,16,4,13,7,10]}] },
           { mode: "your", lo: ["6Ss.03"], v: [
-            {"type":"smean","tool":true,"nums":[3,6,2,5]},
-            {"type":"smean","tool":true,"nums":[1,8,4,3,4]},
+            {"type":"smean","tool":true,"nums":[5,8,2,9]},
+            {"type":"smean","tool":true,"nums":[1,8,3,2,6]},
             {"type":"smean","tool":true,"nums":[6,2,7,5]}] },
           { mode: "your", lo: ["6Ss.03"], v: [
-            {"type":"smedian","tool":true,"nums":[8,3,10,5]},
-            {"type":"smedian","tool":true,"nums":[12,7,9,4,15,10]},
-            {"type":"smedian","tool":true,"nums":[6,1,9,4]}] }] } }]
+            {"type":"smedian","tool":true,"nums":[8,3,11,5]},
+            {"type":"smedian","tool":true,"nums":[12,7,9,4,16,10]},
+            {"type":"smedian","tool":true,"nums":[6,1,10,4]}] }] } }]
     },
     // Practise: Pictorial (Draw it: the data cards and the towers) then Abstract (Solve it, like the test).
     practise: [
@@ -104,11 +104,11 @@
       { title: { en: "Level the towers", vi: "Làm cho các tháp bằng nhau" }, rounds: [
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.05"], v: [
             {"type":"smean","tool":true,"nums":[4,8,3,5]},
-            {"type":"smean","tool":true,"nums":[2,6,7,1]},
+            {"type":"smean","tool":true,"nums":[2,6,9,3]},
             {"type":"smean","tool":true,"nums":[5,9,4,6]}] },
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.05", "TWM.01"], v: [
-            {"type":"smean","tool":true,"nums":[6,0,3,7],"labels":["Mon","Tue","Wed","Thu"],"ctx":"The towers show the goals a team scores on 4 days."},
-            {"type":"smean","tool":true,"nums":[9,0,6,5,5],"labels":["Mon","Tue","Wed","Thu","Fri"],"ctx":"The towers show the pages Hoa reads on 5 days."},
+            {"type":"smean","tool":true,"nums":[8,0,5,7],"labels":["Mon","Tue","Wed","Thu"],"ctx":"The towers show the goals a team scores on 4 days."},
+            {"type":"smean","tool":true,"nums":[9,0,6,7,3],"labels":["Mon","Tue","Wed","Thu","Fri"],"ctx":"The towers show the pages Hoa reads on 5 days."},
             {"type":"smean","tool":true,"nums":[7,0,8,9],"labels":["Mon","Tue","Wed","Thu"],"ctx":"The towers show the birds Duc sees on 4 days."}] }] },
       { title: { en: "Piles and middles", vi: "Chồng thẻ và giá trị ở giữa" }, rounds: [
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.06"], v: [
@@ -124,30 +124,30 @@
         levels: [
       { title: { en: "Mode, median, mean", vi: "Mốt, trung vị, số trung bình cộng" }, rounds: [
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.05"], v: [
-            {"type":"smode","nums":[2,0,3,2,1,2,4],"unit":"goals","ctx":"A football team plays 7 matches. Here are the goals it scores."},
+            {"type":"smode","nums":[4,0,3,4,1,2,5],"unit":"goals","ctx":"A football team plays 7 matches. Here are the goals it scores."},
             {"type":"sfreq","head":["Shoe size","Frequency"],"vals":[33,34,35,36,37],"freqs":[2,5,8,4,1],"ctx":"A shop sells children's shoes on Saturday."},
             {"type":"mcq","at":1,"q":"A shoe shop sells these sizes in one day: <b>35, 36, 36, 37, 36, 38, 36</b>. The shop wants to know which size to order most. Which value helps most?","opts":["The mode","The mean","The range"],"whys":[null,"The mean here is not a whole number, so it is not a real shoe size. The shop needs the size sold most often.","The range only tells how spread out the sizes are: 38 − 35 = 3. The shop needs the size sold most often."],"hint":{"pic":{"k":"dcards","nums":[35,36,36,37,36,38,36],"sorted":true,"cap":"The sizes in order"},"step":"Which size is sold most often? What is that average called?"},"worked":{"text":"Size 36 is sold 4 times, more than any other size. The most common value is the mode. So the mode, 36, helps most.","pic":{"k":"dcards","nums":[35,36,36,37,36,38,36],"show":"mode","cap":"mode = 36"}},"yes":"The mode, 36, is the size sold most often."}] },
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.05"], v: [
             {"type":"smedian","nums":[142,128,150,135,139],"unit":"cm","ctx":"Here are the heights, in cm, of 5 sunflowers."},
-            {"type":"smedian","nums":[31,28,33,29,34,30],"unit":"°C","ctx":"Here are the temperatures at noon on 6 days."},
+            {"type":"smedian","nums":[31,28,33,29,34,30],"unit":"°C","ctx":"Here are the temperatures, in °C, at noon on 6 days."},
             {"type":"smedian","nums":[48,62,55,40,71,58,66],"unit":"skips","ctx":"Seven children count their skips in one minute."}] },
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.05"], v: [
             {"type":"smean","nums":[12,0,7,15,6],"unit":"mm","ctx":"Here is the rainfall, in mm, on 5 days."},
-            {"type":"smean","nums":[14,9,17,12],"unit":"points","ctx":"Here are the points Hung scores in 4 basketball games."},
-            {"type":"smean","nums":[5,3,4,6,4,5],"unit":"kg","ctx":"Here are the masses, in kg, of 6 watermelons."}] }] },
+            {"type":"smean","nums":[14,9,18,11],"unit":"points","ctx":"Here are the points Hung scores in 4 basketball games."},
+            {"type":"smean","nums":[5,3,4,7,4,4],"unit":"m","ctx":"Here are the lengths, in m, of 6 ropes."}] }] },
       { title: { en: "Use the measures", vi: "Dùng các số đo" }, rounds: [
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.05"], v: [
-            {"type":"sall","nums":[6,9,4,9,7,5,9],"ctx":"Here are the points of 7 teams in a science quiz."},
-            {"type":"sall","nums":[11,7,14,7,6],"ctx":"Here are the ages, in years, of 5 cousins."},
-            {"type":"sall","nums":[10,18,12,16,22,12],"ctx":"Here are the numbers of pages Trang reads on 6 days."}] },
+            {"type":"sall","nums":[6,9,4,9,8,4,9],"unit":"points","ctx":"Here are the points of 7 teams in a science quiz."},
+            {"type":"sall","nums":[10,7,19,7,12],"unit":"years","ctx":"Here are the ages, in years, of 5 cousins."},
+            {"type":"sall","nums":[14,12,23,10,18,12,16],"unit":"cars","ctx":"Here are the numbers of cars that pass a school gate in each of 7 minutes."}] },
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.01"], v: [
-            {"type":"smissmean","known":[7,9,4,8],"mean":8,"what":"score","ctx":"Phong plays a game 5 times."},
+            {"type":"smissmean","known":[7,9,4,8],"mean":8,"what":"score","ctx":"Phong plays 5 rounds of a game."},
             {"type":"smissrange","known":[15,22,18,11],"range":16,"end":"max","ctx":"Five children count the books on their shelves."},
-            {"type":"smissmean","known":[20,35,25],"mean":30,"what":"time","unit":"minutes","ctx":"Yen practises the piano on 4 days."}] },
+            {"type":"smissmean","known":[20,35,25],"mean":30,"what":"time","short":true,"unit":"minutes","ctx":"Yen practises the piano on 4 days."}] },
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.07"], v: [
             {"type":"scompare","by":"mean","ask":"greater","at":1,"unit":"points","a":{"name":"Hoa","nums":[8,12,6,10]},"b":{"name":"Duc","nums":[11,7,9,13]},"q":"Hoa and Duc each play 4 games of basketball. Here are their points. Who has the greater <b>mean</b> score?"},
             {"type":"sbest","nums":[8,10,9,12,46],"unit":"minutes","thing":"walk to school","at":2,"ctx":"Here are the minutes 5 children take to walk to school."},
-            {"type":"scompare","by":"range","ask":"smaller","at":0,"unit":"seconds","a":{"name":"Giang","nums":[52,58,55,61,54]},"b":{"name":"Kim","nums":[56,57,53,59,55]},"q":"Giang and Kim each time 5 laps, in seconds. Whose times are closer together? Use the <b>range</b>."}] }] },
+            {"type":"scompare","by":"range","ask":"smaller","at":0,"unit":"seconds","a":{"name":"Giang","nums":[52,58,55,61,54]},"b":{"name":"Kim","nums":[56,57,53,59,55]},"q":"Giang and Kim each run 5 laps. Here are their lap times, in seconds. Whose times are closer together? Use the <b>range</b>."}] }] },
       { title: { en: "Who is correct?", vi: "Ai đúng?" }, rounds: [
           { mode: "your", lo: ["6Ss.03"], twm: ["TWM.07"], v: [
             {"type":"sspot","who":"Son","he":true,"nums":[12,5,9,3,8],"slip":"unsorted","at":1},
@@ -163,11 +163,11 @@
     notes: {
       items: [
         { en: 'An [[average]] is one value that describes a whole [[data set]]. The [[mode]], the [[median]] and the [[mean]] are three averages.',
-          vi: 'Số trung bình (average) là một giá trị đại diện cho cả bộ dữ liệu. Mốt, trung vị và số trung bình cộng là ba giá trị như vậy.',
+          vi: 'Giá trị đại diện (average) là một giá trị mô tả cả bộ dữ liệu. Mốt, trung vị và số trung bình cộng là ba giá trị đại diện.',
           example: ['Data: 3, 5, 5, 6, 11', 'mode *5*, median *5*, mean *6*'],
           pic: { k: 'dcards', nums: [3, 5, 5, 6, 11], sorted: true } },
         { en: 'The [[mode]] is the value that appears most often. With two modes, the data is [[bimodal]]. If every value appears once, there is no mode.',
-          vi: 'Mốt là giá trị xuất hiện nhiều lần nhất. Nếu có hai mốt, bộ dữ liệu có hai mốt (bimodal). Nếu mỗi giá trị chỉ xuất hiện một lần thì không có mốt.',
+          vi: 'Mốt là giá trị xuất hiện nhiều lần nhất. Bộ dữ liệu có hai mốt gọi là bimodal (hai mốt). Nếu mỗi giá trị chỉ xuất hiện một lần thì không có mốt.',
           example: ['2, 4, 4, 7, 4: the mode is *4*.', '1, 1, 5, 8, 8: the modes are *1 and 8*.'],
           pic: { k: 'dcards', nums: [2, 4, 4, 7, 4], show: 'mode', cap: 'mode = 4' } },
         { en: 'For the [[median]], put the [[data]] in order. The median is the middle value. With two middle values, it is halfway between them.',
@@ -179,7 +179,7 @@
           example: ['2, 7, 4, 3: the total is *16*.', '16 ÷ 4 = *4*, so the mean is 4.'],
           pic: { k: 'dtowers', nums: [2, 7, 4, 3], line: true, cap: 'Level towers would all have 4' } },
         { en: 'The [[range]] is the largest value take away the smallest. It tells how spread out the data is. It is not an average.',
-          vi: 'Khoảng biến thiên là giá trị lớn nhất trừ giá trị bé nhất. Nó cho biết dữ liệu trải rộng thế nào. Nó không phải là số trung bình.',
+          vi: 'Khoảng biến thiên là giá trị lớn nhất trừ giá trị bé nhất. Nó cho biết dữ liệu trải rộng thế nào. Nó không phải là một giá trị đại diện.',
           example: ['3, 12, 7, 9: the largest is 12, the smallest is 3.', '12 − 3 = *9*, so the range is 9.'],
           pic: { k: 'dcards', nums: [3, 12, 7, 9], show: 'range', cap: '12 − 3 = 9' } },
         { en: 'Choose the average that fits. One very large or very small value pulls the mean. Then the median is better. Use the mode for the most common one, like a shoe size.',
@@ -195,8 +195,8 @@
         { sentence: 'The mode, the median and the mean are three {averages|ranges|totals}.', answer: 'averages' },
         { sentence: 'The mode of 6, 9, 6, 2, 9, 6 is {6|9|2}.', answer: '6' },
         { sentence: 'The median of 7, 1, 10, 4, 5 is {5|10|4}.', answer: '5' },
-        { sentence: 'The mean of 3, 0, 8, 5 is {4|16|8}.', answer: '4' },
-        { sentence: 'The range of 14, 6, 20, 9 is {14|20|5}.', answer: '14' },
+        { sentence: 'The mean of 3, 0, 9, 8 is {5|20|10}.', answer: '5' },
+        { sentence: 'The range of 15, 6, 20, 9 is {14|20|5}.', answer: '14' },
         { sentence: 'For the data 2, 3, 3, 4, 38 the best average is the {median|mean|range}.', answer: 'median' },
         { sentence: 'In a frequency table, the mode has the {highest|lowest|middle} frequency.', answer: 'highest' }
       ]
@@ -208,13 +208,13 @@
     test: {
       items: [
         { dok: 1, lo: ["6Ss.03"], twm: ["TWM.05"], v: [
-          {"type":"smode","nums":[5,3,6,3,4,3,6,2],"unit":"goals","ctx":"Here are the goals scored in 8 handball matches."},
-          {"type":"smode","nums":[29,31,30,31,28,31,30],"unit":"°C","ctx":"Here are the temperatures at noon on the 7 days of one week."},
-          {"type":"smode","nums":[8,5,9,5,7,5,9],"unit":"stickers","ctx":"Here are the numbers of stickers 7 children have."}
+          {"type":"sfreq","head":["Number of goals","Frequency"],"vals":[3,4,5,6,7],"freqs":[2,6,7,4,1],"ctx":"A handball team plays 20 matches."},
+          {"type":"smodes","nums":[29,31,30,33,28,32,27],"unit":"°C","at":2,"ctx":"Here are the temperatures, in °C, at noon on the 7 days of one week."},
+          {"type":"smodes","nums":[8,5,9,5,7,9,6],"unit":"stickers","at":0,"ctx":"Here are the numbers of stickers 7 children have."}
         ] },
         { dok: 1, lo: ["6Ss.03"], twm: ["TWM.05"], v: [
           {"type":"smedian","nums":[24,17,30,21,26],"unit":"cm","ctx":"Here are the heights, in cm, of 5 bean plants."},
-          {"type":"smedian","nums":[9,12,8,11,10,13],"unit":"years","ctx":"Here are the ages, in years, of the 6 children in a chess club."},
+          {"type":"smedian","nums":[9,12,8,11,10,15],"unit":"years","ctx":"Here are the ages, in years, of the 6 children in a chess club."},
           {"type":"smedian","nums":[38,52,41,60,47],"unit":"cm","ctx":"Here are the lengths, in cm, of 5 fish."}
         ] },
         { dok: 1, lo: ["6Ss.03"], twm: ["TWM.05"], v: [
@@ -223,19 +223,19 @@
           {"type":"srange","nums":[41,26,58,33,47,29],"unit":"points","ctx":"Here are the scores of 6 players in a darts game."}
         ] },
         { dok: 1, lo: ["6Ss.03"], twm: ["TWM.05"], v: [
-          {"type":"smean","nums":[7,10,6,9],"unit":"points","ctx":"Here are the points Ngoc scores in 4 rounds of a quiz."},
-          {"type":"smean","nums":[18,22,15,20,25],"unit":"m","ctx":"Here are the lengths, in metres, of 5 ball throws."},
-          {"type":"smean","nums":[12,16,9,15],"unit":"laps","ctx":"Here are the numbers of laps Long swims on 4 days."}
+          {"type":"smean","nums":[7,10,6,13],"unit":"points","ctx":"Here are the points Ngoc scores in 4 rounds of a quiz."},
+          {"type":"smean","nums":[18,22,15,19,26],"unit":"m","ctx":"Here are the lengths, in metres, of 5 ball throws."},
+          {"type":"smean","nums":[12,16,8,14],"unit":"laps","ctx":"Here are the numbers of laps Long swims on 4 days."}
         ] },
         { dok: 1, lo: ["6Ss.03"], twm: ["TWM.05"], v: [
-          {"type":"sall","nums":[9,6,17,6,12],"ctx":"Here are the numbers of push-ups Binh does on 5 days."},
-          {"type":"sall","nums":[14,8,11,14,5,10,22],"ctx":"Here are the goals a team scores in 7 netball matches."},
-          {"type":"sall","nums":[20,35,20,45,30,24],"ctx":"Here are the minutes Chi cycles on 6 days."}
+          {"type":"sall","nums":[9,6,17,6,12],"unit":"press-ups","ctx":"Here are the numbers of press-ups Binh does on 5 days."},
+          {"type":"sall","nums":[14,8,11,14,5,10,22],"unit":"goals","ctx":"Here are the goals a team scores in 7 netball matches."},
+          {"type":"sall","nums":[20,35,20,45,30,24],"unit":"minutes","ctx":"Here are the minutes Chi cycles on 6 days."}
         ] },
         { dok: 2, lo: ["6Ss.03"], twm: ["TWM.01"], v: [
-          {"type":"smissmean","known":[6,9,5,8],"mean":8,"what":"score","ctx":"Hanh plays a game 5 times."},
+          {"type":"smissmean","known":[6,11,7,8],"mean":9,"what":"score","ctx":"Hanh plays 5 rounds of a game."},
           {"type":"smissrange","known":[138,145,141,150],"range":17,"end":"min","unit":"cm","ctx":"Five friends measure their heights in cm."},
-          {"type":"smissmean","known":[12,15,11,14,13],"mean":14,"what":"time","unit":"minutes","ctx":"Son times 6 bus journeys."}
+          {"type":"smissmean","known":[12,15,11,14,13],"mean":14,"what":"time","short":true,"unit":"minutes","ctx":"Son measures how long 6 bus journeys take."}
         ] },
         { dok: 2, lo: ["6Ss.03"], twm: ["TWM.07"], v: [
           {"type":"scompare","by":"mean","ask":"greater","at":2,"unit":"tomatoes","a":{"name":"Linh","nums":[9,14,11,6]},"b":{"name":"Phong","nums":[12,8,13,11]},"q":"Linh and Phong each grow 4 tomato plants. Here are the numbers of tomatoes on each plant. Who has the greater <b>mean</b> number of tomatoes?"},
@@ -249,13 +249,13 @@
         ] },
         { dok: 2, lo: ["6Ss.03"], twm: ["TWM.07"], v: [
           {"type":"sspot","who":"Giang","he":false,"nums":[14,6,11,3,9],"slip":"unsorted","at":2},
-          {"type":"sspot","who":"Hung","he":true,"nums":[8,0,6,10],"slip":"zero","at":1},
+          {"type":"sspot","who":"Hung","he":true,"nums":[12,0,9,15],"slip":"zero","at":1},
           {"type":"sspot","who":"Kim","he":false,"nums":[26,9,18,31,14],"slip":"max","at":0}
         ] },
         { dok: 3, lo: ["6Ss.03"], twm: ["TWM.01", "TWM.04"], v: [
           {"type":"claim","who":"Trang","ok":false,"at":2,"says":"The mean of a data set is always one of the numbers in the data set.","reasons":[{"t":"the mean of 2, 3 and 7 is 4, and 4 is not in the data set. One example like this shows the rule is not always true."},{"t":"the mean of 2, 4 and 6 is 4, and 4 is in the data set.","why":"That example fits. But one example that fits is not enough for “always”. Try 2, 3 and 7."},{"t":"the mean is the middle number, so it is always in the data set.","why":"The middle number is the median. The mean is the total divided by the number of values."}],"hint":{"pic":{"k":"dtowers","nums":[2,3,7],"sum":true},"step":"Test the rule. Find the mean of 2, 4 and 6. Then find the mean of 2, 3 and 7."},"worked":"2 + 4 + 6 = 12 and 12 ÷ 3 = 4: this mean is in the data set. But 2 + 3 + 7 = 12 and 12 ÷ 3 = 4: this mean is not in the data set. So the rule is not always true.","model":"Trang is incorrect because the mean of 2, 3 and 7 is 4, and 4 is not in the data set."},
           {"type":"claim","who":"Minh","ok":false,"at":0,"says":"A data set can never have more than one mode.","reasons":[{"t":"in 1, 1, 4, 6, 6 both 1 and 6 appear twice. This data set has two modes."},{"t":"the mode is the most common value, and only one value can be the most common.","why":"Two values can appear the same number of times, more often than all the others. Try 1, 1, 4, 6, 6."},{"t":"in 2, 5, 5, 9 the only mode is 5.","why":"That example has one mode. But “never” must be true for every data set. Try 1, 1, 4, 6, 6."}],"hint":{"pic":{"k":"dcards","nums":[1,1,4,6,6],"show":"mode"},"step":"Test the rule. Look for the mode of 2, 5, 5, 9. Then look for the mode of 1, 1, 4, 6, 6."},"worked":"In 1, 1, 4, 6, 6 the values 1 and 6 both appear twice, and 4 appears once. So this data set has two modes, 1 and 6: it is bimodal. The rule is not true.","model":"Minh is incorrect because 1, 1, 4, 6, 6 has two modes, 1 and 6."},
-          {"type":"claim","who":"Yen","ok":false,"at":1,"says":"When you add a bigger number to a data set, the median always changes.","reasons":[{"t":"the median of 3, 5, 5, 8 is 5. Add 20: the median of 3, 5, 5, 8, 20 is still 5."},{"t":"the median of 2, 4, 6 is 4. Add 10: the median of 2, 4, 6, 10 is 5.","why":"That example fits. But “always” must be true for every data set. Try 3, 5, 5, 8 and add 20."},{"t":"a bigger number always makes every average bigger.","why":"It makes the mean bigger. The median can stay the same: try 3, 5, 5, 8 and add 20."}],"hint":{"pic":[{"k":"dcards","nums":[3,5,5,8],"show":"median","cap":"3, 5, 5, 8"},{"k":"dcards","nums":[3,5,5,8,20],"show":"median","cap":"3, 5, 5, 8, 20"}],"step":"Test the rule. Find the median of 3, 5, 5, 8. Then add 20 and find the median again."},"worked":"The median of 3, 5, 5, 8 is halfway between 5 and 5: it is 5. With 20 added, the data is 3, 5, 5, 8, 20 and the middle value is 5. The median did not change. So the rule is not always true.","model":"Yen is incorrect because the median of 3, 5, 5, 8 is 5, and with 20 added it is still 5."}
+          {"type":"claim","who":"Yen","ok":false,"at":1,"says":"When you put one more value into a data set, and it is larger than all the other values, the median always changes.","reasons":[{"t":"the median of 3, 5, 5, 8 is 5. Put in 20: the median of 3, 5, 5, 8, 20 is still 5."},{"t":"the median of 2, 4, 6 is 4. Put in 10: the median of 2, 4, 6, 10 is 5.","why":"That example fits. But “always” must be true for every data set. Try 3, 5, 5, 8 and put in 20."},{"t":"a larger value always makes every average bigger.","why":"It makes the mean bigger. The median can stay the same: try 3, 5, 5, 8 and put in 20."}],"hint":{"pic":[{"k":"dcards","nums":[3,5,5,8],"show":"median","cap":"3, 5, 5, 8"},{"k":"dcards","nums":[3,5,5,8,20],"show":"median","cap":"3, 5, 5, 8, 20"}],"step":"Test the rule. Find the median of 3, 5, 5, 8. Then put in 20 and find the median again."},"worked":"The median of 3, 5, 5, 8 is halfway between 5 and 5: it is 5. With 20 put in, the data is 3, 5, 5, 8, 20 and the middle value is 5. The median did not change. So the rule is not always true.","model":"Yen is incorrect because the median of 3, 5, 5, 8 is 5, and with 20 put in it is still 5."}
         ] }
       ]
     },
@@ -277,7 +277,7 @@
         ["Mode of 10, 10, 6, 11, 3", ["10", "11", "2"]],
         ["4 values have a mean of 9. Their total is", ["36", "13", "9"]],
         ["Mean of 10, 15, 6, 13, 11", ["11", "55", "15"]],
-        ["Modes of 5, 5, 7, 8, 6, 6", ["5 and 6", "5 only", "no mode"]],
+        ["Mode of 5, 5, 7, 8, 6, 6", ["5 and 6", "5 only", "no mode"]],
         ["The middle value of data in order is the", ["median", "mode", "range"]],
         ["Data with two modes is", ["bimodal", "in order", "level"]],
         ["Mean of 5, 0, 15, 14", ["8.5", "34", "9.5"]],
@@ -293,7 +293,7 @@
         ["Mode of 7, 9, 3, 10, 12", ["no mode", "12", "9"]],
         ["Largest value − smallest value gives the", ["range", "mean", "mode"]],
         ["Median of 5, 3, 2, 8", ["4", "3", "5"]],
-        ["Modes of 8, 3, 2, 3, 2, 1", ["2 and 3", "2 only", "no mode"]],
+        ["Mode of 8, 3, 2, 3, 2, 1", ["2 and 3", "2 only", "no mode"]],
         ["Mean of 11, 12, 4", ["9", "27", "11"]],
         ["Range of 14, 16, 2, 4, 13, 25", ["23", "25", "11"]],
         ["Total 27, 3 values. The mean is", ["9", "24", "27"]],
@@ -327,7 +327,7 @@
         ["Median of 13, 14, 3, 16, 11, 15", ["13.5", "13", "14"]],
         ["Range of 2, 27, 11, 16, 18", ["25", "27", "16"]],
         ["Range of 20, 19, 6, 29", ["23", "29", "9"]],
-        ["Modes of 6, 2, 8, 8, 5, 5", ["5 and 8", "5 only", "no mode"]],
+        ["Mode of 6, 2, 8, 8, 5, 5", ["5 and 8", "5 only", "no mode"]],
         ["Median of 13, 8, 18, 11, 16, 20, 7", ["13", "11", "20"]],
         ["Mean of 14, 0, 6, 0, 10", ["6", "30", "7.5"]],
         ["Before you find the median, you", ["order the data", "add the data", "halve the data"]],

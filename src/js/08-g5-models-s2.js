@@ -5,7 +5,8 @@
 
    to = 'whole' (the nearest whole number) or 'tenth' (the nearest tenth); op = '+' or '-'.
 
-   drline     { n: '6.38', to }                          tap the nearer end of the rounding line (tool dround)
+   drline     { n: '6.38', to, mid?: true }              tap the nearer end of the rounding line (tool dround); mid: the
+                                                         halfway mark is shown from the start (always in 'our' mode)
    dround     { items: [{ n, to }, ...] }                write each rounded number
    droundto   { n, to, at, line?: true }                 tick the rounded number (the wrong options are the usual slips);
                                                          line: the rounding line is drawn in the question
@@ -23,7 +24,8 @@
                 kind 'change' have, items: [..]          have − (the sum of the items): two steps
                 kind 'left'   start, each, n             start − n lots of each: two steps
                 kind 'both'   a, d, more: true | false   a + (a + d) or a + (a − d): two steps
-   dcolfix    { who, a, b, op, slip, at }                spot the mistake in a written calculation, then correct it
+   dcolfix    { who, pro?, a, b, op, slip, at }          spot the mistake in a written calculation, then correct it
+                                                         (pro: 'she' | 'he', the pronoun for who; default 'they')
                 slip 'right' (digits lined up from the right), 'nozero' (no place holder: the extra digit is brought
                 down), 'noex' (no exchange: the smaller digit from the bigger one), 'nocarry' (the carried 1 is lost)
 
@@ -155,7 +157,7 @@ M.drline = function (d, mode) {
   return {
     q: "Round <b>" + n + "</b> " + near(to) + ".",
     how: mode === "our" ? n + " is between " + rs(l, to) + " and " + rs(h, to) + ". Halfway is " + mid + ". Tap the end that is nearer." : "Tap the end of the line that is nearer to " + n + ".",
-    ui: { k: "dround", n: n, to: to, mid: mode === "our" }, right: { choice: ans },
+    ui: { k: "dround", n: n, to: to, mid: mode === "our" || !!d.mid }, right: { choice: ans },
     ready: r => !!r.choice,
     check(r) { return r.choice === ans ? { ok: true } : { ok: false, msg: rslip(n, to, r.choice) }; },
     given: r => String(r.choice || ""),
@@ -280,7 +282,7 @@ M.dest = function (d) {
   return {
     q: "[[Estimate|estimate]] <b>" + sumText(a, op, b) + "</b> first. Then calculate.", marks: 2,
     sub: "For the estimate, round each number to the nearest whole number.",
-    lines: ["Estimate: {0} " + OPS[op] + " {1} = {2}", "Calculate: " + sumText(a, op, b) + " = {3}"],
+    lines: ["Estimate:", "{0} " + OPS[op] + " {1} = {2}", "Calculate: " + sumText(a, op, b) + " = {3}"],
     blanks: [{ len: 3, w: "mid" }, { len: 3, w: "mid" }, { len: 3, w: "mid" }, { len: 6, w: "big", dec: 3 }],
     check(r) {
       const parts = [D.eq(r.v[0], ra), D.eq(r.v[1], rb), D.eq(r.v[2], est), D.eq(r.v[3], w.ans)];
@@ -357,10 +359,11 @@ M.dmiss = function (d) {
   const it = d.items.map(x => {
     const w = work(x.a, x.b, x.op), c = w.ansText, tell = sumText(x.a, x.op, x.b) + " = " + c;
     const hideA = x.hide === "a", want = D.p(hideA ? x.a : x.b), other = hideA ? x.b : x.a;
-    /* how to find it: the inverse (a = c − b or c + b); for a − ? = c take the answer away from a */
+    /* how to find it: the inverse (a = c − b or c + b); for a − ? = c the missing number is the difference a − c */
     const back = x.op === "+" ? c + " − " + other : hideA ? c + " + " + other : other + " − " + c;
+    const how = (x.op === "-" && !hideA ? "The missing number is the difference: work out " : "Use the inverse: work out ") + back + ".";
     const fwd = x.op === "+" ? D.p(c) + D.p(other) : hideA ? D.p(c) - D.p(other) : D.p(other) + D.p(c);     /* the slip: the wrong way round */
-    return { line: (hideA ? "{#} " + OPS[x.op] + " " + x.b : x.a + " " + OPS[x.op] + " {#}") + " = " + c, want: want, ans: String(hideA ? x.a : x.b), tell: tell, back: back, fwd: fwd,
+    return { how: how, line: (hideA ? "{#} " + OPS[x.op] + " " + x.b : x.a + " " + OPS[x.op] + " {#}") + " = " + c, want: want, ans: String(hideA ? x.a : x.b), tell: tell, back: back, fwd: fwd,
       bw: x.op === "+" ? [c, other, "-"] : hideA ? [c, other, "+"] : [other, c, "-"],
       pic: x.op === "+" ? { k: "bar", whole: Number(c), parts: hideA ? [null, Number(x.b)] : [Number(x.a), null] } : hideA ? { k: "bar", whole: null, parts: [Number(x.b), Number(c)] } : { k: "bar", whole: Number(x.a), parts: [null, Number(c)] } };
   });
@@ -372,10 +375,10 @@ M.dmiss = function (d) {
       const parts = it.map((x, i) => D.eq(r.v[i], x.want));
       if (parts.every(Boolean)) return { ok: true, parts: parts };
       const i = parts.indexOf(false), x = it[i], v = D.p(r.v[i]);
-      const msg = v === x.fwd && x.fwd >= 0 ? "That is the wrong way round. Work out " + x.back + "." : v === x.want ? "" : "Use the inverse: work out " + x.back + ". " + (isNaN(v) ? "" : sumSlip(x.bw[0], x.bw[1], x.bw[2], r.v[i]));
+      const msg = v === x.fwd && x.fwd >= 0 ? "That is the wrong way round. Work out " + x.back + "." : v === x.want ? "" : x.how + " " + (isNaN(v) ? "" : sumSlip(x.bw[0], x.bw[1], x.bw[2], r.v[i]));
       return { ok: false, msg: (it.length > 1 ? "Look at (" + "abc"[i] + "). " : "") + msg, parts: parts };
     },
-    hint: { pic: it.map(x => x.pic), step: it.map(x => "Use the inverse: work out " + x.back + ".").join(" ") + " Line up the decimal points." },
+    hint: { pic: it.map(x => x.pic), step: it.map((x, i) => (it.length > 1 ? "(" + "abc"[i] + ") " : "") + x.how).join(" ") + " Line up the decimal points." },
     worked: { text: it.map(x => x.back + " = " + x.ans + ". Check: " + x.tell).join(". ") + "." },
     yes: it.map(x => x.tell).join(" and ") + ".",
     key: it.map(x => x.ans).join(" ; "), fill: it.map(x => x.ans)
@@ -446,10 +449,10 @@ M.dstory = function (d) {
 M.dcolfix = function (d) {
   const a = d.a, b = d.b, op = d.op, who = d.who, w = work(a, b, op), s = slips(a, b, op), wrongT = s[d.slip];
   if (wrongT == null) throw new Error("dcolfix: the slip " + d.slip + " does not change " + sumText(a, op, b));
-  const wrong = D.s(wrongT, w.dp), did = op === "+" ? "add" : "subtract", last = w.cols[w.cols.length - 1];
+  const wrong = D.s(wrongT, w.dp), did = op === "+" ? "add" : "subtract", last = w.cols[w.cols.length - 1], pro = d.pro || "they";
   const TRUE = {
     right: "The decimal points are not in a line. Tenths must be under tenths.",
-    nozero: who + " did not write 0 as a place holder in " + a + " and exchange.",
+    nozero: who + " did not write " + a + " as " + D.s(D.p(a), w.dp) + ", so " + pro + " did not exchange in the " + last.many + ".",
     noex: who + " did not exchange. " + who + " took the smaller digit from the bigger digit each time.",
     nocarry: who + " did not carry 1 to the next column."
   };
@@ -479,7 +482,8 @@ M.dcolfix = function (d) {
         "The mistake is right. Now work it out again. " + sumSlip(a, b, op, (r.v || [])[0]);
       return { ok: false, msg: msg, parts: [vOk], pickOk: pickOk };
     },
-    hint: { pic: { k: "dcol", a: a, b: b, op: op }, step: "Set the calculation out again. Line up the decimal points and write 0 in an empty place. Then compare with " + who + "'s working." },
+    hint: { pic: { k: "dcol", a: a, b: b, op: op }, step: "Set the calculation out again. Line up the decimal points. " +
+      (d.slip === "noex" ? "When the top digit is smaller, exchange." : "Write 0 in an empty place.") + " Then compare with " + who + "'s working." },
     worked: { text: WORK[d.slip] + " The right way: " + w.text + " So " + sumText(a, op, b) + " = " + w.ansText + ", not " + wrong + ".", pic: { k: "dcol", a: a, b: b, op: op, ans: true } },
     yes: sumText(a, op, b) + " = " + w.ansText + ".", key: w.ansText, fill: [w.ansText.replace(/,/g, "")]
   };

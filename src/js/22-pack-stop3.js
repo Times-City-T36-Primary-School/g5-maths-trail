@@ -46,15 +46,15 @@
               zip: { en: 'Now hop past zero. Tap *Hop* two more times.', vi: 'Bây giờ nhảy qua số 0. Bấm *Hop* thêm hai lần.' },
               then: { en: '*−0.3* and *−0.6* are negative numbers.', vi: '*−0.3* và *−0.6* là các số âm.' } },
             { can: { hop: true }, wait: 'hop', until: { n: 4 }, strack: { a: '1/4', d: '1/2', shown: 1, max: 4, pos: true },
-              zip: { en: 'Now fractions. Each hop is *+ ½*. Hop three times.', vi: 'Bây giờ là phân số. Mỗi bước nhảy là *+ ½*. Nhảy ba lần.' },
-              then: { en: '¼, ¾, 1¼, 1¾. Equal steps again! Tap *Next*.', vi: '¼, ¾, 1¼, 1¾. Các bước lại đều nhau! Bấm *Next*.' } }] },
+              zip: { en: 'Now fractions. Each hop is *+ 1/2*. Hop three times.', vi: 'Bây giờ là phân số. Mỗi bước nhảy là *+ 1/2*. Nhảy ba lần.' },
+              then: { en: '1/4, 3/4, 1 1/4, 1 3/4. Equal steps again! Tap *Next*.', vi: '1/4, 3/4, 1 1/4, 1 3/4. Các bước lại đều nhau! Bấm *Next*.' } }] },
         { id: 'rule', title: { en: 'Position to term', vi: 'Vị trí đến số hạng' }, tool: 'srule', srule: { pos: [1, 2, 3, 4], rule: { k: 3, c: 2 }, far: 10 },
           steps: [
             { can: { mul: true }, wait: 'mul', until: { k: 3 },
               zip: { en: 'The terms go up in *3s*. Tap *+* two times.', vi: 'Các số hạng tăng *3 đơn vị* mỗi lần. Bấm *+* hai lần.' },
               then: { en: 'Position × 3 gives 3, 6, 9, 12. Nearly!', vi: 'Vị trí × 3 cho 3, 6, 9, 12. Gần đúng rồi!' } },
             { can: { add: true }, wait: 'add', until: { fit: true },
-              zip: { en: 'Every term is *2 more*. Now add 2.', vi: 'Mỗi số hạng *lớn hơn 2*. Bây giờ cộng thêm 2.' },
+              zip: { en: 'Every term is *2 more* than position × 3. Now add 2.', vi: 'Mỗi số hạng *lớn hơn* vị trí × 3 *2 đơn vị*. Bây giờ cộng thêm 2.' },
               then: { en: 'The rule fits! The 10th term is *32*. Tap *Next*.', vi: 'Quy luật đã đúng! Số hạng thứ 10 là *32*. Bấm *Next*.' } }] },
         { id: 'challenge', title: { en: 'Sequence challenge', vi: 'Thử thách dãy số' },
           challenge: {
@@ -111,7 +111,7 @@
             {"type":"sruleset","k":3,"c":4,"n":4,"far":10},
             {"type":"sruleset","k":5,"c":-1,"n":4,"far":10}] },
           { mode: "your", lo: ["6Nc.04"], twm: ["TWM.02"], v: [
-            {"type":"stable","sq":[0,0],"pos":[1,2,3,4,9],"hide":[3,4],"fig":{"k":"dotseq","ks":[1,2,3]}},
+            {"type":"stable","sq":[0,0],"pos":[1,2,3,4,6],"hide":[3,4],"fig":{"k":"dotseq","ks":[1,2,3]}},
             {"type":"stable","sq":[0,1],"pos":[1,2,3,4,7],"hide":[2,4]},
             {"type":"stable","sq":[2,0],"pos":[1,2,3,4,8],"hide":[3,4]}] }] }] },
       { id: 's3a', kit: 'model', game: 'a', surface: 'paper', art: 'icon-step-test',
@@ -158,7 +158,7 @@
     notes: {
       items: [
         { en: 'A [[sequence]] is a list of numbers that follows a [[rule]]. Each number is a [[term]]. The place of a term is its [[position]].',
-          vi: 'Dãy số là một dãy các số tuân theo một quy luật. Mỗi số là một số hạng. Chỗ đứng của số hạng là vị trí của nó.',
+          vi: 'Dãy số là một dãy các số tuân theo một quy luật. Mỗi số là một số hạng. Thứ tự của số hạng trong dãy là vị trí của nó.',
           example: ['In 4, 7, 10, 13 ... the 3rd term is *10*.', 'The term 10 is in *position 3*.'],
           pic: { k: 'strack', a: 4, d: 3, n: 4, pos: true } },
         { en: 'To [[count on]] or [[count back]], add or subtract the same step each time. The step is [[constant]].',
@@ -171,7 +171,7 @@
           pic: { k: 'strack', a: 5, d: -3, n: 5, mark: [4] } },
         { en: 'Fractions work in the same way. Write the terms with the same denominator. Then only the numerator changes.',
           vi: 'Phân số cũng làm như vậy. Viết các số hạng với cùng mẫu số. Khi đó chỉ tử số thay đổi.',
-          example: ['1/4, 3/4, 5/4, 7/4 ... The step is *+ 2/4*.', 'The next term is *9/4*. That is 2 and 1/4.'],
+          example: ['1/4, 3/4, 5/4, 7/4 ... The step is *+ 2/4*.', 'The next term is *9/4*. That is 2 1/4.'],
           pic: { k: 'strack', a: '1/4', d: '1/2', n: 4, blanks: 1, den: 4 } },
         { en: 'A [[term-to-term rule]] takes you to the next term. A [[position-to-term rule]] takes you to any term. Adding the same step again and again is multiplying.',
           vi: 'Quy luật từ số hạng đến số hạng đưa em đến số hạng kế tiếp. Quy luật từ vị trí đến số hạng đưa em đến bất kì số hạng nào. Cộng lặp lại cùng một bước nhảy chính là phép nhân.',
@@ -183,7 +183,7 @@
           pic: { k: 'smachine', rule: { k: 5, c: 1 }, back: true } },
         { en: 'A [[square number]] is a whole number times itself. In the sequence of square numbers, the term is the position times the position.',
           vi: 'Số chính phương là một số tự nhiên nhân với chính nó. Trong dãy các số chính phương, số hạng bằng vị trí nhân với vị trí.',
-          example: ['1, 4, 9, 16 ... 9th term: 9 × 9 = *81*.', '2, 5, 10, 17 ... is 1 more each time: 9 × 9 + 1 = *82*.'],
+          example: ['1, 4, 9, 16 ... 9th term: 9 × 9 = *81*.', '2, 5, 10, 17 ... Each term is 1 more than a square number. 9th term: 9 × 9 + 1 = *82*.'],
           pic: { k: 'dotseq', ks: [1, 2, 3, 4] } }
       ],
       check: [
@@ -202,7 +202,7 @@
       items: [
         { dok: 1, lo: ["6Nc.01"], twm: ["TWM.02"], v: [
           {"type":"scount","a":"7.5","d":"-1.2","shown":4,"ask":1},
-          {"type":"scount","a":"0.45","d":"0.2","shown":4,"ask":1},
+          {"type":"sfracnext","a":"2 3/4","d":"-1/2","shown":4,"at":1},
           {"type":"scount","a":"9.4","d":"-1.5","shown":4,"ask":1}
         ] },
         { dok: 1, lo: ["6Nc.01"], twm: ["TWM.02"], v: [
@@ -211,13 +211,13 @@
           {"type":"scount","a":8,"d":-5,"shown":3,"ask":2}
         ] },
         { dok: 1, lo: ["6Nc.03"], twm: ["TWM.02"], v: [
-          {"type":"snth","k":7,"c":0,"n":15,"shown":4},
+          {"type":"snth","k":12,"c":0,"n":15,"shown":4},
           {"type":"snth","k":8,"c":0,"n":11,"shown":4},
           {"type":"snth","k":11,"c":0,"n":14,"shown":4}
         ] },
         { dok: 1, lo: ["6Nc.04"], twm: ["TWM.02"], v: [
           {"type":"sqterm","s":0,"c":0,"n":12,"shown":4},
-          {"type":"sqterm","s":0,"c":0,"n":11,"shown":4},
+          {"type":"sqpos","s":0,"c":0,"term":121,"shown":4},
           {"type":"sqterm","s":0,"c":0,"n":10,"shown":4}
         ] },
         { dok: 1, lo: ["6Nc.03"], twm: ["TWM.01"], v: [
@@ -241,13 +241,13 @@
           {"type":"sqterm","s":2,"c":0,"n":9,"shown":4}
         ] },
         { dok: 2, lo: ["6Nc.03"], twm: ["TWM.07", "TWM.04"], v: [
-          {"type":"claim","who":"Hoa","ok":false,"at":1,"says":"The sequence 3, 8, 13, 18, ... goes up in 5s. So the 20th term is 20 × 5 = 100.","reasons":[{"t":"the rule is: multiply the position by 5, then subtract 2. The 20th term is 20 × 5 − 2 = 98."},{"t":"20 × 5 = 100, and the terms go up in 5s.","why":"Check with position 1: 1 × 5 = 5, but the 1st term is 3. Each term is 2 less than a multiple of 5."},{"t":"the 20th term is 18 + 5 = 23.","why":"18 + 5 = 23 is the 5th term, the next one. The 20th term is much further on."}],"hint":{"pic":{"k":"stable","pos":[1,2,3,4,20],"rule":{"k":5,"c":-2},"hide":[4]},"step":"Test Hoa's rule with position 1. Does 1 × 5 give the 1st term?"},"worked":"Position 1: 1 × 5 = 5, but the 1st term is 3. Each term is 2 less than a multiple of 5. So the rule is: multiply the position by 5, then subtract 2. 20 × 5 − 2 = 98.","model":"Hoa is incorrect because each term is 2 less than a multiple of 5: the 20th term is 98."},
+          {"type":"claim","who":"Hoa","ok":false,"at":1,"says":"The sequence 2, 7, 12, 17, ... goes up in 5s. So the 20th term is 20 × 5 = 100.","reasons":[{"t":"the rule is: multiply the position by 5, then subtract 3. The 20th term is 20 × 5 − 3 = 97."},{"t":"20 × 5 = 100, and the terms go up in 5s.","why":"Check with position 1: 1 × 5 = 5, but the 1st term is 2. Each term is 3 less than a multiple of 5."},{"t":"the 20th term is 17 + 5 = 22.","why":"17 + 5 = 22 is the 5th term, the next one. The 20th term is much further on."}],"hint":{"pic":{"k":"stable","pos":[1,2,3,4,20],"rule":{"k":5,"c":-3},"hide":[4]},"step":"Test Hoa's rule with position 1. Does 1 × 5 give the 1st term?"},"worked":"Position 1: 1 × 5 = 5, but the 1st term is 2. Each term is 3 less than a multiple of 5. So the rule is: multiply the position by 5, then subtract 3. 20 × 5 − 3 = 97.","model":"Hoa is incorrect because each term is 3 less than a multiple of 5: the 20th term is 97."},
           {"type":"claim","who":"Long","ok":true,"at":2,"says":"For the sequence 8, 15, 22, 29, ... the position-to-term rule is: multiply the position by 7, then add 1.","reasons":[{"t":"1 × 7 + 1 = 8, 2 × 7 + 1 = 15, 3 × 7 + 1 = 22 and 4 × 7 + 1 = 29. The rule gives every term."},{"t":"the rule must be: multiply the position by 8, because the 1st term is 8.","why":"That fits the 1st term only: 2 × 8 = 16, but the 2nd term is 15."},{"t":"the rule is only: add 7.","why":"Add 7 is the term-to-term rule. It does not use the position."}],"hint":{"pic":{"k":"stable","pos":[1,2,3,4],"rule":{"k":7,"c":1}},"step":"Test the rule with positions 1, 2, 3 and 4."},"worked":"1 × 7 + 1 = 8. 2 × 7 + 1 = 15. 3 × 7 + 1 = 22. 4 × 7 + 1 = 29. The rule gives all four terms.","model":"Long is correct because the rule gives every term: 8, 15, 22, 29."},
           {"type":"claim","who":"Kim","ok":false,"at":0,"says":"The sequence 2, 8, 14, 20, ... goes up in 6s. So every term is a multiple of 6.","reasons":[{"t":"8 is a term, and 8 is not a multiple of 6. Each term is 4 less than a multiple of 6."},{"t":"a sequence that goes up in 6s always has multiples of 6.","why":"Only when it starts at a multiple of 6. This sequence starts at 2."},{"t":"2, 8, 14 and 20 are all even, and every even number is a multiple of 6.","why":"8 is even, but 8 is not a multiple of 6."}],"hint":{"pic":{"k":"stable","pos":[1,2,3,4],"rule":{"k":6,"c":-4}},"step":"Say the multiples of 6: 6, 12, 18, 24. Compare them with the terms."},"worked":"The multiples of 6 are 6, 12, 18, 24 ... The terms are 2, 8, 14, 20: each one is 4 less. So no term here is a multiple of 6.","model":"Kim is incorrect because the terms are 4 less than the multiples of 6. For example, 8 is not a multiple of 6."}
         ] },
         { dok: 3, lo: ["6Nc.01", "6Nc.03", "6Nc.04"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Trang","ok":false,"at":2,"says":"When a sequence counts on in steps of 2, every term is always an even number.","reasons":[{"t":"1, 3, 5, 7 counts on in 2s, and every term is odd. One example like this shows it is not always true."},{"t":"2, 4, 6, 8 counts on in 2s, and every term is even.","why":"That example fits. But the first term matters. Try a sequence that starts at 1."},{"t":"adding 2 to any number always makes an even number.","why":"1 + 2 = 3, and 3 is odd."}],"hint":{"pic":{"k":"strack","a":1,"d":2,"n":2,"blanks":2,"labs":"all"},"step":"Test the rule. Start at 2 and count on in 2s. Then start at 1."},"worked":"2, 4, 6, 8 are all even. But 1, 3, 5, 7 also counts on in 2s, and these terms are all odd. So the rule is not always true.","model":"Trang is incorrect because 1, 3, 5, 7 counts on in 2s and its terms are odd."},
-          {"type":"claim","who":"Phong","ok":true,"at":0,"says":"In the sequence of square numbers 1, 4, 9, 16, 25, ... the step from one term to the next is always an odd number.","reasons":[{"t":"the steps are 3, 5, 7, 9 ... They go up by 2 each time, so they are always odd."},{"t":"the steps are all the same size: 3, 3, 3 ...","why":"4 − 1 = 3, but 9 − 4 = 5. The steps grow each time."},{"t":"16 − 9 = 6, and 6 is an even number.","why":"Check the subtraction: 16 − 9 = 7, not 6."}],"hint":{"pic":{"k":"dotseq","ks":[1,2,3,4]},"step":"Work out each step: 4 − 1, 9 − 4, 16 − 9, 25 − 16."},"worked":"4 − 1 = 3. 9 − 4 = 5. 16 − 9 = 7. 25 − 16 = 9. The steps are 3, 5, 7, 9: odd numbers that go up by 2, so they stay odd.","model":"Phong is correct because the steps are 3, 5, 7, 9 ...: they are always odd."},
+          {"type":"claim","who":"Phong","ok":true,"at":0,"says":"In the sequence of square numbers 1, 4, 9, 16, ... the step from one term to the next is always an odd number.","reasons":[{"t":"the steps are 3, 5, 7, 9 ... Each step adds two positions next to each other (16 − 9 = 3 + 4). One of the two numbers is odd and one is even, so the step is always odd."},{"t":"the steps are all the same size: 3, 3, 3 ...","why":"4 − 1 = 3, but 9 − 4 = 5. The steps grow each time."},{"t":"16 − 9 = 6, and 6 is an even number.","why":"Check the subtraction: 16 − 9 = 7, not 6."}],"hint":{"pic":{"k":"dotseq","ks":[1,2,3,4]},"step":"Work out each step: 4 − 1, 9 − 4, 16 − 9, 25 − 16."},"worked":"4 − 1 = 3 = 1 + 2. 9 − 4 = 5 = 2 + 3. 16 − 9 = 7 = 3 + 4. 25 − 16 = 9 = 4 + 5. Each step adds two numbers next to each other. One is odd and one is even, and odd + even is always odd.","model":"Phong is correct because the steps are 3, 5, 7, 9 ...: they are always odd."},
           {"type":"claim","who":"Giang","ok":true,"at":1,"says":"The rule of a sequence is: multiply the position by 10, then subtract 1. Every term always ends in the digit 9.","reasons":[{"t":"a multiple of 10 always ends in 0. One less than that always ends in 9: 9, 19, 29, 39 ..."},{"t":"it is only true for the 1st term, 9.","why":"Try positions 2 and 3: 2 × 10 − 1 = 19 and 3 × 10 − 1 = 29. They end in 9 too."},{"t":"the 10th term is 100, and 100 does not end in 9.","why":"Do not forget to subtract 1: 10 × 10 − 1 = 99."}],"hint":{"pic":{"k":"stable","pos":[1,2,3,4,10],"rule":{"k":10,"c":-1},"hide":[4]},"step":"Test the rule. Find the first four terms. Then try position 10."},"worked":"1 × 10 − 1 = 9. 2 × 10 − 1 = 19. 3 × 10 − 1 = 29. 10 × 10 − 1 = 99. A multiple of 10 ends in 0, so one less always ends in 9.","model":"Giang is correct because one less than a multiple of 10 always ends in 9."}
         ] }
       ]
@@ -297,7 +297,7 @@
         ["Position × 7, then add 3. The 12th term is", ["87", "84", "81"]],
         ["Rule for 4, 4.7, 5.4, ... ?", ["add 0.7", "subtract 0.7", "add 7"]],
         ["Next term: 3.7, 4.3, 4.9, ...", ["5.5", "6.1", "5.6"]],
-        ["9, 16, 25, 36, ... The 8th term is", ["100", "64", "81"]],
+        ["16, 25, 36, 49, ... The 10th term is", ["169", "100", "144"]],
         ["The 8th square number is", ["64", "16", "56"]],
         ["Next term: 1.1, 2, 2.9, ...", ["3.8", "4.7", "3.9"]],
         ["Position × 3, then subtract 2. The 12th term is", ["34", "36", "38"]],
@@ -305,7 +305,7 @@
         ["Rule: multiply the position by 12. The 10th term is", ["120", "22", "108"]],
         ["In 2, 9, 16, 23, ... the 4th term is", ["23", "16", "4"]],
         ["2, 5, 10, 17, ... The 10th term is", ["101", "100", "82"]],
-        ["16, 25, 36, 49, ... The 6th term is", ["81", "36", "64"]],
+        ["16, 25, 36, 49, ... The 8th term is", ["121", "64", "100"]],
         ["Next term: 5.1, 3.6, 2.1, ...", ["0.6", "−0.9", "0.5"]],
         ["Next term: 5, 1, −3, ...", ["−7", "7", "−11"]],
         ["Rule: multiply the position by 12. The 13th term is", ["156", "25", "144"]],
@@ -324,7 +324,7 @@
         ["Rule: multiply the position by 12. The 12th term is", ["144", "24", "132"]],
         ["Position × 2, then add 1. The 12th term is", ["25", "24", "23"]],
         ["Next term: 2/7, 5/7, 8/7, ...", ["11/7", "11/14", "12/7"]],
-        ["4, 7, 12, 19, ... The 8th term is", ["67", "64", "52"]],
+        ["4, 7, 12, 19, ... The 9th term is", ["84", "81", "67"]],
         ["Position × 3, then add 2. The 20th term is", ["62", "60", "58"]],
         ["7, 14, 21, 28, ... 70 is in position", ["10", "11", "9"]],
         ["Which is a term of 14, 22, 30, 38, ...?", ["94", "88", "98"]],
@@ -335,11 +335,11 @@
         ["Rule for 6.2, 5.9, 5.6, ... ?", ["subtract 0.3", "add 0.3", "subtract 3"]],
         ["Next term: 1/9, 4/9, 7/9, ...", ["10/9", "10/18", "11/9"]],
         ["Adding 4 five times is the same as", ["5 × 4", "5 + 4", "4 × 4"]],
-        ["9, 16, 25, 36, ... The 10th term is", ["144", "100", "121"]],
+        ["16, 25, 36, 49, ... The 6th term is", ["81", "36", "64"]],
         ["3, 6, 9, 12, ... 18 is in position", ["6", "7", "5"]],
         ["Rule: multiply the position by 11. The 19th term is", ["209", "30", "198"]],
         ["3, 6, 11, 18, ... The 10th term is", ["102", "100", "83"]],
-        ["16, 25, 36, 49, ... The 8th term is", ["121", "64", "100"]],
+        ["2, 5, 10, 17, ... The 7th term is", ["50", "49", "37"]],
         ["In 5, 8, 11, 14, ... the term in position 3 is", ["11", "8", "3"]]
       ]
     },

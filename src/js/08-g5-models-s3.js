@@ -23,6 +23,7 @@
    sisin      { k, c, target: 73, shown: 4, at }               is the number in the sequence? yes or no, with the reason (tick)
    sqterm     { s: 0, c: 0, n: 9, shown: 4 }                   a square number sequence (position + s) squared + c: the n-th term
    sqrule     { s, c, shown: 4, at }                           tick the rule of a square number sequence
+   sqpos      { s: 0, c: 0, term: 121, shown: 4 }              a square number sequence: which position has this term?
    sstory     { text: '... {a} ... {d} ... {n} ...', a, d, n, unit, start: 0 | 1 }   a two-step problem: start 0: the value
                                                                after n equal steps (a + n x d); start 1: a is term 1, find term n */
 (function () {
@@ -328,7 +329,7 @@ M.stable = function (d) {
   const spec = Object.assign({ k: "stable", pos: d.pos }, sq ? { sq: { s: s, c: c } } : { rule: { k: k, c: c } });
   const firstShown = d.pos.findIndex((p, i) => hide.indexOf(i) < 0);
   const find = sq
-    ? "Compare the terms with the [[square numbers|square number]] 1, 4, 9, 16, 25 ..." + (s ? " Position 1 is " + (1 + s) + " × " + (1 + s) + "." : "") + (c ? " Each term is " + more(c) + " a square number." : "")
+    ? "Compare the terms with the [[square numbers|square number]] 1, 4, 9, 16, ..." + (s ? " Position 1 is " + (1 + s) + " × " + (1 + s) + "." : "") + (c ? " Each term is " + more(c) + " a square number." : "")
     : "The terms go up in " + fmt(k) + "s, so multiply the position by " + fmt(k) + "." + (c ? " Position 1: 1 × " + fmt(k) + " = " + fmt(k) + ", but the term is " + sgn(k + c) + ". So " + (c > 0 ? "add " + fmt(c) : "subtract " + fmt(-c)) + "." : "");
   return {
     q: d.say ? "The [[rule]] of a [[sequence]] is: <b>" + text + "</b>. Complete the table." : "Complete the table for this [[sequence]].",
@@ -457,6 +458,34 @@ M.sqterm = function (d) {
     worked: { text: find + " Position " + n + ": " + sqWork(s, c, n) + ".", pic: Object.assign({}, tb, { hl: d.shown }) },
     yes: "The rule is: " + sqText(s, c) + ". " + sqWork(s, c, n) + ".",
     key: sgn(ans), fill: [String(ans)]
+  };
+};
+
+/* a square number sequence: which position has this term? (works backwards: take away c, find the number times
+   itself, take away s) */
+M.sqpos = function (d) {
+  const s = d.s || 0, c = d.c || 0, T0 = d.term, t = Array.from({ length: d.shown }, (x, i) => sqVal(s, c, i + 1));
+  const x = T0 - c, b = Math.round(Math.sqrt(x)), ans = b - s;
+  if (b * b !== x || ans <= d.shown || sqVal(s, c, ans) !== T0) throw new Error("sqpos: the term must be in the sequence, after the terms shown");
+  const back = (c ? T0 + (c > 0 ? " − " : " + ") + Math.abs(c) + " = " + x + ". " : "") + b + " × " + b + " = " + x + (s ? ". " + b + " − " + s + " = " + ans : "");
+  const find = (c ? "Each term is " + more(c) + " a square number. " : "") + (s ? "The number that is squared is " + s + " more than the position." : "The number that is squared is the position.");
+  const tb = { k: "stable", pos: Array.from({ length: d.shown }, (x, i) => i + 1).concat([ans]), sq: { s: s, c: c } };
+  return {
+    q: "This [[sequence]] is made from [[square numbers|square number]]. The number <b>" + fmt(T0) + "</b> is a [[term]]. What is its [[position]]?", sum: t.map(sgn).join(", ") + ", ...",
+    lines: ["position {0}"], blanks: [{ len: 4, w: "mid" }],
+    check(r) {
+      const v = r.v[0] === "" ? NaN : +r.v[0];
+      if (v === ans) return { ok: true };
+      if (v === T0) return { ok: false, msg: fmt(T0) + " is the term, not the position. Which number times itself makes " + fmt(x) + "?", parts: [false] };
+      if (v * 2 === x) return { ok: false, msg: v + " × 2 = " + x + ". A square number is a number times itself, not times 2.", parts: [false] };
+      if (s && v === b) return { ok: false, msg: b + " × " + b + " = " + x + " is right. But position 1 is " + (1 + s) + " × " + (1 + s) + ", so take away " + s + ".", parts: [false] };
+      if (Number.isInteger(v) && v >= 1) return { ok: false, msg: "Check: position " + v + " gives " + sqWork(s, c, v).split(". ").pop() + ", not " + fmt(T0) + ".", parts: [false] };
+      return { ok: false, msg: "Which number times itself makes " + fmt(x) + "?", parts: [false] };
+    },
+    hint: { pic: { k: "stable", pos: t.map((x, i) => i + 1), sq: { s: s, c: c } }, step: find + " Which number times itself makes " + fmt(x) + "?" },
+    worked: { text: find + " Work backwards: " + back + ". So " + fmt(T0) + " is the " + ord(ans) + " term. Check: " + sqWork(s, c, ans) + ".", pic: Object.assign({}, tb, { hl: d.shown }) },
+    yes: fmt(T0) + " is the " + ord(ans) + " term: " + sqWork(s, c, ans) + ".",
+    key: String(ans), fill: [String(ans)]
   };
 };
 

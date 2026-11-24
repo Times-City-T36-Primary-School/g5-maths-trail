@@ -85,7 +85,7 @@ for n in [18, 20, 28, 32, 45, 50, 44, 27]:
     add(f'Factors of {n}: {shown}', miss, near[:2], lambda x, n=n, fs=fs, i=i: n % x == 0 and fs[i - 1] < x < fs[i + 1])
 # 10. the words of the stop (written out; each one is checked below by a small test of its own)
 add('A number in two times tables is a common ...', 'multiple', ['factor', 'product'], lambda w: w == 'multiple')
-add('The smallest factor of every number is', 1, [0, 2], lambda x: x != 0 and all(n % x == 0 for n in range(1, 200)))
+add('The smallest factor of every whole number is', 1, [0, 2], lambda x: x != 0 and all(n % x == 0 for n in range(1, 200)))
 add('The biggest factor of 36 is', 36, [18, 6], lambda x: x == max(facts(36)))
 add('The first multiple of 9 is', 9, [18, 1], lambda x: x == 9 * 1)
 add('5 × 8 = 40. So 40 is the ___ of 5 and 8', 'product', ['sum', 'factor'], lambda w: w == 'product' and 5 * 8 == 40 and 5 + 8 != 40)
@@ -93,7 +93,7 @@ add('Which is a factor pair of 20?', '4 and 5', ['4 and 6', '2 and 20'], lambda 
 add('12 is divisible by', 4, [5, 8], lambda x: 12 % x == 0)
 add('35 is divisible by', 7, [6, 15], lambda x: 35 % x == 0)
 add('Which is a factor pair of 36?', '4 and 9', ['4 and 8', '3 and 9'], lambda s: math.prod(int(v) for v in s.split(' and ')) == 36)
-add('1 is a common factor of', 'every pair of numbers', ['odd numbers only', 'no numbers'], lambda w: w == 'every pair of numbers' and all(a % 1 == 0 for a in range(1, 100)))
+add('1 is a common factor of', 'every pair of whole numbers', ['odd numbers only', 'no numbers'], lambda w: w == 'every pair of whole numbers' and all(a % 1 == 0 for a in range(1, 100)))
 
 R.shuffle(items)
 # no item uses the pairs of the real test

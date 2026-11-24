@@ -91,7 +91,7 @@ function lcmSlip(a, b, v) {
 /* a wrong answer for the highest common factor of a and b */
 function hcfSlip(a, b, v) {
   if (isNaN(v) || v < 1) return "Write a number. List the factors of " + a + " and of " + b + " in pairs.";
-  if (a % v === 0 && b % v === 0) return v === 1 ? "1 is a common factor of every pair of numbers. But here there is a bigger one. Look at both lists."
+  if (a % v === 0 && b % v === 0) return v === 1 ? "1 is a common factor of every pair of whole numbers. But here there is a bigger one. Look at both lists."
     : v + " is a common factor, but it is not the highest. Look for a bigger number in both lists.";
   if (v % a === 0 && v % b === 0) return fmt(v) + " is a common multiple. A factor of " + a + " is never bigger than " + a + ". List the factors.";
   if (a % v === 0 || b % v === 0) return notCF(v, a, b) + " It must be in both lists.";
@@ -207,7 +207,7 @@ M.fmrel = function (d) {
     where === 0 ? x + " " + X + " " + y / x + " = " + y + ". So " + x + " divides " + y + " exactly." : y + " " + X + " " + x / y + " = " + x + ". So " + x + " is in the " + y + " times table."];
   const opts = ["factor", "multiple", "not a factor and not a multiple"].map((t, i) => ({ html: t, ok: i === where, why: i === where ? "" : whys[i] }));
   return {
-    q: "Which words fit? <b>" + x + "</b> is a ______ of <b>" + y + "</b>.", sub: "Tick (✓) one box.", opts: opts,
+    q: "Choose the word or words that fit. <b>" + x + "</b> is a ______ of <b>" + y + "</b>.", sub: "Tick (✓) one box.", opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why }; },
     hint: { step: "A factor of " + y + " divides " + y + " exactly. A multiple of " + y + " is in the " + y + " times table: " + list(mults(y, y * 3)) + " ..." },
     worked: { text: tell }, yes: tell, key: opts[where].html
@@ -269,7 +269,7 @@ M.flist = function (d) {
 M.fmiss = function (d) {
   const n = d.n, all = facts(n), shown = all.slice(0, d.shown), want = all.slice(d.shown), s = d.he ? "He" : "She";
   need(want.length >= 2 && want.length <= 5 && shown.length >= 2, "fmiss: 2 to 5 factors are missing");
-  const partner = v => v + " " + X + " " + n / v + " = " + n;
+  const partner = v => v + " " + X + " " + n / v + " = " + n, root = Math.round(Math.sqrt(n));
   return {
     q: d.who + " lists the [[factors|factor]] of <b>" + n + "</b>, smallest first: <b>" + list(shown) + "</b>. " + s + " stops too early. Write the factors that are missing.",
     lines: [boxes(want.length)], blanks: want.map(() => ({ len: 2, w: "s4" })),
@@ -284,7 +284,7 @@ M.fmiss = function (d) {
       else msg = "Every factor has a partner: " + partner(shown[1]) + ". Find the partner of each number in the list. Write them smallest first.";
       return { ok: false, msg: msg, parts: parts };
     },
-    hint: { pic: { k: "frain", n: n, hide: want }, step: "Every factor has a partner. " + shown.slice(0, 2).map(partner).join(" and ") + ". Find the partner of each number in the list." },
+    hint: { pic: { k: "frain", n: n, hide: want }, step: "Every factor has a partner. " + shown.slice(0, 2).map(partner).join(" and ") + ". Find the partner of each number in the list." + (root * root === n ? " " + root + " " + X + " " + root + " = " + n + ", so " + root + " is its own partner." : "") },
     worked: { text: "Factor pairs of " + n + ": " + pairText(n) + ". The missing factors are " + and(want) + ".", pic: { k: "frain", n: n } },
     yes: "The factor pairs of " + n + " are " + pairText(n) + ".", key: want.join(" ; "), fill: want.map(String)
   };
@@ -339,7 +339,7 @@ M.cmrange = function (d) {
       if (v <= d.lo || v >= d.hi) return { ok: false, msg: "The number must be between " + fmt(d.lo) + " and " + fmt(d.hi) + ".", parts: [false] };
       return { ok: false, msg: notCM(v, a, b) + " It must be a multiple of both.", parts: [false] };
     },
-    hint: { pic: listPic("mult", a, b, L, { marked: "all", hl: "low" }), step: "The lowest common multiple of " + a + " and " + b + " is " + L + ". Every common multiple is a multiple of " + L + ". Count on in " + L + "s." },
+    hint: { pic: listPic("mult", a, b, L), step: "First find the lowest common multiple of " + a + " and " + b + ". Every common multiple is a multiple of it. Count on in steps of that number." },
     worked: { text: "The lowest common multiple of " + a + " and " + b + " is " + L + ". Count on in " + L + "s: " + list(run) + ". Between " + fmt(d.lo) + " and " + fmt(d.hi) + ": " + sol.map(fmt).join(" or ") + "." },
     yes: fmt(sol[0]) + " = " + sol[0] / a + " " + X + " " + a + " = " + sol[0] / b + " " + X + " " + b + ".",
     key: sol.map(fmt).join(" or "), fill: [String(sol[0])]
