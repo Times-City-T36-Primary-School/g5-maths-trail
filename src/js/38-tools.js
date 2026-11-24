@@ -201,6 +201,8 @@
       spec.forEach(function (s) { const p = pic(s); if (p) row.appendChild(p); });
       return row.children.length ? row : null;
     }
+    // Stop 9: results in the order they came ({k: 'strip', seq}) are not a fraction strip (39-tools-chance.js)
+    if (spec.k === 'strip' && spec.seq && pics.seqstrip) return pics.seqstrip(spec);
     switch (spec.k) {
       case 'chart': return chart(null, Object.assign({ mini: true }, spec, { k: 'chart' })).el;
       case 'slider': return slider(null, Object.assign({ mini: true, fixed: true }, spec)).el;

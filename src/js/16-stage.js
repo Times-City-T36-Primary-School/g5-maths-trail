@@ -71,7 +71,7 @@
     T.ui.empty(screen);
 
     /* the three zones */
-    const backButton = T.ui.iconButton({ icon: 'back', label: 'Back to the stop', kind: 'band', cls: 'topbar__back', onClick: goBack });
+    const backButton = T.ui.iconButton({ icon: 'back', label: opts.backLabel || 'Back to the stop', kind: 'band', cls: 'topbar__back', onClick: goBack });
     const titleEl = el('h1', { class: 'topbar__title' }, opts.title || stepLabel(step));
     const progressEl = el('div', { class: 'topbar__progress', hidden: true });
     const meterFill = el('span', { class: 'stage__meter-fill' });

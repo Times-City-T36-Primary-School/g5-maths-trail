@@ -65,7 +65,7 @@
   flex: none;
   width: 100%;
   max-width: 27rem;
-  height: 70rem;
+  height: 77.5rem;              /* nine stops and the Summit */
   margin: 0 auto;
 }
 .map__ground, .map__nodes, .map__trail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
@@ -251,21 +251,22 @@
 @media (min-width: 600px) {
   .map {
     --map-layout: grid;
-    --node: 7.25rem;
-    --node-open: 7.75rem;
-    --node-now: 9.25rem;
+    --node: 6.25rem;
+    --node-open: 6.75rem;
+    --node-now: 7.75rem;
     flex: 1 0 auto;
     max-width: 54rem;
     height: auto;
     min-height: 43rem;
   }
-  .map-pos, .map-pos.is-odd { left: calc(18% + var(--col) * 32%); top: calc(17.5% + var(--row) * 30% + var(--wob) * 1.75rem); }
+  /* a snake four wide: 1 to 4, 8 to 5, then Stop 9 and the Summit */
+  .map-pos, .map-pos.is-odd { left: calc(12.5% + var(--col) * 25%); top: calc(17% + var(--row) * 31% + var(--wob) * 1.75rem); }
   .map-node__label, .map-node.is-odd .map-node__label {
-    top: calc(100% + 1.125rem);
+    top: calc(100% + .75rem);
     left: 50%;
     right: auto;
     align-items: center;
-    max-width: min(14rem, 30vw);  /* a column is 32% wide: long names ("Times Table Tower") keep to one line */
+    max-width: min(12rem, 23vw);  /* a column is 25% wide: a long name ("Times Table Tower") takes two lines */
     text-align: center;
     transform: translateX(-50%);
   }
@@ -294,11 +295,11 @@
     max-width: 80rem;
     min-height: 28rem;
   }
-  .map-pos, .map-pos.is-odd { left: calc(10% + var(--col5) * 20%); top: calc(30% + var(--row5) * 40% + var(--wob5) * 1.25rem); }
+  .map-pos, .map-pos.is-odd { left: calc(10% + var(--col5) * 20%); top: calc(29% + var(--row5) * 42% + var(--wob5) * 1.25rem); }
   /* two rows are tight on a 768px-high screen: names a size smaller, labels closer to their disc; the four stops of
      the second row stand further apart (30-home.js --col5), so their names may be wider and keep to one line */
   .map-node__label, .map-node.is-odd .map-node__label { top: calc(100% + .75rem); max-width: 11rem; }
-  .map-node:nth-child(n+6) .map-node__label { max-width: min(15rem, 22.5vw); }
+  .map-node:nth-child(n+6) .map-node__label { max-width: min(12rem, 19vw); }
   .map-node__name { font-size: 1.1875rem; }
   .map-node.is-current .map-node__name { font-size: 1.375rem; }
   .map-node__zip, .map-node.is-odd .map-node__zip { left: calc(var(--node-now) * .27); top: calc(var(--node-now) * -.5 - 3.5rem); width: 4rem; }
@@ -311,26 +312,23 @@
   .map {
     --map-layout: wave;
     /* nine stops share the width: a badge is about three quarters of the step between two stops */
-    --node: min(7.25rem, 8.3vw);
-    --node-open: min(7.75rem, 8.8vw);
-    --node-now: min(9rem, 10.2vw);
+    --node: min(7.25rem, 7.6vw);
+    --node-open: min(7.75rem, 8vw);
+    --node-now: min(9rem, 9.3vw);
     max-width: none;
     min-height: 23rem;
   }
-  .map-pos { left: calc(6.5% + var(--i) * 10.875%); top: 36%; }
-  .map-pos.is-odd { left: calc(6.5% + var(--i) * 10.875%); top: 64%; }
+  .map-pos { left: calc(5% + var(--i) * 10%); top: 36%; }
+  .map-pos.is-odd { left: calc(5% + var(--i) * 10%); top: 64%; }
   .map-node__zip, .map-node.is-odd .map-node__zip { left: calc(var(--node-now) * .26); top: calc(var(--node-now) * -.5 - 3.6rem); width: 4rem; }
   .map-node__name, .map-node.is-current .map-node__name { font-size: 1.3125rem; }
-  .map-node__label, .map-node.is-odd .map-node__label, .map-node:nth-child(n+6) .map-node__label { top: calc(100% + 1.125rem); max-width: 10vw; }
+  .map-node__label, .map-node.is-odd .map-node__label, .map-node:nth-child(n+6) .map-node__label { top: calc(100% + 1.125rem); max-width: 9.4vw; }
 }
 
 /* ---------- where Zip stands on a tablet, a laptop and the board (R3B-02; G4: Zip walks on from the quick stops, so he
    must never stand on another stop's name or stars) ---------- */
-@media (min-width: 600px) {                               /* the 3 x 3 snake: beside the badge, away from the map's edge */
-  .map__nodes .map-node .map-node__zip { left: calc(var(--node-now) * .5 + .25rem); right: auto; top: -2.25rem; width: 4.25rem; }
-  .map__nodes .map-node:nth-child(3) .map-node__zip,
-  .map__nodes .map-node:nth-child(4) .map-node__zip,
-  .map__nodes .map-node:nth-child(9) .map-node__zip { left: calc(var(--node-now) * -.5 - 4.5rem); }
+@media (min-width: 600px) {                               /* the snake four wide: beside the badge, away from the map's edge */
+  .map__nodes .map-node .map-node__zip { left: calc(var(--node-now) * .22); right: auto; top: calc(var(--node-now) * -.5 - 3.4rem); width: 3.75rem; }
 }
 @media (min-width: 700px) and (min-aspect-ratio: 5/4) {   /* two rows: above a stop of the first row, left of one of the second */
   .map__nodes .map-node .map-node__zip,
@@ -355,4 +353,14 @@
 @media (max-width: 419px) {
   .home__trophies { gap: .25rem; padding: 0 .625rem 0 .5rem; }
   .home__trophies .stars { display: none; }
+}
+
+/* ---------- the Summit (Session 14): the tenth node, after Stop 9 ---------- */
+.map-node--summit .map-node__btn { --ring: var(--line-strong); }
+.map-node--summit.is-open .map-node__btn { --ring: var(--world-10); --ring-edge: var(--world-10-deep); }
+.map-node--summit.is-done .map-node__btn { --ring: var(--gold); --ring-edge: var(--gold-edge); }
+.map-node--summit.is-soon .map-node__disc { filter: saturate(.55); }
+/* the Summit stands under the middle of the last row on an upright tablet; on a laptop at the start of the second row */
+@media (min-width: 700px) and (min-aspect-ratio: 5/4) {
+  .map__nodes .map-node.map-node--summit .map-node__zip { left: calc(var(--node-now) * .5 + .25rem); top: -2.25rem; }   /* right of it, away from the edge */
 }

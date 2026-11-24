@@ -9,6 +9,8 @@
    Logged once per round, as in v2: T.events.log({s, g: 'l', v: '<number right>', ok: a bolt was won, q: last question}).
    Saved for the hub and the dashboards (docs/04 "bolt"): stops.N.lightning.best and stops.N.lightning.plays.
    T.steps.lightning.secs, when set, replaces the length of every round (the tests use a short one).
+   The Summit's big round (79-summit.js): mount(ctx, {big: {items, secs}}) plays the items of all nine stops (90 s), saves
+   summit.big.best and .plays, logs {s: 0, g: 'L', v, ok} as v2 did, and its way on goes back to the Summit.
    Rewards (Phase 6, 18-rewards.js): right answers in a row pop on Zip at 3, 5, 10, then every 5 (stops.N.streak.lightning);
    a new best shows the old best on the result card; the bolt zaps onto it. */
 (function (T) {
@@ -46,10 +48,11 @@
     return list.filter(function (x) { return Array.isArray(x) && x[0] && Array.isArray(x[1]) && x[1].length >= 2; });
   }
 
-  function mount(ctx) {
-    const items = itemsOf(ctx.pack);
-    const secs = Number(T.steps.lightning.secs) || Number(ctx.pack && ctx.pack.lightning && ctx.pack.lightning.secs) || 60;
-    const base = ['stops', String(ctx.stop), 'lightning'];
+  function mount(ctx, opts) {
+    const big = opts && opts.big ? opts.big : null;
+    const items = big ? big.items : itemsOf(ctx.pack);
+    const secs = Number(T.steps.lightning.secs) || (big ? Number(big.secs) || 90 : Number(ctx.pack && ctx.pack.lightning && ctx.pack.lightning.secs) || 60);
+    const base = big ? ['summit', 'big'] : ['stops', String(ctx.stop), 'lightning'];
     let stopRound = null, onKey = null, shown = null;
 
     function quit() {
@@ -75,6 +78,7 @@
         el('ul', { class: 'mt-medals', 'aria-label': 'Bolts' }, BOLTS.slice().reverse().map(function (b) {
           return el('li', { class: 'mt-medal' }, T.ui.art('bolt-' + b.k, { decorative: true }), el('span', b.at + ' or more'));
         })),
+        big ? el('p', { class: 'lt-intro__from' }, T.SUMMIT.big.from) : null,
         best != null ? el('p', { class: 'mt-best' }, 'Your best: ', el('b', String(best))) : null);
       ctx.body.appendChild(el('div', { class: 'mt-wrap' }, card));
       ctx.primary({ label: 'Start the clock', icon: 'play', onClick: countdown });
@@ -111,7 +115,7 @@
       const order = T.util.shuffle(items.slice());
       let qi = 0, score = 0, streak = 0, busy = false, over = false;
       const t0 = Date.now();
-      const run = T.rewards.counter(ctx.stop, 'lightning');   // Phase 6: "5 in a row!" on Zip (never a word when it ends)
+      const run = T.rewards.counter(big ? 0 : ctx.stop, 'lightning');   // the big round's runs are not kept (stop 0)   // Phase 6: "5 in a row!" on Zip (never a word when it ends)
 
       const timeNum = el('b', String(secs));
       const timeBar = el('i', { class: 'lt-time__bar' });
@@ -138,6 +142,7 @@
           b.insertBefore(el('kbd', { class: 'lt-o__key', 'aria-hidden': 'true' }, String(j + 1)), b.firstChild);
           opts.appendChild(b);
         });
+        if (T.tools && T.tools.fracText) { T.tools.fracText(qEl); T.tools.fracText(opts); }   // Stop 7: 1/4 as on paper
       }
 
       function tap(b) {
@@ -198,11 +203,13 @@
         const bolt = boltFor(score), old = T.store.get(base.concat('best'), null);
         T.store.set(base.concat('plays'), (Number(T.store.get(base.concat('plays'), 0)) || 0) + 1);
         if (old == null || score > old) T.store.set(base.concat('best'), score);
-        T.events.log({ s: ctx.stop, g: 'l', v: String(score), ok: !!bolt, q: qi - 1 });
+        T.events.log({ s: big ? 0 : ctx.stop, g: big ? 'L' : 'l', v: String(score), ok: !!bolt, q: qi - 1 });
         const say = bolt ? STR.won : STR.none;
         ctx.instruct(Object.assign({ mood: bolt ? 'cheer' : 'happy' }, say));
         // ONE big button to the way on (the next step, the self-check or the next stop); "Go again" is quiet
-        const way = T.stage.wayOn(ctx.stop, 'lightning', { again: countdown, againLabel: 'Go again' });
+        const way = big ? { line: '', primary: { label: T.SUMMIT.way.back, icon: 'back', onClick: function () { T.router.go('summit'); } },
+          secondary: [{ label: 'Go again', icon: 'replay', onClick: countdown }] }
+          : T.stage.wayOn(ctx.stop, 'lightning', { again: countdown, againLabel: 'Go again' });
         // Phase 6: a new best (compared before it was saved) shows the old best; the bolt zaps onto the card
         const newBest = old != null && score > old;
         shown = ctx.result({
@@ -221,7 +228,7 @@
 
     if (!items.length) {
       ctx.instruct({ en: 'No questions here yet.', vi: 'Chưa có câu hỏi nào.', mood: 'think' });
-      ctx.primary({ label: 'Back to the stop', icon: 'back', onClick: function () { T.router.go('stop-' + ctx.stop); } });
+      ctx.primary({ label: 'Back to the stop', icon: 'back', onClick: function () { T.router.go(big ? 'summit' : 'stop-' + ctx.stop); } });
       return;
     }
     intro();

@@ -148,7 +148,9 @@
     minus: '<path d="M5 12h14"/>',
     up: '<path d="M12 19V5.5"/><path d="M5.5 11.5 12 5l6.5 6.5"/>',
     down: '<path d="M12 5v13.5"/><path d="M5.5 12.5 12 19l6.5-6.5"/>',
-    bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.8.6 1.1 1.4 1.1 2.2h5c0-.8.3-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>'
+    bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.8.6 1.1 1.4 1.1 2.2h5c0-.8.3-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',
+    clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    print: '<path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14.5h10V21H7z"/>'
   };
 
   // icon(name) -> a small inline <svg>. An unknown name gives a plain dot (never throws).

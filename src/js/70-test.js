@@ -258,5 +258,11 @@
 
   T.steps = T.steps || {};
   T.steps.test = { mount: mount, medals: MEDALS };
+  // what a stop's paper is saved out of (the unit 'paper': questions fully right, out of the questions on it);
+  // 0 when the pack has no test. Used by the progress code (26-progress-code.js)
+  T.steps.test.maxMarks = function (pack) {
+    const items = (pack && pack.test && pack.test.items) || [];
+    return items.filter(function (it) { return it && Array.isArray(it.v) && it.v.length; }).length;
+  };
   (T.zipLines = T.zipLines || {}).test = STR;           // checked by test/guide.mjs (at most 10 words)
 })(window.T = window.T || {});

@@ -111,6 +111,13 @@
 .tp-sheet .pk__ring { stroke: var(--tp-pencil); stroke-width: 2.4; }
 .tp-sheet .pk.is-bad .pk__ring { stroke: var(--tp-bad); }
 .tp-sheet .pk.is-shown .pk__ring { stroke: var(--tp-good); }
+/* the marked paper: solid closed rings, green (right) or red (wrong), a dashed green ring for a number that should have one */
+.tp-sheet .pk__ring path { stroke-dasharray: none; animation: none !important; }
+.tp-sheet .pk.is-right .pk__ring { stroke: var(--go); }
+.tp-sheet .pk.is-wrong .pk__ring { stroke: var(--ring-wrong); }
+.tp-sheet .pk.is-wrong { color: var(--ring-wrong); }
+.tp-sheet .pk.is-answer .pk__ring--answer { stroke: var(--go); }
+.tp-sheet .pk__ring--answer path { stroke-dasharray: .03 .022; }
 
 /* ---------- in See it ---------- */
 .see-hands__desk:has(> .pc, > .ord) { margin-top: auto; margin-bottom: auto; align-self: center; }

@@ -50,7 +50,7 @@
   }
 
   function saveRun(stop, kind, n) {
-    if (KINDS.indexOf(kind) < 0 || !(n >= 3)) return false;
+    if (KINDS.indexOf(kind) < 0 || !(n >= 3) || !(Number(stop) >= 1)) return false;   // stop 0: the Summit's big round
     const path = ['stops', String(stop), 'streak', kind];
     const old = Number(T.store.get(path, 0)) || 0;
     if (n <= old) return false;

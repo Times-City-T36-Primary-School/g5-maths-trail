@@ -5,7 +5,8 @@
    drawn shelves in the G4 flat style: the 9 stop badges (won: bright, with the day; others as outlines, "Not yet" or
    "Coming soon"), the Mini Practice test medal and the Lightning bolt of every stop that has them (with the best
    scores), and "My best runs" (the longest runs of right answers in a row). A trophy the shelf has not shown yet
-   wears "New!" once (trophy.seen). ONE main button: "Back to the map". Readable on the classroom board.
+   wears "New!" once (trophy.seen). The Summit (Session 14): the Summit Trophy (70% in the final test), the final test's
+   best and the big Lightning round's best (T.SUMMIT.shelf). ONE main button: "Back to the map". Readable on the classroom board.
    The words are in T.REWARDS.shelf (18-rewards-text.js). */
 (function (T) {
   'use strict';
@@ -59,7 +60,10 @@
         medal: hasTest ? { prize: medal, best: tb == null ? null : fill(T.REWARDS.outOf, { n: tb, m: n }), key: medal ? 'm' + s.n + '-' + medal.k : '' } : null,
         bolt: hasBolt ? { prize: bolt, best: lb, key: bolt ? 'l' + s.n + '-' + bolt.k : '' } : null });
     });
-    out.any = out.stars > 0 || out.won > 0 || out.medals > 0 || out.bolts > 0 || T.rewards.KINDS.some(function (k) { return out.runs[k] > 0; });
+    const sm = T.store.get(['summit'], null) || {};
+    out.summit = { won: !!(sm.test && sm.test.won), day: day(sm.trophy && sm.trophy.on), test: sm.test && sm.test.best != null ? sm.test : null,
+      big: sm.big && sm.big.best != null ? sm.big.best : null };
+    out.any = out.summit.won || out.summit.test != null || out.summit.big != null || out.stars > 0 || out.won > 0 || out.medals > 0 || out.bolts > 0 || T.rewards.KINDS.some(function (k) { return out.runs[k] > 0; });
     return out;
   }
 
@@ -141,6 +145,20 @@
       el('ul', { class: 'shelf__cubbies' }, cubbies),
       c.soon ? el('p', { class: 'shelf__soon' }, c.soon === 1 ? W.moreSoonOne : fill(W.moreSoon, { n: c.soon })) : null), 'shelf--prizes');
 
+    // the Summit: the trophy, the final test's best, the big Lightning round's best
+    const SW = T.SUMMIT.shelf, sm = c.summit;
+    const smSlot = function (art, name, status, on, key) {
+      return el('div', { class: ['shelf__slot', on ? 'is-won' : 'is-outline'], role: 'group', 'aria-label': name + '. ' + status + '.' },
+        on && key ? freshTag(c, key, fresh) : null,
+        pic(art, 'shelf__pic shelf__pic--prize'),
+        el('span', { class: 'shelf__name', 'aria-hidden': 'true' }, name),
+        el('span', { class: 'shelf__status', 'aria-hidden': 'true' }, status));
+    };
+    const summit = section(SW.title, SW.how, el('div', { class: 'shelf__slots shelf__slots--summit' },
+      smSlot('trophy-summit', sm.won ? SW.trophy : SW.trophyNot, sm.won ? (sm.day ? fill(W.won, { d: sm.day }) : W.wonNoDate) : SW.notYet, sm.won, 'summit'),
+      smSlot('icon-summit-test', SW.test, sm.test ? fill(W.best, { b: fill(T.REWARDS.outOf, { n: sm.test.best, m: sm.test.total }) }) : SW.notYet, !!sm.test, ''),
+      smSlot('icon-extra-lightning', SW.big, sm.big != null ? fill(W.best, { b: sm.big }) : SW.notYet, sm.big != null, '')), 'shelf--summit');
+
     const runs = section(W.runs, W.runsHow, el('ul', { class: 'shelf__runs' }, T.rewards.KINDS.map(function (k) {
       const n = c.runs[k];
       return el('li', { class: ['shelf__run', n ? 'is-won' : 'is-outline'] },
@@ -152,7 +170,7 @@
     const head = el('header', { class: 'home__head trophies__head' },
       T.ui.iconButton({ icon: 'back', label: playing ? 'Back to the map' : 'Back to the start', onClick: leave }),
       el('div', { class: 'brand' }, el('span', { class: 'trophies__cup', 'aria-hidden': 'true' }, T.ui.icon('trophy')), el('h1', { class: 'brand__name' }, W.title)));
-    const inner = el('div', { class: 'trophies__inner rise' }, zip.el, tiles, badges, prizes, runs);
+    const inner = el('div', { class: 'trophies__inner rise' }, zip.el, tiles, badges, prizes, summit, runs);
     const scroller = el('div', { class: 'trophies__scroll' }, inner);
     const bar = T.ui.actionBar();
     T.shell.screen.appendChild(el('div', { class: ['trophies', !c.any && 'is-empty'] }, head, scroller, bar.el));

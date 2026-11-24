@@ -16,6 +16,7 @@
   --ctl: #FFFFFF; --ctl-ink: #10305E; --ctl-line: #C9D6E5; --ctl-edge: #B3C4D8;
   --tp-font: Arial, 'Helvetica Neue', Helvetica, 'Liberation Sans', var(--font-body);
   --tp-pencil: #3A3F47; --tp-good: #1E8E5F; --tp-bad: #C62C1C; --tp-half: #B86E00; --tp-grey: #5F656D;
+  --ring-wrong: #D93A3A;                              /* white paper in both themes: the day colour of the token */
   color-scheme: light;
   position: relative;
   flex: 1 1 auto; min-height: 0;
@@ -109,7 +110,9 @@
 .tp-tick__box { position: relative; justify-self: end; width: 1.875rem; height: 1.875rem; border: 2px solid #111111; background: #FFFFFF; }
 .tp-tick.is-good { background: #EAF7F0; }
 .tp-tick.is-bad { background: #FDECE9; }
-.tp-tick.is-fix { box-shadow: inset 0 0 0 2px var(--tp-good); }
+.tp-tick.is-answer .tp-tick__box { border-color: var(--go); border-style: dashed; }
+.tp-tick.is-good .tp-tick__box > .tp-pencil { stroke: var(--go); }
+.tp-tick.is-bad .tp-tick__box > .tp-pencil { stroke: var(--ring-wrong); }
 
 /* circle one word */
 .tp-circle { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1.25rem; }
@@ -121,6 +124,8 @@
 .tp-ring:disabled { cursor: default; }
 .tp-ring.is-good { color: var(--tp-good); }
 .tp-ring.is-bad { color: var(--tp-bad); }
+.tp-ring.is-good > .tp-pencil { stroke: var(--go); }
+.tp-ring.is-bad > .tp-pencil { stroke: var(--ring-wrong); }
 
 /* pencil strokes that draw themselves, and the teacher's pen */
 .tp-pencil { position: absolute; pointer-events: none; overflow: visible; fill: none; stroke: var(--tp-pencil); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
@@ -129,6 +134,21 @@
 .tp-pencil--ring { left: -.125rem; top: -.125rem; width: calc(100% + .25rem); height: calc(100% + .25rem); }
 .tp-pencil--tick { left: -.1rem; top: -.55rem; width: 2.2rem; height: 2.2rem; stroke-width: 3; }
 .tp-pencil.is-fix { stroke: var(--tp-good); stroke-dasharray: none; }
+/* rings are closed and drawn solid, at once (Jovan, EOS 1 finishing touches); ticks still draw themselves */
+.tp-pencil--ring path { stroke-dasharray: none; animation: none !important; }
+/* the review: the right answer the child did not choose has a dashed green ring */
+.tp-pencil--answer { stroke: var(--go); }
+.tp-pencil--answer path { stroke-dasharray: .03 .022; animation: none !important; }
+/* the review's sign by what was chosen: a green tick (right) or a red cross (wrong) */
+.tp-sign {
+  position: absolute; top: -.5rem; right: -.625rem; z-index: 2;
+  display: grid; place-items: center; width: 1.375rem; height: 1.375rem; border-radius: 50%;
+  font: 900 .8125rem/1 var(--font-body); color: #FFFFFF; box-shadow: 0 0 0 2px #FFFFFF;
+  animation: rise-in var(--dur-quick) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+}
+.tp-sign--right { background: var(--go); }
+.tp-sign--wrong { background: var(--ring-wrong); }
+.tp-tick__box > .tp-sign { top: 50%; right: calc(100% + .375rem); margin-top: -.6875rem; }
 .tp-mk__got { display: inline-flex; align-items: center; gap: .125rem; font: 700 1rem/1 var(--tp-font); white-space: nowrap; }
 .tp-got--correct { color: var(--tp-good); }
 .tp-got--partial { color: var(--tp-half); }

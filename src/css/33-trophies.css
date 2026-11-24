@@ -123,3 +123,7 @@
   .shelf__row--badges .shelf__item:nth-child(5n+1)::after { content: none; }
   .shelf__row--badges .shelf__item:nth-child(9n+1)::after { content: ""; left: 0; right: -800%; }
 }
+
+/* the Summit (Session 14): the trophy, the final test and the big Lightning round on one plank */
+.shelf__slots--summit { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: .75rem .75rem 0; border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-1); overflow: hidden; }
+.shelf__slots--summit .shelf__slot.is-won .shelf__pic { box-shadow: 0 0 0 .1875rem var(--gold); border-radius: 50%; }

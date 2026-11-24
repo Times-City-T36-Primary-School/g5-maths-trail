@@ -43,6 +43,7 @@
 
   /* ---- soft coral: wrong answers (never a red screen) ---- */
   --no: #EE7D6C;
+  --ring-wrong: #D93A3A;       /* a wrong ring or tick in the test review (clearer than the soft coral) */
   --no-edge: #C8594A;
   --no-soft: #FFE8E2;
   --no-line: #F3A99D;
@@ -121,6 +122,7 @@
   --world-7: #8DB32E;  --world-7-deep: #66861A;   /* Shape Studio */
   --world-9: #5B8CA8;  --world-9-deep: #3C6880;   /* Data Stadium */
   --world-8: #C050A8;  --world-8-deep: #92367E;   /* Circle Circus */
+  --world-10: #3B4FA8; --world-10-deep: #24316E;  /* the Summit */
   --hue-tint: .2;              /* how strong a world's ground colour is on the map */
 
   /* ---- world 1, the Number Factory: petal pink on deep berry, soft pink paper ---- */
@@ -200,6 +202,7 @@
     --bar: #11233A;  --map-dot: rgba(190, 215, 245, .1);
     --go: #21A870;  --go-edge: #0F5F3D;  --go-ink: #FFFFFF;  --go-soft: #12392B;  --go-line: #2C8A62;  --go-text: #86E3B8;
     --no: #E8806F;  --no-edge: #8E3B30;  --no-soft: #3E211E;  --no-line: #9B4E43;  --no-text: #FFB9AC;
+    --ring-wrong: #FF7B7B;
     --ctl: #213B5C;  --ctl-ink: #EEF5FD;  --ctl-line: #35547C;  --ctl-edge: #35547C;
     --disabled: #1A2F4A;  --disabled-ink: #6F87A6;  --disabled-edge: #0C1A2D;
     --pick: #6FB1FF;  --pick-soft: #16365A;  --focus: #7DB9FF;
@@ -221,6 +224,7 @@
     --world-7: #9ECA31;  --world-7-deep: #506223;
     --world-9: #87BAD8;  --world-9-deep: #264A5E;
     --world-8: #E785D2;  --world-8-deep: #5E2652;
+    --world-10: #8FA2F0; --world-10-deep: #2B3878;
     --hue-tint: .26;
     /* the Flower Lab at night: deep berry, glowing petals */
     --w1-bg: #290A16;  --w1-bg-deep: #1D070F;  --w1-surface: #3A1222;  --w1-surface-2: #4D192D;
@@ -243,6 +247,7 @@
   --bar: #11233A;  --map-dot: rgba(190, 215, 245, .1);
   --go: #21A870;  --go-edge: #0F5F3D;  --go-ink: #FFFFFF;  --go-soft: #12392B;  --go-line: #2C8A62;  --go-text: #86E3B8;
   --no: #E8806F;  --no-edge: #8E3B30;  --no-soft: #3E211E;  --no-line: #9B4E43;  --no-text: #FFB9AC;
+  --ring-wrong: #FF7B7B;
   --ctl: #213B5C;  --ctl-ink: #EEF5FD;  --ctl-line: #35547C;  --ctl-edge: #35547C;
   --disabled: #1A2F4A;  --disabled-ink: #6F87A6;  --disabled-edge: #0C1A2D;
   --pick: #6FB1FF;  --pick-soft: #16365A;  --focus: #7DB9FF;
@@ -264,6 +269,7 @@
   --world-7: #9ECA31;  --world-7-deep: #506223;
   --world-9: #87BAD8;  --world-9-deep: #264A5E;
   --world-8: #E785D2;  --world-8-deep: #5E2652;
+  --world-10: #8FA2F0; --world-10-deep: #2B3878;
   --hue-tint: .26;
   --w1-bg: #290A16;  --w1-bg-deep: #1D070F;  --w1-surface: #3A1222;  --w1-surface-2: #4D192D;
   --w1-line: #582237;  --w1-line-strong: #7D3651;  --w1-bar: #330D1C;  --w1-ctl: #541C32;
@@ -307,6 +313,7 @@
 [data-hue="7"] { --hue: var(--world-7); --hue-deep: var(--world-7-deep); }
 [data-hue="8"] { --hue: var(--world-8); --hue-deep: var(--world-8-deep); }
 [data-hue="9"] { --hue: var(--world-9); --hue-deep: var(--world-9-deep); }
+[data-hue="10"] { --hue: var(--world-10); --hue-deep: var(--world-10-deep); }
 
 /* ---- base ---- */
 html {

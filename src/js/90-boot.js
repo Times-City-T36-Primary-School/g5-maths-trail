@@ -14,6 +14,16 @@
     // Phones only show the pressed look of a button (:active) when something listens for touches.
     app.addEventListener('touchstart', function () {}, { passive: true });
 
+    // the school label: a thin quiet line at the very bottom of every screen, under the action bar (Jovan: the title and
+    // the school line on a laptop, the school line only on a phone; hidden when printing, 49-label.css)
+    void T.shell.screen;                              // the screen first, so the label sits under it
+    const B = T.brand, U = T.util;
+    app.appendChild(U.el('footer', { class: 'app-label', 'aria-label': B.title + ', ' + B.school },
+      U.el('span', { class: 'app-label__title' }, B.title),
+      U.el('span', { class: 'app-label__dot', 'aria-hidden': 'true' }, '·'),
+      U.el('span', { class: 'app-label__school' }, B.school)));
+    app.classList.add('has-label');
+
     // The school build (src/school/) waits: its bridge finds out who is logged in, then starts the router
     // through MTRAIL.start (docs/04-data-contract.md). The preview build starts at once.
     if (T.school && typeof T.school.boot === 'function') T.school.boot();

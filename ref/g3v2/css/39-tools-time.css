@@ -1,0 +1,167 @@
+/* 39-tools-time.css - the Stop 8 tools (39-tools-time.js): the clock with buttons for its hands (and, in See it, a
+   digital clock with a.m. and p.m.), draw a line to match, a timetable with times to tap and a time line, and the
+   pictures clock, dclock, pair and table. Flat on the light art plate (light in both themes, ink --plate-ink; the words under a picture take the colour of the text around them), tap targets
+   48 px. Meaning in colour, as in Maths v2: the short (hour) hand and its buttons are blue, the long (minute) hand and its
+   buttons are red; a lit row and column of a timetable are steel blue, the colour of the Clock Station; a jump on the time
+   line is gold. Motion: transform and opacity only (the hands turn, a line draws itself like a pen); still = at once. */
+
+/* ---------- the clock ---------- */
+:root { --tc-h-ink: #1F4FA8; --tc-m-ink: #B01E27; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --tc-h-ink: #9DBBFF; --tc-m-ink: #FF9CA2; } }
+:root[data-theme="dark"] { --tc-h-ink: #9DBBFF; --tc-m-ink: #FF9CA2; }
+.tc { display: grid; justify-items: center; gap: .625rem; width: 100%; min-width: 0; }
+.tc__clock { width: min(13rem, 56vw); padding: .375rem; border-radius: 50%; background: var(--plate); box-shadow: inset 0 0 0 2px var(--plate-line); }
+.tc__box, .tc__svg { display: block; width: 100%; height: auto; }
+.tc__rim { fill: #3F6E9E; }
+.tc__face { fill: #FFFFFF; stroke: #2B4F78; stroke-width: 2; }
+.tc__tk { stroke: #2A2F3A; stroke-width: 1.2; stroke-linecap: round; }
+.tc__tk--big { stroke-width: 3; }
+.tc__n { fill: #10305E; font: 700 18.5px/1 var(--font-display); text-anchor: middle; }
+.tc__hh, .tc__mh { transform-box: view-box; transform-origin: 100px 100px; transition: transform var(--dur-slow) var(--ease-snap); }
+.tc__hh path { fill: #1F4FA8; stroke: #FFFFFF; stroke-width: 1.5; }
+.tc__mh path { fill: #D22630; stroke: #FFFFFF; stroke-width: 1.5; }
+.tc__pin { fill: #2A2F3A; }
+.tc__pin2 { fill: #FFD872; }
+.tc__ctl { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1rem; }
+.tc__pair { display: grid; justify-items: center; gap: .125rem; }
+.tc__lab { font: 700 var(--fs-small)/1.2 var(--font-body); }
+.tc__lab--h { color: var(--tc-h-ink); }
+.tc__lab--m { color: var(--tc-m-ink); }
+.tc__row { display: flex; gap: .375rem; }
+.tc__b { min-height: 3rem; padding: .5rem .75rem; font-size: 1rem; }
+.tc__b--h:not(:disabled) { --btn-face: #E6EEFB; --btn-ink: #163B80; --btn-line: #8DAAE0; --btn-edge: #6F8FCB; }
+.tc__b--m:not(:disabled) { --btn-face: #FCE8E9; --btn-ink: #8E1820; --btn-line: #E79AA0; --btn-edge: #CF7A80; }
+.tc__cap { margin: 0; text-align: center; font: 700 var(--fs-small)/1.25 var(--font-body); color: inherit; }
+/* See it: the digital clock beside the clock, with a.m. and p.m. */
+.tc__digi { display: grid; justify-items: center; gap: .5rem; }
+.tc__screen { display: grid; justify-items: center; gap: .125rem; min-width: 10rem; padding: .5rem 1rem; border-radius: var(--r-md); background: #173B63; box-shadow: inset 0 0 0 3px #0E2744; }
+.tc__d24 { font: 600 2.5rem/1.1 var(--font-display); color: #7CF0C5; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.tc__d12 { font: 700 1rem/1.2 var(--font-body); color: #DCE8F3; }
+.tc__aps { display: flex; gap: .5rem; }
+.tc__ap { min-width: 4.5rem; min-height: 3rem; justify-content: center; font-size: 1.0625rem; }
+.tc__ap.is-on, .tc__ap.is-on:disabled { --btn-face: #173B63; --btn-ink: #FFFFFF; --btn-line: #0E2744; --btn-edge: #0E2744; }
+.tc--mini { gap: .25rem; }
+.tc--mini .tc__clock { width: 8.5rem; padding: .25rem; }
+/* a wide screen: the clock on the left, the buttons (and the digital clock) beside it */
+@media (min-width: 600px) {
+  .tc:not(.tc--mini) { grid-template-columns: auto auto; align-items: center; justify-content: center; column-gap: 1.5rem; }
+  .tc:not(.tc--mini) .tc__clock { grid-row: 1 / span 3; }
+  .tc:not(.tc--mini) .tc__ctl { flex-direction: column; align-items: center; }
+}
+.mk .tc__clock { width: min(12rem, 52vw); }
+.see-hands .tc__clock { width: min(17rem, 64vw, 40vh); }
+.see-hands .tc--dig .tc__clock { width: min(15rem, 52vw, 34vh); }
+/* a phone: in a question the clock and its buttons sit side by side, so the number pad never hides the buttons */
+@media (max-width: 599px) {
+  .mk .tc { grid-template-columns: auto auto; align-items: center; justify-content: center; gap: .375rem .5rem; }
+  .mk .tc__clock { grid-row: 1 / span 2; width: min(10rem, 44vw); }
+  .mk .tc__ctl { flex-direction: column; gap: .25rem; }
+  .mk .tc__b { padding: .5rem; min-width: 3rem; }
+  .see-hands .tc--dig { grid-template-columns: auto auto; align-items: center; justify-content: center; gap: .5rem .75rem; }
+  .see-hands .tc--dig .tc__clock { width: min(9.5rem, 42vw, 30vh); }
+  .see-hands .tc--dig .tc__ctl { grid-column: 1 / -1; }
+  .see-hands .tc--dig .tc__screen { min-width: 0; padding: .375rem .75rem; }
+  .see-hands .tc--dig .tc__d24 { font-size: 2rem; }
+}
+
+/* ---------- a digital clock, two pictures side by side ---------- */
+.dck { display: inline-grid; justify-items: center; gap: .25rem; }
+.dck__screen { display: block; padding: .375rem .875rem; border-radius: var(--r-md); background: #173B63; box-shadow: inset 0 0 0 3px #0E2744; }
+.dck__t { display: block; font: 600 2rem/1.1 var(--font-display); color: #7CF0C5; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.dck__cap { font: 700 var(--fs-small)/1.2 var(--font-body); color: inherit; }
+.tpair { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem 1rem; }
+.tpair__mid { font: 600 2rem/1 var(--font-display); color: inherit; }
+.tpair .tc--mini .tc__clock { width: 7.5rem; }
+
+/* jumps over days: the day in each box is a little smaller than the time */
+.tdh__d { font-size: 19px; fill: var(--plate-ink-2); }
+
+/* ---------- a table (a timetable) ---------- */
+.ttb { display: grid; justify-items: center; gap: .25rem; max-width: 100%; min-width: 0; }
+.ttb__wrap { max-width: 100%; overflow-x: auto; border-radius: var(--r-md); }
+.ttb__t { border-collapse: separate; border-spacing: 0; font: 600 1.0625rem/1.2 var(--font-display); color: var(--plate-ink); background: #FFFFFF;
+  border: 2px solid #2B4F78; border-radius: var(--r-md); overflow: hidden; font-variant-numeric: tabular-nums; }
+.ttb__t th, .ttb__t td { padding: .4rem .6rem; border-right: 1px solid #C9D6E5; border-bottom: 1px solid #C9D6E5; text-align: center; white-space: nowrap; }
+.ttb__t tr > :last-child { border-right: 0; }
+.ttb__t tbody tr:last-child > * { border-bottom: 0; }
+.ttb__t thead th { background: #2B4F78; color: #FFFFFF; font-weight: 700; }
+.ttb__t tbody th { background: #E3ECF6; text-align: left; font-weight: 700; white-space: normal; min-width: 5.5rem; max-width: 9rem; }
+.ttb__cap { margin: 0; font: 700 var(--fs-small)/1.25 var(--font-body); color: inherit; }
+@media (max-width: 420px) {
+  .ttb__t { font-size: .9375rem; }
+  .ttb__t th, .ttb__t td { padding: .35rem .4rem; }
+  .ttb__t tbody th { min-width: 4.25rem; max-width: 6.5rem; }
+}
+/* a small phone: a timetable with four journeys fits beside the paper's question number */
+@media (max-width: 380px) {
+  .ttb__t--c5 { font-size: .875rem; }
+  .ttb__t--c5 th, .ttb__t--c5 td { padding: .3rem .25rem; }
+  .ttb__t--c5 tbody th { min-width: 0; max-width: 5.25rem; }
+}
+
+/* ---------- See it: the timetable with times to tap, and the time line ---------- */
+.tt { display: grid; justify-items: center; gap: .75rem; width: 100%; min-width: 0; }
+.tt .ttb__t td { padding: .25rem; }
+.see-hands .tt .ttb__t { font-size: 1.25rem; }
+@media (max-width: 420px) { .see-hands .tt .ttb__t { font-size: 1rem; } .tt__cell { min-width: 3.75rem; } }
+.tt__cell { min-width: 4.25rem; min-height: 3rem; padding: .25rem .375rem; border: 0; border-radius: .625rem; background: transparent; color: inherit;
+  font: inherit; cursor: pointer; transition: transform var(--dur-quick) var(--ease-out); }
+.tt__cell:not(:disabled) { background: #F2F7FD; box-shadow: inset 0 0 0 2px #B9CCE3; }
+.tt__cell:not(:disabled):hover { background: #E3ECF6; }
+.tt__cell:disabled { cursor: default; }
+.ttb__t td.is-lit, .ttb__t tbody th.is-lit { background: #D6E6F7; }
+.ttb__t thead th.is-lit { background: #173B63; }
+.tt__cell.is-on { background: var(--gold); color: #10305E; box-shadow: inset 0 0 0 3px var(--gold-edge); animation: tick-pop var(--dur-base) var(--ease-pop); }
+.tt__foot { display: grid; justify-items: center; gap: .5rem; width: 100%; }
+.tt__line { width: min(100%, 32rem); padding: .375rem .5rem; border-radius: var(--r-lg); background: var(--plate); box-shadow: inset 0 0 0 2px var(--plate-line); }
+.tt__line[hidden] { display: none; }
+.tt__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.tt__node rect { fill: #FFFFFF; stroke: #2B4F78; stroke-width: 3; }
+.tt__node.is-end rect { fill: #E3ECF6; }
+.tt__node text { fill: #10305E; font: 700 20px/1 var(--font-display); text-anchor: middle; }
+.tt__node.is-new { transform-box: fill-box; transform-origin: center; animation: tl-pop var(--dur-base) var(--ease-pop) both; }
+.tt__arc { fill: none; stroke: var(--gold-edge); stroke-width: 4; stroke-linecap: round; }
+.tt__arc.is-new { stroke-dasharray: 1; stroke-dashoffset: 1; animation: stroke-draw var(--dur-slow) var(--ease-out) forwards; }
+.tt__lab { fill: #7B4E00; font: 700 17px/1 var(--font-body); text-anchor: middle; }
+.tt__lab.is-new { animation: tt-in var(--dur-base) var(--ease-out) both; animation-delay: 200ms; }
+@keyframes tt-in { from { opacity: 0; } to { opacity: 1; } }
+.tt__ctl { display: flex; align-items: center; justify-content: center; gap: .75rem; }
+.tt__jump[hidden], .tt__total[hidden] { display: none; }
+.tt__total { font: 600 1.375rem/1.2 var(--font-display); color: var(--ink); }
+
+/* ---------- draw a line to match ---------- */
+.lm { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .5rem clamp(3rem, 12vw, 7rem); width: min(100%, 34rem); padding: .5rem;
+  border-radius: var(--r-lg); background: var(--plate); box-shadow: inset 0 0 0 2px var(--plate-line); }
+.lm--wide { width: min(100%, 44rem); }
+.lm__lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 1; }
+.lm__ln { stroke-width: 4; stroke-linecap: round; }
+.lm__ln.is-new { stroke-dasharray: 1; stroke-dashoffset: 1; animation: stroke-draw var(--dur-slow) var(--ease-out) forwards; }
+.lm__col { display: grid; gap: .5rem; align-content: center; min-width: 0; }
+.lm__i { display: grid; justify-items: center; align-content: center; gap: .25rem; min-height: 3.25rem; padding: .375rem .5rem; border: 2px solid #C9D6E5; border-radius: var(--r-md);
+  background: #FFFFFF; color: var(--plate-ink); font: 700 1rem/1.25 var(--font-body); text-align: center; cursor: pointer; transition: transform var(--dur-quick) var(--ease-out); }
+.lm__i:not(:disabled):hover { border-color: #8DAAE0; }
+.lm__i:not(:disabled):active { transform: scale(.97); }
+.lm__i:disabled { cursor: default; }
+.lm__i.is-used { border-color: #2B4F78; }
+.lm__i.is-sel { border-color: var(--gold-edge); box-shadow: 0 0 0 3px var(--gold); }
+.lm__i.is-bad { border-color: #D9475F; }
+.lm__i.is-shake { animation: choice-no .45s ease-out; }
+.lm__t { display: block; }
+.lm__i .dck__t { font-size: 1.5rem; }
+.lm__i .tc--mini .tc__clock { width: 6.5rem; }
+@media (max-width: 420px) { .lm { gap: .375rem 2.5rem; padding: .375rem; } .lm__i { font-size: .9375rem; padding: .25rem; } .lm__i .dck__t { font-size: 1.25rem; } .lm__i .tc--mini .tc__clock { width: 5rem; } }
+
+/* hints and worked answers: smaller pictures */
+.mk__hint .tc--mini .tc__clock, .mk__worked .tc--mini .tc__clock { width: 7rem; }
+
+/* Notes (65-notes.css zooms a tool picture 1.35 to 2.4 times): the clock, the digital clock, the pair and the table size
+   themselves from the plate instead (container units), so they fit it whole at every size */
+.nt-pic--tool:has(> .tc, > .tpair, > .dck, > .ttb) { container-type: size; }
+.nt-pic--tool > .tc, .nt-pic--tool > .tpair, .nt-pic--tool > .dck, .nt-pic--tool > .ttb { zoom: 1; }
+.nt-pic--tool > .tc .tc__clock { width: min(calc(100cqh - 3rem), 80cqw, 20rem); }
+.nt-pic--tool .tc__cap, .nt-pic--tool .dck__cap { font-size: clamp(.9375rem, 5cqh, 1.375rem); }
+.nt-pic--tool > .tpair { flex-wrap: nowrap; gap: 4cqw; }
+.nt-pic--tool > .tpair .tc__clock { width: min(calc(100cqh - 3rem), 40cqw, 15rem); }
+.nt-pic--tool > .tpair .tpair__mid { font-size: clamp(1.5rem, 8cqh, 3rem); }
+.nt-pic--tool .dck__t { font-size: clamp(1.5rem, min(11cqw, 22cqh), 4.5rem); }
+.nt-pic--tool > .ttb .ttb__t { font-size: clamp(.9375rem, min(5cqw, 9cqh), 2rem); }

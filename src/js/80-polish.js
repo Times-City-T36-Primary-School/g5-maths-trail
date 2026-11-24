@@ -268,6 +268,7 @@
 
   function depthOf(route) {
     if (!route || route === 'home') return 0;
+    if (/^summit-/.test(route)) return 2;                   // the Summit's test, big round and certificate are step screens
     return route.split('-').length >= 3 ? 2 : 1;
   }
 
@@ -275,7 +276,13 @@
 
   var SCHOOL = 'Vinschool Times City Primary School - T36';
 
+  // EOS 1 finishing touches (Jovan): the school line now sits in the map's own header, in his exact words
+  // ("Vinschool Times City T36 Primary School – Advanced Program", 25-players.js T.brand), so this older band with
+  // other words is not drawn any more (two school lines, one above the other, would only confuse)
+  var MASTHEAD = false;
+
   function masthead() {
+    if (!MASTHEAD) return;
     var head = T.shell.screen.querySelector('.home__head');
     if (!head || !head.parentNode) return;
     if (head.parentNode.querySelector('.school')) return;

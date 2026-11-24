@@ -5,7 +5,9 @@
    Vietnamese caption. The pictures are the app's own drawings and real parts of its screens (the step icons,
    the nine badges, stars, a medal and a bolt, Zip's line, the Hint buttons, a test paper, the pointing hand).
    ONE main button: "Back to the map" when a child is playing (or in the school build), else "Start".
-   The captions are in T.HOWTO (31-howto-text.js, data only, so build.mjs writes them to dist/dump.txt too). */
+   The captions are in T.HOWTO (31-howto-text.js, data only, so build.mjs writes them to dist/dump.txt too).
+   Every "How to use" button opens this page (the map, the start screen); in the preview build it ends with the card of
+   the written guide (27-howto.js: Students, Teachers and families, every line in English and Vietnamese). */
 (function (T) {
   'use strict';
 
@@ -84,7 +86,9 @@
       el('div', { class: 'brand' }, T.ui.brandMark(), el('h1', { class: 'brand__name' }, T.HOWTO.title.en)),
       viButton);
     const list = el('ol', { class: 'howto__grid' }, cards);
-    const scroller = el('div', { class: 'howto__scroll' }, el('div', { class: 'howto__inner rise' }, list));
+    // the preview build: the written guide for students and for teachers and families (27-howto.js) under the pictures
+    const more = !school && T.howto ? el('div', { class: 'howto__more' }, T.howto.card()) : null;
+    const scroller = el('div', { class: 'howto__scroll' }, el('div', { class: 'howto__inner rise' }, list, more));
     const bar = T.ui.actionBar();
     T.shell.screen.appendChild(el('div', { class: 'howto' }, head, scroller, bar.el));
     bar.primary(playing

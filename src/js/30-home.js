@@ -10,8 +10,11 @@
    Rewards (Phase 6): the total of stars in the header is a button to the trophy shelf (route 'trophies'); a badge
    that was just won flies onto its stop once (T.rewards.land, trophy.landed.N).
 
-   The nodes are placed by CSS (four layouts: a tall zigzag on phones, a three by three snake on
-   an upright tablet, two rows of five and four on a laptop, one long wave on the board). The
+   The Summit (Session 14) is a tenth node after Stop 9: a mountain top with a flag (badge-summit), locked kindly until
+   the Mini Practice tests of 7 stops are done (T.summit.isOpen, 79-summit.js); Zip stands there once every stop is finished.
+
+   The nodes are placed by CSS (four layouts: a tall zigzag on phones, a three by three snake and the Summit under it on
+   an upright tablet, two rows of five on a laptop, one long wave on the board). The
    trail is then drawn through the places the nodes really have, so the two can never disagree. */
 (function (T) {
   'use strict';
@@ -19,7 +22,7 @@
   const el = T.util.el;
 
   const TEXT = {
-    app: 'Maths Revision Trail',
+    app: T.brand ? T.brand.title : 'EOS 1 – G5 Maths Revision Trail',
     soon: 'Coming soon',
     family: 'For families and teachers',
     notes: [
@@ -30,8 +33,8 @@
         en: 'Each child taps their class, types their name and starts straight away. On a shared device, typing the same class and name again brings back that child\'s stars.',
         vi: 'Mỗi em chọn lớp, nhập tên rồi bắt đầu ngay. Trên thiết bị dùng chung, em nhập lại đúng lớp và tên để chơi tiếp với số sao của mình.' },
       { icon: 'device',
-        en: 'Stars and progress are saved on this device, separately for each child. On an iPad, tap Share, then Add to Home Screen, and always open the trail from that icon so the stars are kept.',
-        vi: 'Sao và tiến độ được lưu trên thiết bị này, riêng cho từng em. Trên iPad, hãy chạm Chia sẻ, chọn Thêm vào MH chính, và luôn mở ứng dụng từ biểu tượng đó để giữ sao.' },
+        en: 'Stars and progress are saved on this device, separately for each child. To move them to another device, tap the child\'s name at the top, then My progress code. On an iPad, tap Share, then Add to Home Screen, and always open the trail from that icon so the stars are kept.',
+        vi: 'Sao và tiến độ được lưu trên thiết bị này, riêng cho từng em. Để chuyển sang thiết bị khác, chạm vào tên của em ở trên cùng, rồi chọn My progress code. Trên iPad, hãy chạm Chia sẻ, chọn Thêm vào MH chính, và luôn mở ứng dụng từ biểu tượng đó để giữ sao.' },
       { icon: 'shield',
         en: 'Names stay on this device and are never sent anywhere. There is no login and no password.',
         vi: 'Tên chỉ được lưu trên thiết bị này và không được gửi đi đâu. Không cần đăng nhập hay mật khẩu.' }
@@ -99,7 +102,7 @@
     const who = T.school && T.school.chip ? T.school.chip() : T.players ? T.players.chip() : null;
     const help = T.howtoButton();
     const head = el('header', { class: 'home__head' },
-      el('div', { class: 'brand' }, T.ui.brandMark(), el('h1', { class: 'brand__name' }, TEXT.app)),
+      el('div', { class: 'brand' }, T.ui.brandMark(), T.brand.text()),
       who ? who.el : null, total, help, T.ui.soundSwitch());
 
     function refresh() {
@@ -122,15 +125,14 @@
 
   function buildNode(info, i) {
     // where the stop stands in each layout: its index (the phone zigzag and the board wave), its row and
-    // column in the three-wide snake (an upright tablet) and in the five-and-four snake (a laptop)
-    const row = Math.floor(i / 3), col = row % 2 ? 2 - i % 3 : i % 3;
-    // stop 6 stands right under stop 5; stops 7 and 8 stand between two stops of the first row, so the labels
-    // above them (Grade 4's longer names) never run under their discs
-    const row5 = i < 5 ? 0 : 1, col5 = i < 5 ? i : [4, 2.5, 1.5, 0.5][i - 5];
+    // column in the four-wide snake (an upright tablet: 4, 4, then Stop 9 and the Summit) and in the two rows of five (a laptop)
+    const row = Math.floor(i / 4), col = row === 2 ? 1 + i % 4 : row % 2 ? 3 - i % 4 : i % 4;   // Stop 9 and the Summit in the middle
+    // two rows of five on a laptop: stops 6 to 9 under stops 5 to 2, the Summit under stop 1
+    const row5 = i < 5 ? 0 : 1, col5 = i < 5 ? i : [4, 3, 2, 1][i - 5];     // the Summit (col 0) ends the second row
     const side = i % 2 ? 'is-odd' : 'is-even';
     const pos = {
-      '--i': String(i), '--row': String(row), '--col': String(col), '--wob': col === 1 ? '1' : '0',
-      '--row5': String(row5), '--col5': String(col5), '--wob5': String(i % 2)
+      '--i': String(i), '--row': String(row), '--col': String(col), '--wob': col === 1 || col === 2 ? '1' : '0',
+      '--row5': String(row5), '--col5': String(col5), '--wob5': String(col5 % 2)   // the same column, the same step down
     };
 
     const disc = T.ui.plate(T.ui.art(info.badgeArt, { decorative: true }), { shape: 'round bleed', replay: false, cls: 'map-node__disc' });
@@ -184,6 +186,43 @@
     return { info: info, el: item, blob: blob, disc: disc, refresh: refresh };
   }
 
+  /* ---------- the Summit: the tenth node, after Stop 9 ---------- */
+
+  function buildSummit(i) {
+    const W = T.SUMMIT;
+    const row = Math.floor(i / 4);
+    const pos = { '--i': String(i), '--row': String(row), '--col': '2', '--wob': '1', '--row5': '1', '--col5': '0', '--wob5': '1' };   // a step lower than stop 1 above it (its name)
+    const side = i % 2 ? 'is-odd' : 'is-even';
+    const disc = T.ui.plate(T.ui.art('badge-summit', { decorative: true }), { shape: 'round bleed', replay: false, cls: 'map-node__disc' });
+    const meta = el('span', { class: 'map-node__meta' });
+    const flag = el('span', { class: 'map-node__flag', 'aria-hidden': 'true' });
+    const button = el('button', { type: 'button', class: 'map-node__btn' }, disc,
+      flag, el('span', { class: 'map-node__label', 'aria-hidden': 'true' }, el('span', { class: 'map-node__name' }, W.name), meta));
+    button.addEventListener('click', function () { T.fx.sfx('tap'); T.router.go('summit'); });
+    const zipSpot = el('span', { class: 'map-node__zip', 'aria-hidden': 'true' });
+    const item = el('li', { class: ['map-pos', 'map-node', 'map-node--summit', side], style: pos, dataset: { hue: 10, n: 'summit' } }, button, zipSpot);
+    const blob = el('span', { class: ['map-pos', 'map__blob', side], style: pos, dataset: { hue: 10 } });
+
+    function refresh(isCurrent) {
+      const open = T.summit.isOpen(), won = T.summit.won();
+      item.classList.toggle('is-open', open);
+      item.classList.toggle('is-soon', !open);
+      item.classList.toggle('is-current', isCurrent);
+      item.classList.toggle('is-done', won);
+      T.ui.empty(meta); T.ui.empty(flag); T.ui.empty(zipSpot);
+      meta.appendChild(document.createTextNode(won ? W.mapWon : open ? W.mapOpen : W.mapSoon));
+      flag.appendChild(T.ui.icon(won ? 'trophy' : open ? 'star' : 'lock'));
+      if (isCurrent) zipSpot.appendChild(T.ui.zip(won ? 'cheer' : 'happy'));
+      button.setAttribute('aria-label', W.name + '. ' + (won ? W.mapWon : open ? W.mapOpen : W.locked.title) + '.');
+    }
+    return { info: { n: 10, summit: true }, el: item, blob: blob, disc: disc, refresh: refresh };
+  }
+
+  // Zip walks on to the Summit once every open stop is finished and the Summit is open
+  function atSummit() {
+    return !!T.summit && T.summit.isOpen() && T.stops.filter(openable).every(finished);
+  }
+
   /* ---------- the map: ground colours, the trail, the nodes ---------- */
 
   function round1(v) {
@@ -210,7 +249,8 @@
   }
 
   function buildMap() {
-    const nodes = T.stops.map(buildNode);
+    const stops = T.stops.map(buildNode);
+    const nodes = stops.concat([buildSummit(T.stops.length)]);
     const road = ['trail--case', 'trail--road', 'trail--dash'].map(function (name) { return el('path', { class: 'trail ' + name }); });
     const gold = el('g', { class: 'trail-gold' });
     const trail = el('svg', { class: 'map__trail', 'aria-hidden': 'true', focusable: 'false' }, road, gold);
@@ -235,7 +275,7 @@
       T.ui.empty(gold);
       for (let i = 0; i < pts.length - 1; i++) {
         const info = nodes[i].info;
-        const part = playable(info) ? T.progress.stopStars(info.n) / 15 : 0;
+        const part = !info.summit && playable(info) ? T.progress.stopStars(info.n) / 15 : 0;
         if (part <= 0) continue;
         const path = el('path', { class: 'trail trail--gold', d: start(pts[i]) + curve(pts[i], pts[i + 1], layout, width) });
         gold.appendChild(path);
@@ -248,7 +288,7 @@
     }
 
     function refresh() {
-      const current = currentStop();
+      const current = atSummit() ? { n: 10 } : currentStop();
       nodes.forEach(function (n) { n.refresh(!!current && n.info.n === current.n); });
       draw();
     }
@@ -269,7 +309,7 @@
 
     // bring the stop where Zip stands into view, Zip included (it matters once later stops are open)
     function showCurrent(scroller) {
-      const current = currentStop();
+      const current = atSummit() ? { n: 10 } : currentStop();
       const node = current && nodes[current.n - 1];
       if (!node || scroller.scrollHeight <= scroller.clientHeight) return;
       const above = Math.max(scroller.clientHeight * 0.4, node.disc.offsetHeight * 1.3);
@@ -277,7 +317,7 @@
     }
 
     // the disc of a stop (a new badge flies onto it, 18-rewards.js)
-    function discOf(n) { const node = nodes[n - 1]; return node ? node.disc : null; }
+    function discOf(n) { const node = stops[n - 1]; return node ? node.disc : null; }
 
     return { el: root, refresh: refresh, watch: watch, showCurrent: showCurrent, discOf: discOf };
   }
@@ -315,6 +355,10 @@
   /* ---------- the ONE big button ---------- */
 
   function setMainButton(bar) {
+    if (atSummit()) {                                  // every stop is finished: the way on is the Summit
+      bar.primary({ label: T.SUMMIT.way.label, iconEnd: 'next', onClick: function () { T.router.go('summit'); } });
+      return;
+    }
     const info = currentStop();
     if (!info) { bar.primary(null); return; }
     const next = playable(info) ? nextReady(info.n) : null;
@@ -341,7 +385,7 @@
       if (open) map.el.style.minHeight = map.el.offsetHeight + 'px';
     };
     const scroller = el('div', { class: 'home__scroll' }, map.el, buildFamily(holdMap));
-    T.shell.screen.appendChild(el('div', { class: 'home' }, head.el, scroller, bar.el));
+    T.shell.screen.appendChild(el('div', { class: 'home' }, head.el, T.brand.strip(), scroller, bar.el));
 
     function refresh() {
       head.refresh();

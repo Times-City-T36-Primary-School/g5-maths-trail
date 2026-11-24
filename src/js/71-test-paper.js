@@ -44,7 +44,8 @@
   /* ---------- pencil strokes (the child) and pen marks (the teacher) ---------- */
 
   const PENCIL = {
-    ring: { box: '0 0 120 50', d: 'M70 5 C40 1 6 8 5 25 C4 42 38 48 66 46 C98 44 117 36 115 21 C113 8 86 2 50 6' },
+    // a closed ring, drawn solid (Jovan, EOS 1 finishing touches: no open end, no tilt)
+    ring: { box: '0 0 120 50', d: 'M60 4 C28 4 4 13 4 25 C4 37 28 46 60 46 C92 46 116 37 116 25 C116 13 92 4 60 4 Z' },
     tick: { box: '0 0 40 40', d: 'M5 21 C9 24 12 28 15 34 C21 22 28 12 37 3' }
   };
   function pencil(kind, fix) {
@@ -63,6 +64,18 @@
     return el('span', { class: 'tp-pen tp-pen--' + state, role: 'img', 'aria-label': PEN_SAYS[state] },
       el('svg:svg', { viewBox: '0 0 40 40', 'aria-hidden': 'true', focusable: 'false' }, el('svg:path', { d: PEN[state], pathLength: '1' })));
   }
+  // the review's sign next to what the child chose: a green tick (right) or a red cross (wrong)
+  function sign(ok) {
+    return el('span', { class: 'tp-sign tp-sign--' + (ok ? 'right' : 'wrong'), 'aria-hidden': 'true' }, ok ? '✓' : '✗');
+  }
+  // the right answer the child did not choose: a dashed green ring
+  function answerRing() {
+    const svg = pencil('ring');
+    svg.classList.add('tp-pencil--answer');
+    return svg;
+  }
+  T.testPaperSign = sign;                             // the tools on the paper use the same sign (39-tools-order.js)
+
   function setMark(node, on, kind) {
     const host = kind === 'tick' ? node.querySelector('.tp-tick__box') : node;
     const old = host.querySelector(':scope > .tp-pencil:not(.is-fix)');
@@ -91,6 +104,7 @@
     if (Array.isArray(r.order)) ok = ok && r.order.length > 0 && r.order.every(function (x) { return x != null; });
     if (Array.isArray(r.picks)) ok = ok && r.picks.length > 0;
     if ('choice' in r) ok = ok && r.choice != null;
+    if (Array.isArray(r.pairs)) ok = ok && r.pairs.every(function (x) { return x >= 0; });     // Stop 9: every line drawn
     if (task.ready) { try { ok = ok && !!task.ready(r); } catch (e) { ok = false; } }
     else if (r.b && !(task.blanks && task.blanks.length)) ok = ok && r.b.some(function (x) { return x > 0; });
     return [ok];
@@ -311,28 +325,37 @@
         col.insertBefore(el('span', { class: 'tp-mk__got tp-got--' + state }, pen(state), el('b', pt.score + '/' + pt.max)), col.firstChild);
         col.querySelector('.tp-mk__n').hidden = true;
       });
-      const reasonOk = isClaim ? res.parts[1].ok : res.parts[0].ok;
+      // what was ringed or ticked: chosen and right = green with a tick, chosen and wrong = red with a cross,
+      // the right one not chosen = a dashed green ring (a dashed green box for a tick)
       if (task.opts) {
         const right = task.opts.findIndex(function (o) { return o.ok; });
-        if (pick >= 0 && rows[pick]) rows[pick].classList.add(reasonOk ? 'is-good' : 'is-bad');
-        if (!reasonOk && rows[right]) { rows[right].classList.add('is-fix'); rows[right].querySelector('.tp-tick__box').appendChild(pencil('tick', true)); }
+        const pickOk = pick >= 0 && !!(task.opts[pick] && task.opts[pick].ok);
+        if (pick >= 0 && rows[pick]) {
+          rows[pick].classList.add(pickOk ? 'is-good' : 'is-bad');
+          rows[pick].querySelector('.tp-tick__box').appendChild(sign(pickOk));
+        }
+        if (!pickOk && rows[right]) rows[right].classList.add('is-fix', 'is-answer');
       }
       if (isClaim) {
-        const want = task.verdict ? 'correct' : 'incorrect';
+        const want = task.verdict ? 'correct' : 'incorrect', decOk = res.parts[0].ok;
         rings.forEach(function (n) {
-          if (n.dataset.d === dec) n.classList.add(res.parts[0].ok ? 'is-good' : 'is-bad');
-          if (!res.parts[0].ok && n.dataset.d === want) { n.classList.add('is-fix'); n.appendChild(pencil('ring', true)); }
+          if (n.dataset.d === dec) { n.classList.add(decOk ? 'is-good' : 'is-bad'); n.appendChild(sign(decOk)); }
+          if (!decOk && n.dataset.d === want) { n.classList.add('is-fix', 'is-answer'); n.appendChild(answerRing()); }
         });
       }
+      // a tool that rings numbers (Stop 3 and Stop 5: ring every number that fits) colours its own rings the same way
+      const colours = !!(tool && typeof tool.review === 'function' && task.right);
+      if (colours) { try { tool.review(task.right); } catch (e) { /* colour is a help, never a blocker */ } }
       if (res.full) return;
       const fix = el('div', { class: 'tp-fix' }, el('p', { class: 'tp-fix__t' }, 'How to do it'));
       // a tool on the paper (Stop 3: tiles in order, rings): the places or rings that are wrong are marked, then the answer
       if (tool && !blanks.length) {
         let out = {};
         try { out = task.check(answer([])) || {}; } catch (e) { out = {}; }
-        if (tool.mark && out.parts) tool.mark(out.parts);
+        if (tool.mark && out.parts && !colours) tool.mark(out.parts);
       }
-      if ((blanks.length || (tool && !task.opts)) && task.key != null) fix.appendChild(el('p', { class: 'tp-fix__ans' }, 'Answer: ', el('b', decode(String(task.key)).replace(/ ; /g, '; '))));
+      // (lines to match have no short answer: the worked answer says each one)
+      if ((blanks.length || (tool && !task.opts && ui.k !== 'match')) && task.key != null) fix.appendChild(el('p', { class: 'tp-fix__ans' }, 'Answer: ', el('b', decode(String(task.key)).replace(/ ; /g, '; '))));
       if (task.worked && task.worked.text) fix.appendChild(p('tp-fix__line', task.worked.text));
       if (task.worked && task.worked.model) fix.appendChild(p('tp-fix__line tp-fix__model', task.worked.model));
       const pic = task.worked && task.worked.pic ? T.tools.pic(task.worked.pic) : null;

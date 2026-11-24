@@ -1,0 +1,148 @@
+/* 39-tools-fractions.css - the Stop 7 tools (39-tools-fractions.js): a strip cut into equal parts, counters shared among
+   plates, two unit fractions compared, and the pictures of strips and of pizzas or cakes shared equally. Also the way a
+   fraction is written everywhere (the models write <span class="fr">: the top number over a line over the bottom number)
+   and the two answer boxes of a fraction, one over the other (.frb, .blank--fr). Flat on the light art plate (light in
+   both themes, ink --plate-ink), tap targets 48 px. One part of a strip is orange (the models say "the orange part"),
+   counters are red like the other counter tools, one plate (the unit fraction) has a lime ring, the colour of the
+   Fraction Garden. Motion: transform and opacity only; still = at once (00-tokens.css). */
+
+/* ---------- a fraction: the top number over the bottom number ---------- */
+.fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1; margin: 0 .1875rem; font-variant-numeric: tabular-nums; }
+.fr i { font-style: normal; padding: 0 .25rem; line-height: 1.1; }
+.fr i:first-child { border-bottom: .15em solid currentColor; padding-bottom: .0625rem; margin-bottom: .0625rem; }
+.fr .frs { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* two answer boxes, one over the other, with the fraction line between them */
+.frb { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; gap: .1875rem; margin: 0 .375rem; }
+.frb .frl { width: 100%; min-width: 3rem; height: 3px; border-radius: 2px; background: currentColor; }
+.blank.blank--fr { min-width: 3.5rem; width: 3.5rem; height: 2.75rem; margin: 0; padding: 0 .25rem; font-size: 1.375rem; }
+.tp-sheet .frb { margin: .25rem .375rem; vertical-align: middle; }
+.tp-sheet .blank.blank--fr { min-width: 3.25rem; width: 3.25rem; height: max(2.5rem, 44px); border: 2px solid #222222; border-radius: .25rem; padding: 0; align-items: center; }
+.tp-sheet .blank--sm { min-width: 3.5rem; }
+.tp-line:has(.frb) { line-height: 1.4; }
+
+/* ---------- a strip cut into equal parts ---------- */
+.fs__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.fs__bg { fill: #F3F8E4; }
+.fs__on, .fs__lit { fill: #F28B30; }
+.fs__lit { transform-box: fill-box; transform-origin: 0 50%; transition: transform var(--dur-slow) var(--ease-out); }
+.fs__cut { stroke: #2A2F3A; stroke-width: 3; }
+.fs__cut.is-new { animation: fs-cut var(--dur-base) var(--ease-out) both; }
+@keyframes fs-cut { from { opacity: 0; } to { opacity: 1; } }
+.fs__edge { fill: none; stroke: #2A2F3A; stroke-width: 3.5; }
+
+.fs { display: grid; justify-items: center; gap: .625rem; width: 100%; min-width: 0; }
+.fs__felt { display: grid; gap: .5rem; width: min(30rem, 88vw); padding: .75rem; border-radius: var(--r-lg); background: var(--plate); box-shadow: inset 0 0 0 2px var(--plate-line); }
+.fs__wall { display: grid; gap: .375rem; }
+.fs__wall:empty { display: none; }
+.fs__row { display: grid; grid-template-columns: 2.75rem 1fr; align-items: center; gap: .5rem; }
+.fs__row.is-new { animation: rise-in var(--dur-base) var(--ease-out) both; }
+.fs__lab { color: var(--plate-ink); font: 600 1.125rem/1 var(--font-display); text-align: center; }
+.fs__mini { display: block; line-height: 0; }
+/* the big strip lines up with the small ones of the wall (the same left edge, after the label column) */
+.fs__felt:has(.fs__row) .fs__big { margin-left: 3.25rem; }
+.fs__ctl { display: flex; align-items: center; justify-content: center; gap: .5rem .75rem; }
+.fs__info { min-width: 7.5rem; text-align: center; font: 600 1.1875rem/1.2 var(--font-display); color: var(--ink); }
+@media (max-width: 479px) {
+  .fs__ctl { display: grid; grid-template-columns: auto auto; gap: .375rem .75rem; }
+  .fs__ctl .fs__info { grid-column: 1 / -1; grid-row: 1; }
+}
+.mk .fs__felt { width: min(24rem, 80vw); padding: .5rem; }
+
+/* ---------- counters shared among plates ---------- */
+.sh { display: grid; justify-items: center; gap: .5rem; width: 100%; min-width: 0; }
+.sh__felt { display: grid; justify-items: center; gap: .625rem; width: min(30rem, 90vw); padding: .625rem; border-radius: var(--r-lg); background: var(--plate); box-shadow: inset 0 0 0 2px var(--plate-line); }
+.sh__tray { display: grid; justify-items: center; gap: .25rem; min-height: 2.75rem; padding: .375rem .625rem; border-radius: var(--r-md); background: #F3F8E4; box-shadow: inset 0 0 0 2px #C9DA9B; }
+.sh__tray[hidden] { display: none; }
+.sh__pilebox { display: block; line-height: 0; }
+.sh__pile { display: block; width: calc(var(--sh-w) * .055rem); max-width: 100%; height: auto; }
+.sh__cap { font: 700 var(--fs-small)/1.2 var(--font-body); color: #3A4A14; }
+.sh__plates { display: flex; flex-wrap: wrap; justify-content: center; gap: .375rem .5rem; }
+.sh__pl { position: relative; display: grid; justify-items: center; width: 4.75rem; }
+.sh__psvg { display: block; width: 100%; height: auto; overflow: visible; }
+.sh__plate { fill: #FFFFFF; stroke: #A9B4C2; stroke-width: 2.5; }
+.sh__plate.is-lit { stroke: #66861A; stroke-width: 5; }
+.sh__rim { fill: none; stroke: #DCE3EC; stroke-width: 2; }
+.sh__c { fill: #E5404A; stroke: #A31A22; stroke-width: 2; }
+.sh__c.is-new { transform-box: fill-box; transform-origin: center; animation: tl-pop var(--dur-base) var(--ease-pop) both; }
+.sh__frac { margin-top: .125rem; padding: .125rem .375rem; border-radius: var(--r-sm); background: #E5F1CF; color: #2F3E0C; font: 600 1rem/1 var(--font-display); }
+.sh__ctl { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem .75rem; }
+.sh__say { margin: 0; min-height: 1.5rem; text-align: center; font: 600 1.0625rem/1.3 var(--font-display); color: var(--ink); }
+.sh__say b { color: var(--ink); font-weight: 800; }
+.sh--mini .sh__felt { width: min(22rem, 100%); padding: .375rem; gap: .375rem; }
+.sh--mini .sh__pl { width: 3.5rem; }
+.sh--mini .sh__say { font-size: var(--fs-small); }
+.mk .sh__felt { width: min(26rem, 84vw); gap: .375rem; padding: .5rem; }
+/* in a question: a tall tool scrolls with the page (not the sticky question column), and the plates are smaller */
+.mk--split .mk__col:first-child:has(> .sh, > .fs) { position: static; }
+.mk .sh__pl { width: 3.375rem; }
+.mk .sh__pile { width: calc(var(--sh-w) * .036rem); }
+/* a phone: in a question the buttons come first (above the counters), the plates in one row, so the number pad never
+   hides the buttons */
+@media (max-width: 599px) {
+  .mk .sh__ctl { order: -1; flex-wrap: nowrap; gap: .375rem; }
+  .mk .sh__btn { padding: .5rem .625rem; font-size: .9375rem; }
+  .mk .sh__pl { width: 2.625rem; }
+  .mk .sh__plates, .mk .sh__plates[data-k="5"], .mk .sh__plates[data-k="6"] { max-width: none; flex-wrap: nowrap; gap: .25rem; }
+  .mk .sh__frac { font-size: .875rem; padding: .0625rem .25rem; }
+  .mk .sh__say { font-size: 1rem; }
+}
+/* a wide screen: the counters to share on the left of the plates, so the buttons stay above the number pad */
+@media (min-width: 600px) {
+  .mk .sh__felt { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
+  .mk .sh__plates { justify-content: flex-start; }
+}
+@media (max-width: 479px) {
+  .sh__pl { width: 4rem; }
+  .sh__plates[data-k="5"], .sh__plates[data-k="6"] { max-width: 15rem; }
+}
+
+/* ---------- two unit fractions compared (See it) ---------- */
+.fc { display: grid; justify-items: center; gap: .875rem; width: min(32rem, 92vw); padding: .75rem; border-radius: var(--r-lg); background: var(--plate); box-shadow: inset 0 0 0 2px var(--plate-line); }
+.fc__strips { position: relative; display: grid; gap: .5rem; width: 100%; --lab: 3.25rem; }
+.fc__row { display: grid; grid-template-columns: var(--lab) 1fr; align-items: center; gap: .5rem; width: 100%; min-height: 3.5rem; margin: 0; padding: .25rem .375rem;
+  border: 0; border-radius: var(--r-md); background: transparent; color: var(--plate-ink); cursor: pointer; box-shadow: inset 0 0 0 2px transparent; }
+.fc__row:disabled { cursor: default; }
+.fc__row:not(:disabled):hover { background: #F3F8E4; }
+.fc__row:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.fc__row.is-picked { background: #FFF8E6; box-shadow: inset 0 0 0 3px var(--gold-edge); }
+.fc__lab { font: 600 1.25rem/1 var(--font-display); text-align: center; }
+.fc__strip { display: block; line-height: 0; }
+.fc__guide { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; border-left: 3px dashed #2F6FD0;
+  left: calc(.375rem + var(--lab) + .5rem + (100% - var(--lab) - 1.25rem) * var(--at)); animation: rise-in var(--dur-base) var(--ease-out) both; }
+.fc__guide[hidden] { display: none; }
+.fc__sent { display: flex; align-items: center; justify-content: center; gap: .75rem; margin: 0; color: var(--plate-ink); font: 600 1.625rem/1 var(--font-display); }
+.fc__box { display: inline-grid; place-items: center; width: 3.25rem; height: 3.25rem; border-radius: var(--r-sm); background: #FFFFFF; box-shadow: inset 0 0 0 2.5px #2A2F3A; font: 700 1.75rem/1 var(--font-display); }
+.fc__box.is-filled { background: var(--gold); color: #3A2600; box-shadow: inset 0 0 0 2.5px var(--gold-edge); animation: tick-pop var(--dur-base) var(--ease-pop); }
+.fc__signs { display: flex; gap: .625rem; justify-content: center; }
+.fc__signs[hidden] { display: none; }
+.fc__sign { min-width: 3.5rem; min-height: 3rem; justify-content: center; font: 700 1.5rem/1 var(--font-display); }
+
+/* ---------- pictures: strips, strips to compare, pizzas or cakes shared ---------- */
+.fbar { display: grid; justify-items: center; gap: .25rem; width: 100%; max-width: 20rem; margin: .25rem auto; }
+.fbar__strip { display: block; width: 100%; line-height: 0; }
+.fbar__cap { color: var(--plate-ink); font: 600 1.0625rem/1 var(--font-display); }
+.fbars { display: grid; gap: .375rem; width: 100%; max-width: 22rem; margin: .25rem auto; }
+.fbars__row { display: grid; grid-template-columns: 2.5rem 1fr; align-items: center; gap: .375rem; }
+.fbars__lab { color: var(--plate-ink); font: 600 1.0625rem/1 var(--font-display); text-align: center; }
+.fbars__strip { display: block; line-height: 0; }
+.pz { display: flex; justify-content: center; width: 100%; margin: .25rem auto; }
+.pz__svg { display: block; width: calc(var(--pz-w) * 1px); max-width: 100%; height: auto; }
+.pz__base { fill: #E8A34A; stroke: #9A5B17; stroke-width: 4; }
+.pz__top { fill: #F6CF63; }
+.pz__base.is-cake { fill: #F2B8C6; stroke: #A55A6E; }
+.pz__top.is-cake { fill: #FCE3EA; }
+.pz__dot { fill: #C2402C; }
+.pz__cherry { fill: #D22630; }
+.pz__mine { fill: rgba(47, 111, 208, .78); stroke: #163E80; stroke-width: 2.5; }
+.pz__cut { stroke: #4A2C0C; stroke-width: 2.5; }
+.pz__edge { fill: none; stroke: #6B3E10; stroke-width: 2; }
+/* a row of pictures in a hint or a note: side by side when they fit */
+.mk .fbar, .tp-sheet .fbar { max-width: 16rem; }
+.mk__hint .fbar, .mk__fb .fbar { max-width: 13rem; }
+.see-hands .fs__felt { width: min(34rem, 90vw); }
+.see-hands .sh__felt { width: min(32rem, 92vw); }
+@media (min-width: 1200px) and (min-height: 860px) {
+  .see-hands .fs__felt { width: min(40rem, 90vw); }
+  .see-hands .sh__pl { width: 5.75rem; }
+  .see-hands .fc { width: min(38rem, 92vw); }
+}

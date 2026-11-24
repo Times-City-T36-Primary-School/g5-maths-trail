@@ -337,7 +337,8 @@
     const sumK = known.reduce(function (s, x) { return s + x; }, 0), nUn = parts.length - known.length;
     const whole = spec.whole != null ? spec.whole : nUn ? null : sumK;
     const rest = whole != null && nUn ? Math.max(whole - sumK, 0) / nUn : 0;
-    const flex = function (x) { return x != null ? x : rest || (whole || sumK || 1) / parts.length; };
+    // a part to find is as long as the known parts (equal parts, Stop 7: one sixth is 4, find the whole)
+    const flex = function (x) { return x != null ? x : rest || (whole == null && known.length ? sumK / known.length : (whole || sumK || 1) / parts.length); };
     const tot = parts.reduce(function (s, x) { return s + flex(x); }, 0) || 1;
     const say = function (x) { return x == null ? 'to find' : fmt(x); };
     return el('div', { class: 'barm', role: 'img', 'aria-label': 'Bar model. Whole: ' + say(spec.whole) + '. Parts: ' + parts.map(say).join(', ') + '.' },

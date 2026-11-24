@@ -499,4 +499,5 @@
   }
 
   T.router.register('stop-:n', mount);
+  T.hubKit = { buildScene: buildScene };              // the Summit's page (79-summit.js) uses the same scene header
 })(window.T = window.T || {});

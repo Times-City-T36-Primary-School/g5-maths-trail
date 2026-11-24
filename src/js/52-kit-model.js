@@ -72,6 +72,14 @@
     msq: { en: 'Tap where the *row* and *column* meet.', vi: 'Bấm vào ô nơi *hàng* và *cột* gặp nhau.' },
     // Stop 6: sharing counters among plates (the remainder is left over)
     share: { en: 'Tap *Give 1 to each plate*.', vi: 'Bấm *Give 1 to each plate* (Cho mỗi đĩa 1).' },
+    // Stop 9: a chance experiment, the measuring jug, lines to match
+    trial: { en: 'Do the *experiment* first. Then read the table.', vi: 'Làm *thí nghiệm* trước. Rồi đọc bảng kết quả.' },
+    jug: { en: 'Tap *Pour in* or *Pour out*.', vi: 'Bấm *Pour in* (Rót vào) hoặc *Pour out* (Đổ bớt).' },
+    match: { en: 'Join each one to its *partner*.', vi: 'Nối mỗi ô với *cặp* của nó.' },        // Stops 8 and 9
+    // Stop 8: the clock with buttons for its hands, draw a line to match
+    clock: { en: 'Move the hands with the *buttons*.', vi: 'Xoay kim đồng hồ bằng các *nút*.' },
+    // Stop 7: a strip cut into equal parts, counters shared among plates (the Zip line is the Stop 6 one above)
+    strip: { en: 'Tap *More* to cut the strip.', vi: 'Bấm *More* (Thêm) để cắt băng giấy.' },
     claim: { en: 'Tap *correct* or *incorrect*. Then tap a reason.', vi: 'Bấm *correct* (đúng) hoặc *incorrect* (sai). Rồi chọn một lý do.' },
     read: { en: 'Read the question.', vi: 'Em đọc câu hỏi.' },
     opts: { en: 'Tap one answer.', vi: 'Bấm vào một đáp án.' },
@@ -145,6 +153,9 @@
     if (Array.isArray(r.picks)) return r.picks.join(',') || '-';
     if (r.choice != null) return String(r.choice);
     if (r.r != null && r.c != null && r.p != null && !r.v) return r.r ? r.r + ' × ' + r.c : '';   // Stop 5: the box tapped on the multiplication square
+    if (r.level != null && r.read != null) return r.read;           // Stop 9: the water in the jug ("1 1/2 l")
+    if (Array.isArray(r.pairs) && r.said) return r.said;             // Stop 9: the lines drawn ("1-Maybe 2-Certain ...")
+    if (r.h != null && r.m != null && !r.v) return r.h + ':' + (r.m < 10 ? '0' : '') + r.m;     // Stop 8: the time set on the clock
     return '';
   }
 

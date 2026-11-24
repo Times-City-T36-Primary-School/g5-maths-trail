@@ -12,7 +12,8 @@
        ready() when every place is full; mark(parts) rings the places that are wrong (false); allow({ place: true |
        [values in the order they must come] }) (a tile that is not next shakes); trade { act: 'place', v, placed }
    T.tools.pickall(host, spec)  numbers in a row: tap to draw a ring around each one that fits (more than one can be right).
-       spec = { nums }. get() -> { picks: [sorted] }; ready() with one ring or more; mark(bad values) crosses those rings
+       spec = { nums }. get() -> { picks: [sorted] }; ready() with one ring or more; mark(bad values) crosses those rings;
+       review(right) colours the rings on the marked paper (green tick, red cross, dashed green answer)
    T.tools.pvcmp(host, spec)    two numbers on a place value chart, compared place by place (See it only).
        spec = { a, b, cols }. "Next place" lights the next place from the left and says "same", or the two digits with
        the sign; then the signs < > = for the box between the numbers. get() -> { at: the place looked at (-1 none),
@@ -39,8 +40,8 @@
   }
   // a pencil ring around a number (drawn like a pen: stroke-dashoffset)
   function ring() {
-    return el('svg:svg', { class: 'pk__ring', viewBox: '0 0 120 60', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false' },
-      el('svg:path', { pathLength: '1', 'vector-effect': 'non-scaling-stroke', d: 'M70 6 C40 2 7 9 6 29 C5 47 38 55 64 54 C97 53 116 44 114 27 C112 12 86 4 48 8' }));
+    return el('svg:svg', { class: 'pk__ring', viewBox: '0 0 120 50', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false' },
+      el('svg:path', { pathLength: '1', 'vector-effect': 'non-scaling-stroke', d: 'M60 4 C28 4 4 13 4 25 C4 37 28 46 60 46 C92 46 116 37 116 25 C116 13 92 4 60 4 Z' }));
   }
 
   /* ---------- number tiles to put in order ---------- */
@@ -186,6 +187,27 @@
       ready: function () { return picks().length > 0; },
       lock: function () { locked = true; root.classList.add('is-locked'); paint(); },
       mark: function (list) { bad = Array.isArray(list) ? list.filter(function (x) { return typeof x === 'number'; }) : []; paint(); },
+      // the marked test paper: a ring that is right turns green with a tick, a wrong one red with a cross, and a
+      // number that should have a ring gets a dashed green one (71-test-paper.js)
+      review: function (right) {
+        const want = (right && Array.isArray(right.picks)) ? right.picks : [];
+        const sign = T.testPaperSign;
+        bad = []; paint();
+        btns.forEach(function (b) {
+          const v = +b.dataset.v, mine = !!on[v], ok = want.indexOf(v) >= 0;
+          if (mine) {
+            b.classList.add(ok ? 'is-right' : 'is-wrong');
+            if (sign) b.appendChild(sign(ok));
+            b.setAttribute('aria-label', sg(v) + (ok ? ', ringed, right' : ', ringed, not right'));
+          } else if (ok) {
+            const r = ring();
+            r.classList.add('pk__ring--answer');
+            b.classList.add('is-answer');
+            b.appendChild(r);
+            b.setAttribute('aria-label', sg(v) + ', the answer');
+          }
+        });
+      },
       solve: function (r) {
         if (!r || !Array.isArray(r.picks)) return;
         nums.forEach(function (v) { setOn(v, r.picks.indexOf(v) >= 0, true); });
