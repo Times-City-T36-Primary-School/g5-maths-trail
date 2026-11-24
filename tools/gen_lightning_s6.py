@@ -23,10 +23,11 @@ def add(q, right, wrongs, kind):
     if len(q) > 60: raise SystemExit('too long: ' + q)
     seen.add(q); items.append([q, opts[:3], kind])
 
-# A. a fraction as a percentage. Slips: the two numbers side by side (3/5 -> 35%), the top times 10, the bottom
+# A. a fraction as a percentage. Slips: the two numbers side by side (3/5 -> 35%), the top times 10, the bottom, the top,
+#    the decimal with a % sign (1/10 -> 0.1%)
 for n, d in [(1, 2), (1, 4), (3, 4), (1, 5), (2, 5), (4, 5), (3, 10), (9, 10), (7, 20), (3, 25), (1, 10), (1, 20)]:
     h = n * 100 // d
-    cand = ['%d%d%%' % (n, d) if n * 10 + d <= 100 and d < 10 else None, '%d%%' % (n * 10), '%d%%' % d, '%d%%' % n, '%d%%' % (h + 10)]
+    cand = ['%d%d%%' % (n, d) if n * 10 + d <= 100 and d < 10 else None, '%d%%' % (n * 10), '%d%%' % d, '%d%%' % n, '%s%%' % dec(h)]
     add('%d/%d as a percentage' % (n, d), '%d%%' % h, [c for c in cand if c and c != '%d%%' % h], 'A')
 # B. a decimal as a percentage. Slips: the digits only (0.4 -> 4%), no change (0.4 -> 0.4%)
 for h in [40, 7, 30, 90, 25, 5, 8, 60, 45, 1]:
@@ -40,13 +41,15 @@ for h in [50, 25, 75, 10, 20, 40, 5, 30, 60, 80, 1]:
     f = Fr(h, 100)
     cand = ['1/%d' % h, '%d/10' % h, '%d/100' % (h // 10) if h % 10 == 0 else None, '%d/50' % h]
     add('%d%% as a fraction' % h, '%d/%d' % (f.numerator, f.denominator), [c for c in cand if c and val(c) != f], 'D')
-# E. a percentage of a number. Slips: 10% of it, the number divided by the percentage, what is left, half
+# E. a percentage of a number. Slips: 10% of it, the number divided by the percentage, what is left, double, half,
+#    double the number instead of half (50%), the whole number, 1% of it instead of 100% (100% of 37 -> 0.37)
 for p, n in [(10, 50), (10, 120), (50, 90), (50, 18), (25, 40), (25, 200), (75, 20), (20, 50), (20, 30), (5, 40), (5, 200), (1, 300), (1, 700), (30, 50), (15, 20), (40, 25), (100, 37)]:
     a = n * p // 100
     assert n * p % 100 == 0
-    cand = [n // 10 if n % 10 == 0 else None, n // p if n % p == 0 else None, n - a, a * 2, n // 2 if n % 2 == 0 else None, a + 10, p]
-    cand = [c for c in cand if c and c != a and c > 0]
-    add('%d%% of %s' % (p, '{:,}'.format(n)), '{:,}'.format(a), ['{:,}'.format(c) for c in cand], 'E')
+    cand = [n // 10 if n % 10 == 0 else None, n // p if n % p == 0 else None, n - a, a * 2, n // 2 if n % 2 == 0 else None,
+            n * 2 if p == 50 else None, n if p < 100 else None]
+    cand = ['{:,}'.format(c) for c in cand if c and c != a and c > 0] + ([dec(n)] if p == 100 else [])
+    add('%d%% of %s' % (p, '{:,}'.format(n)), '{:,}'.format(a), cand, 'E')
 # F. which is greater?
 for a, b in [('0.4', '35%'), ('1/2', '45%'), ('3/10', '0.25'), ('3/4', '70%'), ('1/5', '0.25'), ('0.09', '10%'), ('9/10', '0.85'), ('2/5', '0.5'), ('1/4', '0.3'), ('0.6', '55%'), ('1/4', '25%'), ('0.8', '4/5')]:
     def hun(t):
@@ -61,9 +64,10 @@ for n, t in [(7, 10), (3, 4), (1, 5), (9, 20), (12, 50), (4, 25)]:
     h = n * 100 // t
     cand = ['%d%%' % n, '%d%%' % t, '%d%%' % (n * 10) if n * 10 <= 100 else None, '%d%%' % (100 - h)]
     add('%d out of %d as a percentage' % (n, t), '%d%%' % h, [c for c in cand if c and c != '%d%%' % h], 'G')
-# H. the part that is not shaded
+# H. the part that is not shaded. Slips: the shaded part; each digit made up to 10 (45 -> 65, as 4 + 6 = 10 and
+#    5 + 5 = 10); for whole tens, out of 10 instead of 100 (30 -> 10 - 3 = 7%)
 for p in [30, 45, 85, 12, 60]:
-    add('%d%% of a shape is shaded. Not shaded:' % p, '%d%%' % (100 - p), ['%d%%' % p, '%d%%' % (100 - p + 10) if p % 10 else '%d%%' % (90 - p)], 'H')
+    add('%d%% of a shape is shaded. Not shaded:' % p, '%d%%' % (100 - p), ['%d%%' % p, '%d%%' % ((10 - p // 10) * 10 + (10 - p % 10)) if p % 10 else '%d%%' % (10 - p // 10)], 'H')
 # I. a discount. Slips: the discount itself, the price take away the number
 for p, n in [(10, 40), (20, 50), (10, 90), (25, 60), (20, 30), (25, 40)]:
     a = n * p // 100

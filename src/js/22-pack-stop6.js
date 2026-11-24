@@ -27,7 +27,7 @@
         'equivalent': { art: 'w-equivalent', vi: 'bằng nhau (có cùng giá trị)', def: 'Equal in value. 1/2, 0.5 and 50% are equivalent: they are the same amount.' },
         'convert': { art: 'w-convert', vi: 'đổi (chuyển đổi)', def: 'To change a number into another form. Convert 0.3 into a percentage: 30%.' },
         'discount': { art: 'w-discount', vi: 'giảm giá', def: 'Money taken off a price. A 10% discount on $50 is $5 off. The new price is $45.' },
-        'compare': { art: 'w-compare', vi: 'so sánh', def: 'To look at two numbers and say which is greater. Compare 0.4 and 35%: 0.4 is greater.' },
+        'compare': { art: 'w-compare', vi: 'so sánh', def: 'To look at two numbers and say which is greater, or if they are equal. Compare 0.4 and 35%: 0.4 is greater.' },
         'greater than': { art: 'w-greater-than', vi: 'lớn hơn', def: 'Bigger than. The sign is >. 1/2 > 0.4, because 1/2 = 50% and 0.4 = 40%.' },
         'less than': { art: 'w-less-than', vi: 'bé hơn', def: 'Smaller than. The sign is <. 20% < 1/4, because 1/4 = 25%.' },
         'ascending order': { art: 'w-ascending-order', vi: 'thứ tự tăng dần', def: 'From the smallest to the largest. 0.2, 1/4, 30% are in ascending order.' },
@@ -166,11 +166,11 @@
     notes: {
       items: [
         { en: '[[Per cent]] means "out of 100". A [[percentage]] is a number of hundredths. 1% is 1 out of 100.',
-          vi: 'Phần trăm nghĩa là "trên 100". Tỉ số phần trăm là một số phần trăm (phần một trăm). 1% là 1 trên 100.',
+          vi: 'Phần trăm nghĩa là "trên 100". Tỉ số phần trăm cho biết có bao nhiêu phần trong 100 phần. 1% là 1 trên 100.',
           example: ['37 squares out of 100 are shaded.', '37% = 37/100 = *0.37*'],
           pic: { k: 'hgrid', shade: 37, cols: true, cap: '37 out of 100' } },
-        { en: 'A fraction, a decimal and a percentage can be [[equivalent]]: three ways to write one number. To [[convert]] a fraction into a percentage, make the denominator 100.',
-          vi: 'Phân số, số thập phân và tỉ số phần trăm có thể bằng nhau: ba cách viết của cùng một số. Để đổi phân số thành tỉ số phần trăm, hãy đưa mẫu số về 100.',
+        { en: 'A fraction, a decimal and a percentage can be [[equivalent]]: three ways to write one number. To [[convert]] a fraction into a percentage, make the denominator 100 (multiply the top and the bottom by the same number).',
+          vi: 'Phân số, số thập phân và tỉ số phần trăm có thể bằng nhau: ba cách viết của cùng một số. Để đổi phân số thành tỉ số phần trăm, hãy đưa mẫu số về 100 (nhân cả tử số và mẫu số với cùng một số).',
           example: ['3/5 = 60/100 (multiply the top and the bottom by 20)', '60/100 = *60%* = *0.6*'],
           pic: { k: 'hgrid', shade: 60, cols: true, cap: '3/5 = 60/100' } },
         { en: 'To change a decimal into a percentage, multiply by 100. To change a percentage into a decimal, divide by 100.',
@@ -190,7 +190,7 @@
           example: ['Order 0.5, 1/5 and 35%.', '0.5 = 50% and 1/5 = 20%', 'Ascending order: *1/5, 35%, 0.5*'],
           pic: { k: 'ftiles', items: ['0.5', '1/5', '35%'], seq: '1,2,0' } },
         { en: 'A [[discount]] makes a price smaller. First find the percentage of the price. Then take it away from the price.',
-          vi: 'Giảm giá làm cho giá tiền nhỏ đi. Trước tiên tìm tỉ số phần trăm của giá tiền. Rồi lấy giá tiền trừ đi số đó.',
+          vi: 'Giảm giá làm cho giá tiền nhỏ đi. Trước tiên tìm số tiền được giảm (tìm giá trị phần trăm của giá tiền, ví dụ 10% của 30). Rồi lấy giá tiền trừ đi số đó.',
           example: ['A hat costs $30. The discount is 10%.', '10% of 30 = *3*', '30 − 3 = *27*. The new price is $27.'],
           pic: { k: 'pctbar', n: 30, parts: 10, take: 1, cut: true, pre: '$' } }
       ],
@@ -198,7 +198,7 @@
         { sentence: '9% means 9 out of {100|10|1,000}.', answer: '100' },
         { sentence: '7/20 = {35%|27%|7%}.', answer: '35%' },
         { sentence: '0.06 = {6%|60%|0.6%}.', answer: '6%' },
-        { sentence: '25% of 36 = {9|18|11}.', answer: '9' },
+        { sentence: '25% of 44 = {11|22|4}.', answer: '11' },
         { sentence: '0.3 is {greater than|less than|equal to} 25%.', answer: 'greater than' },
         { sentence: 'In descending order: {1/2, 40%, 0.3|0.3, 40%, 1/2|40%, 0.3, 1/2}.', answer: '1/2, 40%, 0.3' },
         { sentence: 'A toy costs $20. With a 50% discount it costs {$10|$15|$30}.', answer: '$10' }
@@ -215,13 +215,13 @@
         ] },
         { dok: 1, lo: ["6Nf.04"], twm: ["TWM.01"], v: [
           {"type":"psame","v":"0.08","at":1,"opts":["8%","80%","0.8"]},
-          {"type":"psame","v":"60%","at":0,"opts":["3/5","6/100","0.06"]},
+          {"type":"psame","v":"60%","at":0,"opts":["3/5","6/100","6/50"]},
           {"type":"psame","v":"1/20","at":2,"opts":["5%","20%","0.2"]}
         ] },
         { dok: 1, lo: ["6Nf.07"], twm: ["TWM.05"], v: [
           {"type":"pshape","r":2,"c":5,"shade":7},
           {"type":"pshape","r":4,"c":5,"shade":3},
-          {"type":"pshape","r":5,"c":5,"shade":15}
+          {"type":"pshape","r":5,"c":5,"shade":8}
         ] },
         { dok: 1, lo: ["6Nf.07"], twm: ["TWM.02"], v: [
           {"type":"pof","items":[{"p":10,"n":130}]},
@@ -245,17 +245,17 @@
         ] },
         { dok: 2, lo: ["6Nf.08"], twm: ["TWM.04"], v: [
           {"type":"pwho","a":{"who":"Trang","v":"3/4"},"b":{"who":"Phong","v":"70%"},"same":"They have planted the same amount","text":"Trang and Phong each have a garden of the same size. Trang has planted " + F(3, 4) + " of her garden. Phong has planted <b>70%</b> of his garden. Who has planted more?"},
-          {"type":"pwho","a":{"who":"Thu","v":"0.4"},"b":{"who":"Hung","v":"2/5"},"same":"They have finished the same amount","text":"Thu and Hung each do the same jigsaw puzzle. Thu has finished <b>0.4</b> of her puzzle. Hung has finished " + F(2, 5) + " of his puzzle. Who has finished more?"},
+          {"type":"pwho","a":{"who":"Thu","v":"0.4"},"b":{"who":"Hung","v":"2/5"},"same":"They have finished the same amount","text":"Thu and Hung each have the same jigsaw puzzle. Thu has finished <b>0.4</b> of her puzzle. Hung has finished " + F(2, 5) + " of his puzzle. Who has finished more?"},
           {"type":"pwho","ask":"less","a":{"who":"Giang","v":"0.8"},"b":{"who":"Binh","v":"17/20"},"same":"They have painted the same amount","text":"Giang and Binh each paint a wall of the same size. Giang has painted <b>0.8</b> of her wall. Binh has painted " + F(17, 20) + " of his wall. Who has painted less?"}
         ] },
-        { dok: 2, lo: ["6Nf.04", "6Nf.07"], twm: ["TWM.07", "TWM.04"], v: [
+        { dok: 2, lo: ["6Nf.04"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Tam","ok":false,"at":2,"says":"0.5 is the same as 5%.","reasons":[{"t":"0.5 = " + F(5, 10) + " = " + F(50, 100) + " = 50%. And 5% is only 0.05."},{"t":"0.5 and 5% both have the digit 5.","why":"The place of the 5 matters. 0.5 is 5 tenths. 5% is 5 hundredths."},{"t":"0.5 = " + F(5, 100) + ", and " + F(5, 100) + " = 5%.","why":"0.5 is 5 tenths, not 5 hundredths. 5 tenths = 50 hundredths."}],"hint":{"pic":[{"k":"hgrid","shade":50,"cols":true,"cap":"0.5"},{"k":"hgrid","shade":5,"cols":true,"cap":"5%"}],"step":"Write 0.5 as hundredths. How many squares out of 100 is that?"},"worked":"0.5 = 5 tenths = 50 hundredths = 50%. 5% = 5 hundredths = 0.05. They are not the same.","model":"Tam is incorrect because 0.5 is 50%, not 5%."},
-          {"type":"claim","who":"Yen","ok":true,"at":0,"says":"20% of 45 is 9.","reasons":[{"t":"20% is one fifth, and 45 ÷ 5 = 9."},{"t":"20% of 45 is 45 − 20 = 25.","why":"That takes away the number 20. 20% of 45 is a part of 45."},{"t":"45 ÷ 20 is not a whole number, so the answer cannot be 9.","why":"20% does not mean ÷ 20. 20% = " + F(20, 100) + " = " + F(1, 5) + ", so divide by 5."}],"hint":{"pic":{"k":"pctbar","n":45,"parts":5,"take":1,"ask":true},"step":"20% = " + F(20, 100) + " = " + F(1, 5) + ". Find one fifth of 45."},"worked":"20% = " + F(20, 100) + " = " + F(1, 5) + ". 45 ÷ 5 = 9. So 20% of 45 is 9.","model":"Yen is correct because 20% is one fifth, and one fifth of 45 is 9."},
+          {"type":"claim","who":"Yen","ok":true,"at":0,"says":F(6, 25) + " is the same as 0.24.","reasons":[{"t":F(6, 25) + " = " + F(24, 100) + ", because 6 × 4 = 24 and 25 × 4 = 100. And " + F(24, 100) + " = 0.24."},{"t":F(6, 25) + " = 0.6, because the top number is 6.","why":"0.6 is " + F(6, 10) + ", not " + F(6, 25) + ". Make the denominator 100 first: multiply the top and the bottom by 4."},{"t":"a fraction and a decimal can never be the same.","why":"They can be equivalent: " + F(1, 2) + " = 0.5. Make the denominator 100 and look again."}],"hint":{"pic":{"k":"hgrid","shade":24,"cols":true,"cap":"0.24"},"step":"Make the denominator 100. 25 × 4 = 100, so multiply the top by 4 too."},"worked":F(6, 25) + " = " + F(24, 100) + " (multiply the top and the bottom by 4). " + F(24, 100) + " = 0.24. So they are the same.","model":"Yen is correct because " + F(6, 25) + " = " + F(24, 100) + " = 0.24."},
           {"type":"claim","who":"Hai","ok":true,"at":1,"says":F(3, 20) + " is the same as 15%.","reasons":[{"t":F(3, 20) + " = " + F(15, 100) + ", because 3 × 5 = 15 and 20 × 5 = 100. And " + F(15, 100) + " = 15%."},{"t":F(3, 20) + " = 0.3, and 0.3 = 30%.","why":F(3, 20) + " is not 3 tenths. Make the denominator 100: multiply the top and the bottom by 5."},{"t":"the denominator is 20, so " + F(3, 20) + " = 20%.","why":"The denominator is the number of equal parts. Make it 100 to read the percentage."}],"hint":{"pic":{"k":"pgrid","r":4,"c":5,"shade":3,"cap":"3 out of 20"},"step":"Make the denominator 100. 20 × 5 = 100, so multiply the top by 5 too."},"worked":F(3, 20) + " = " + F(15, 100) + " (multiply the top and the bottom by 5). " + F(15, 100) + " = 15%.","model":"Hai is correct because " + F(3, 20) + " = " + F(15, 100) + " = 15%."}
         ] },
-        { dok: 3, lo: ["6Nf.08", "6Nf.07"], twm: ["TWM.07", "TWM.01"], v: [
+        { dok: 3, lo: ["6Nf.08"], twm: ["TWM.07", "TWM.01"], v: [
           {"type":"claim","who":"Dung","ok":false,"at":1,"says":"A fraction with a bigger denominator is always the smaller fraction.","reasons":[{"t":F(9, 10) + " has a bigger denominator than " + F(1, 2) + ", but " + F(9, 10) + " = 90% is greater than " + F(1, 2) + " = 50%. One example like this shows the rule is not always true."},{"t":F(1, 10) + " is smaller than " + F(1, 2) + ", so a bigger denominator always makes a smaller fraction.","why":"That example fits, but one example does not prove a rule. Try a fraction with a bigger numerator, like " + F(9, 10) + "."},{"t":"the denominator is the only number you need to compare two fractions.","why":"The numerator matters too. Compare " + F(9, 10) + " and " + F(1, 2) + "."}],"hint":{"pic":{"k":"fdpline","cards":["1/10","1/2","9/10"]},"step":"Test the rule. Try " + F(1, 10) + " and " + F(1, 2) + ". Then try " + F(9, 10) + " and " + F(1, 2) + "."},"worked":F(1, 10) + " = 10% is less than " + F(1, 2) + " = 50%: the rule fits. But " + F(9, 10) + " = 90% is greater than " + F(1, 2) + " = 50%, and 10 is a bigger denominator than 2. So the rule is not always true.","model":"Dung is incorrect because " + F(9, 10) + " is greater than " + F(1, 2) + ", and its denominator is bigger."},
-          {"type":"claim","who":"Linh","ok":true,"at":2,"says":"To find 10% of any whole number, you can divide it by 10.","reasons":[{"t":"10% = " + F(10, 100) + " = " + F(1, 10) + ", and finding one tenth of a number is the same as dividing it by 10."},{"t":"it only works for numbers that end in 0, like 70.","why":"Try 45. 45 ÷ 10 = 4.5, and 4.5 is 10% of 45. The answer can be a decimal."},{"t":"10% of a number is the number take away 10.","why":"Try 70. 70 − 10 = 60, but 10% of 70 is 7."}],"hint":{"pic":{"k":"pctbar","n":70,"parts":10,"take":1,"ask":true},"step":"Write 10% as a fraction in its simplest form. Then try it with a number, like 70."},"worked":"10% = " + F(10, 100) + " = " + F(1, 10) + ". One tenth of a number is the number ÷ 10. For example, 10% of 70 = 70 ÷ 10 = 7, and 10% of 45 = 45 ÷ 10 = 4.5.","model":"Linh is correct because 10% = " + F(1, 10) + ", and one tenth of a number is the number ÷ 10."},
+          {"type":"claim","who":"Linh","ok":true,"at":2,"says":"A decimal that starts with 0.0, like 0.04, is always less than 10%.","reasons":[{"t":"10% = " + F(10, 100) + " = 0.1. A decimal that starts with 0.0 has 0 tenths, so it is always less than 0.1. Even 0.09 = 9% is less than 10%."},{"t":"it only works for 0.04, because 4 is less than 10.","why":"Try more numbers. 0.01 = 1% and 0.09 = 9%. They are all less than 10%."},{"t":"a decimal is always less than a percentage.","why":"Not always. 0.5 = 50%, and 50% is greater than 10%. Look at the tenths digit."}],"hint":{"pic":[{"k":"hgrid","shade":9,"cols":true,"cap":"0.09"},{"k":"hgrid","shade":10,"cols":true,"cap":"10%"}],"step":"Change 10% into a decimal. Then test the rule with 0.04 and 0.09."},"worked":"10% = " + F(10, 100) + " = 0.1. A decimal that starts with 0.0 has 0 tenths, so it is less than 1 tenth. For example, 0.04 = 4% and 0.09 = 9%, and both are less than 10%. So the rule is always true.","model":"Linh is correct because 10% = 0.1, and a decimal that starts with 0.0 has 0 tenths, so it is less than 0.1."},
           {"type":"claim","who":"Binh","ok":false,"at":0,"says":"A decimal with two decimal places is always greater than a decimal with one decimal place.","reasons":[{"t":"0.25 has two decimal places and 0.3 has one, but 0.25 = 25% is less than 0.3 = 30%. One example like this shows the rule is not always true."},{"t":"0.75 is greater than 0.5, so two decimal places always make a greater number.","why":"That example fits, but one example does not prove a rule. Try 0.25 and 0.3."},{"t":"a number with more digits is always greater.","why":"That is true for whole numbers, not for decimals. 0.3 = 0.30, and 30 hundredths is more than 25 hundredths."}],"hint":{"pic":{"k":"fdpline","cards":["0.25","0.3","0.75"]},"step":"Test the rule. Try 0.75 and 0.5. Then try 0.25 and 0.3."},"worked":"0.75 is greater than 0.5: the rule fits. But 0.25 = 25% is less than 0.3 = 30%. So the rule is not always true.","model":"Binh is incorrect because 0.25 is less than 0.3."}
         ] }
       ]
@@ -286,11 +286,11 @@
         ["12% of a shape is shaded. Not shaded:", ["88%", "12%", "98%"]],
         ["1/20 as a percentage", ["5%", "10%", "20%"]],
         ["0.9 as a percentage", ["90%", "9%", "0.9%"]],
-        ["1/10 as a percentage", ["10%", "1%", "20%"]],
+        ["1/10 as a percentage", ["10%", "1%", "0.1%"]],
         ["25% off $60. New price:", ["$45", "$15", "$35"]],
         ["10% off $90. New price:", ["$81", "$9", "$80"]],
         ["12 out of 50 as a percentage", ["24%", "12%", "50%"]],
-        ["60% of a shape is shaded. Not shaded:", ["40%", "60%", "30%"]],
+        ["60% of a shape is shaded. Not shaded:", ["40%", "60%", "4%"]],
         ["40% as a fraction", ["2/5", "1/40", "40/10"]],
         ["Which is greater: 3/10 or 0.25?", ["3/10", "0.25", "They are equal"]],
         ["50% of 90", ["45", "9", "90"]],
@@ -322,13 +322,13 @@
         ["20% off $50. New price:", ["$40", "$10", "$30"]],
         ["20% off $30. New price:", ["$24", "$6", "$10"]],
         ["60% as a decimal", ["0.6", "6", "0.06"]],
-        ["50% of 18", ["9", "18", "19"]],
+        ["50% of 18", ["9", "18", "36"]],
         ["0.07 as a percentage", ["7%", "70%", "0.07%"]],
         ["25% of 40", ["10", "4", "30"]],
         ["1/2 as a percentage", ["50%", "12%", "10%"]],
         ["40% of 25", ["10", "15", "20"]],
         ["1/4 as a percentage", ["25%", "14%", "10%"]],
-        ["30% of a shape is shaded. Not shaded:", ["70%", "30%", "60%"]],
+        ["30% of a shape is shaded. Not shaded:", ["70%", "30%", "7%"]],
         ["0.05 as a percentage", ["5%", "50%", "0.05%"]],
         ["20% of 30", ["6", "3", "24"]],
         ["0.3 as a percentage", ["30%", "3%", "0.3%"]],
@@ -348,7 +348,7 @@
         ["3 out of 4 as a percentage", ["75%", "3%", "4%"]],
         ["75% as a fraction", ["3/4", "1/75", "75/10"]],
         ["30% as a fraction", ["3/10", "1/30", "30/10"]],
-        ["100% of 37", ["37", "74", "47"]],
+        ["100% of 37", ["37", "74", "0.37"]],
         ["25% as a fraction", ["1/4", "1/25", "25/10"]],
         ["15% of 20", ["3", "2", "17"]],
         ["80% as a fraction", ["4/5", "1/80", "80/10"]],

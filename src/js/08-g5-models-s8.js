@@ -17,15 +17,16 @@
                                                   another unit: mm, cm, m)
    cdraw   { r | d, at: 'P', pts?: [['P', 5, 5], ['M', 3, 7]] }      draw the circle with the compasses tool (cm, halves)
    cwhich  { r | d, wrong: ['5', '1.5'], size?: 10, at }   which circle on the centimetre grid? (wrong: the radii of the others)
-   crow    { n, r, give: 'r' | 'd', ask: 'len' | 'r' | 'd' | 'n', unit, text?, box? }    n equal circles touch in a row
-                                                  (two steps). r is the radius of one circle; give: what the question
-                                                  tells; text: with {n} {r} {d} {len}
+   crow    { n, r, give: 'r' | 'd', ask: 'len' | 'r' | 'd' | 'n', unit, text?, box?, obj? }    n equal circles touch in
+                                                  a row (two steps). r is the radius of one circle; give: what the
+                                                  question tells; text: with {n} {r} {d} {len}; obj: the word for one
+                                                  and for many, e.g. ['plate', 'plates'] (default circle, circles)
    csq     { r, give: 'r' | 'd' | 'side', ask: 'side' | 'perim' | 'r' | 'd', unit, text? }   a circle that fits exactly
                                                   inside a square; text: with {r} {d} {side}
-   ccfix   { who, kind: 'set' | 'halved', d | r, unit, text?, at }   spot the mistake (tick), then write the right length.
+   ccfix   { who, kind: 'set' | 'same', d | r, unit, text?, at }   spot the mistake (tick), then write the right length.
                                                   set: the compasses were opened to the diameter (give d);
-                                                  halved: the radius was halved to find the distance across (give r;
-                                                  text with {who} {r} {half})
+                                                  same: the radius was taken as the distance across (give r;
+                                                  text with {who} {r})
    cprop   { want: true | false, ids: ['t1', 'f3', 'f6'], at }       which sentence about circles is true / not true?
                                                   (ids[0] is the answer; the sentences are in PROPS below) */
 (function () {
@@ -273,16 +274,17 @@ M.crow = function (d) {
   const u = d.unit || "cm", n = d.n, c = rd({ r: d.r }), len = n * c.d, give = d.give || "r", ask = d.ask || "len";
   if (!(n >= 2 && n <= 12 && n === Math.floor(n))) throw new Error("crow: n must be 2 to 12");
   const NM = { r: "radius", d: "diameter" }, o = { n: n, r: L(c.r, u), d: L(c.d, u), len: L(len, u) };
+  const ob = d.obj || ["circle", "circles"], one1 = "One " + ob[0];
   const told = "Each circle has a <b>" + NM[give] + "</b> of <b>" + L(c[give], u) + "</b>.";
   const q = d.text ? tpl(d.text, o)
     : ask === "len" ? "<b>" + n + "</b> equal circles touch in a row. " + told + " How long is the row?"
     : ask === "n" ? "Equal circles touch in a row. " + told + " The row is <b>" + L(len, u) + "</b> long. How many circles are in the row?"
     : "<b>" + n + "</b> equal circles touch in a row. The row is <b>" + L(len, u) + "</b> long. What is the <b>" + NM[ask] + "</b> of one circle?";
   const ans = ask === "len" ? len : ask === "n" ? n * 1000 : c[ask];
-  const one = give === "r" ? "One circle is 2 radii wide: 2 × " + D.s(c.r) + " = " + L(c.d, u) + "." : "One circle is " + L(c.d, u) + " wide.";
-  const work = ask === "len" ? one + " " + n + " circles: " + n + " × " + D.s(c.d) + " = " + L(len, u) + "."
-    : ask === "n" ? one + " " + D.s(len) + " ÷ " + D.s(c.d) + " = " + n + " circles."
-    : "One circle is " + D.s(len) + " ÷ " + n + " = " + L(c.d, u) + " wide. That is its diameter." + (ask === "r" ? " Radius = " + D.s(c.d) + " ÷ 2 = " + L(c.r, u) + "." : "");
+  const one = give === "r" ? one1 + " is 2 radii wide: 2 × " + D.s(c.r) + " = " + L(c.d, u) + "." : one1 + " is " + L(c.d, u) + " wide.";
+  const work = ask === "len" ? one + " " + n + " " + ob[1] + ": " + n + " × " + D.s(c.d) + " = " + L(len, u) + "."
+    : ask === "n" ? one + " " + D.s(len) + " ÷ " + D.s(c.d) + " = " + n + " " + ob[1] + "."
+    : one1 + " is " + D.s(len) + " ÷ " + n + " = " + L(c.d, u) + " wide. That is its diameter." + (ask === "r" ? " Radius = " + D.s(c.d) + " ÷ 2 = " + L(c.r, u) + "." : "");
   const fig = ask === "n" ? null : { k: "crow", n: n, box: !!d.box, lab: ask === "len" ? "?" : L(len, u),
     r: ask === "len" && give === "r" ? L(c.r, u) : ask === "r" ? "?" : "", d: ask === "len" && give === "d" ? L(c.d, u) : ask === "d" ? "?" : "" };
   return {
@@ -293,11 +295,11 @@ M.crow = function (d) {
       if (D.eq(r.v[0], ans)) return { ok: true };
       let msg;
       if (ask === "len") {
-        msg = "One circle is " + L(c.d, u) + " wide. There are " + n + " circles.";
-        if (give === "r" && v === n * c.r) msg = "You used the radius. One circle is 2 radii wide. Double first, then multiply by " + n + ".";
-        else if (v === c.d) msg = "That is the width of one circle. There are " + n + " circles in the row.";
+        msg = one1 + " is " + L(c.d, u) + " wide. There are " + n + " " + ob[1] + ".";
+        if (give === "r" && v === n * c.r) msg = "You used the radius. " + one1 + " is 2 radii wide. Double first, then multiply by " + n + ".";
+        else if (v === c.d) msg = "That is the width of one " + ob[0] + ". There are " + n + " " + ob[1] + " in the row.";
         else if (give === "d" && v === 2 * len) msg = "The diameter is given. Do not double it.";
-        else if (v === c.d + n * 1000 || v === c.r + n * 1000) msg = "Do not add. Multiply the width of one circle by " + n + ".";
+        else if (v === c.d + n * 1000 || v === c.r + n * 1000) msg = "Do not add. Multiply the width of one " + ob[0] + " by " + n + ".";
       } else if (ask === "n") {
         msg = "How wide is one circle? Then see how many fit in " + L(len, u) + ".";
         if (give === "r" && v * c.r === len) msg = "You divided by the radius. One circle is 2 radii wide: " + L(c.d, u) + ".";
@@ -310,7 +312,7 @@ M.crow = function (d) {
       return { ok: false, msg: msg, parts: [false] };
     },
     hint: { pic: ask === "n" || ask === "len" ? { k: "crow", n: 1, r: give === "r" ? L(c.r, u) : "", d: give === "d" ? L(c.d, u) : "" } : { k: "crow", n: n, lab: L(len, u) },
-      step: ask === "len" || ask === "n" ? "Step 1: how wide is one circle? It is as wide as its diameter." + (ask === "len" ? " Step 2: multiply by " + n + "." : " Step 2: how many fit in the row?")
+      step: ask === "len" || ask === "n" ? "Step 1: how wide is one " + ob[0] + "? It is as wide as its diameter." + (ask === "len" ? " Step 2: multiply by " + n + "." : " Step 2: how many fit in the row?")
         : "Step 1: share the row between the " + n + " circles. Step 2: is that the radius or the diameter?" },
     worked: { text: work, pic: ask === "n" ? { k: "crow", n: Math.min(n, 6), d: L(c.d, u), lab: n <= 6 ? L(len, u) : "" } : Object.assign({}, fig, { lab: L(len, u), r: fig.r ? L(c.r, u) : "", d: fig.d ? L(c.d, u) : "" }) },
     yes: work, key: ask === "n" ? String(n) : L(ans, u), fill: [raw(ans)]
@@ -368,19 +370,19 @@ M.ccfix = function (d) {
     if (u === "cm" && c.d % 500 === 0 && c.d <= 5000) fig = { k: "cruler", r: raw(c.d), cap: who + "'s compasses" };
     step = "The opening of the compasses is the radius of the circle. What is the radius when the diameter is " + L(c.d, u) + "?";
     work = "The opening of the compasses is the radius. " + who + "'s circle has a radius of " + L(c.d, u) + ", so it is " + L(2 * c.d, u) + " across. The right opening is " + D.s(c.d) + " ÷ 2 = " + L(c.r, u) + ".";
-  } else {
-    if (c.from !== "r" || c.r % 2) throw new Error("ccfix halved: give r, with an exact half");
-    ans = c.d; wrongV = c.r / 2; line = "{0} " + u;
-    const o = { who: who, r: L(c.r, u), half: L(wrongV, u) };
-    story = tpl(d.text || "The radius of a circle is {r}. {who} says the circle is {half} across.", o) + " That is wrong.";
+  } else if (kind === "same") {
+    if (c.from !== "r") throw new Error("ccfix same: give r");
+    ans = c.d; wrongV = c.r; line = "{0} " + u;
+    const o = { who: who, r: L(c.r, u) };
+    story = tpl(d.text || "The radius of a circle is {r}. {who} says the circle is {r} across.", o) + " That is wrong.";
     reasons = [
-      { t: who + " halved the radius. The distance across is the diameter: double the radius." },
-      { t: who + " must add the radius to the circumference.", why: "The circumference is the line all the way round. The distance across, through the centre, is the diameter: 2 radii." },
-      { t: who + " halved the diameter. The radius is double the diameter.", why: L(c.r, u) + " is the radius, not the diameter. And the radius is the shorter one: half of the diameter." }];
+      { t: who + " used the radius. The distance across is the diameter: double the radius." },
+      { t: who + " must add 2 to the radius: " + D.s(c.r) + " + 2 = " + L(c.r + 2000, u) + ".", why: "Double means × 2, not + 2." },
+      { t: "There is no mistake. The radius is the distance across.", why: "A radius goes only from the centre to the circumference. The distance across, through the centre, is 2 radii." }];
     abAsk = "Write the correct distance across, through the centre.";
     step = "The distance across a circle, through the centre, is the diameter. It is 2 radii.";
-    work = "The distance across, through the centre, is the diameter. Diameter = 2 × radius = 2 × " + D.s(c.r) + " = " + L(c.d, u) + ". " + who + " halved the radius.";
-  }
+    work = "The distance across, through the centre, is the diameter. Diameter = 2 × radius = 2 × " + D.s(c.r) + " = " + L(c.d, u) + ". " + who + " used the radius.";
+  } else throw new Error("ccfix: no kind " + kind);
   const opts = arrange(reasons.map((x, i) => ({ html: x.t, ok: i === 0, why: x.why || "" })), d.at);
   return {
     q: story, marks: 2, ab: true, fig: fig,

@@ -7,7 +7,7 @@
    MX.G7   SH (the table), of(id) -> properties, quad(pts), order4(pts, edges), is(p, name), say(id), tell(aspect, p),
            ST (the statements a shape can be tested with), fitsAfter(shape, degrees), svg(shape, marks) -> the drawing
 
-   Statement keys (ST): par0 par1 par2 | eq4 noteq4 eqopp kite | right0 right2 right4 | sym0 sym1 sym2 sym4 |
+   Statement keys (ST): par0 par1 par2 | eq4 noteq4 eqopp kite (not a rhombus) kitei (any kite, a rhombus too) | right0 right2 right4 | sym0 sym1 sym2 sym4 |
                         rot1 rot2 rot3 rot4 | deq dneq dperp dbis
    Marks of a drawing: { ticks, par, right, diag, sym, centre, dot, grid, lens: { side: '8 cm' } }
 
@@ -17,7 +17,8 @@
    qnum    { id, ask: ['par', 'right', 'sym', 'rot'] }            write the numbers: one box for each property
    qcount  { ids: [...], prop: 'par2' }                           how many of these shapes have the property? (a box)
    spick   { ids: [...], prop: 'par2' }                           tap every shape with the property (tool shpick)
-   swhich  { ids: [right, wrong, wrong, (wrong)], prop, at, marks?, text? }   which shape has the property (figures)
+   swhich  { ids: [right, wrong, wrong, (wrong)], prop, at, marks?, text?, worked? }   which shape has the property (figures);
+                                                                  worked: a sentence put before the worked answer
    rorder  { id, tool?: true }                                    the order of rotational symmetry (the turning tool,
                                                                   or the picture alone), one box
    rtiles  { who, he?, items: [['rhombus', 3], ['square', 2]] }   two steps: the orders of the tiles, then the sum
@@ -59,7 +60,7 @@ const SH = {
   kitew:    { pts: [[0, 2], [1, 0], [6, 2], [1, 4]] },
   quad:     { pts: [[0, 0], [5, 1], [4, 4], [1, 2]] },
   tri:      { say: "equilateral triangle", pts: [[0, 0], [4, 0], [2, 2 * R3]] },
-  isotri:   { say: "isosceles triangle", pts: [[0, 0], [4, 0], [2, 5]] },
+  isotri:   { say: "triangle with 2 equal sides", pts: [[0, 0], [4, 0], [2, 5]] },
   rtri:     { say: "right-angled triangle", pts: [[0, 0], [5, 0], [0, 3]] },
   plus:     { say: "cross", pts: [[1, 0], [2, 0], [2, 1], [3, 1], [3, 2], [2, 2], [2, 3], [1, 3], [1, 2], [0, 2], [0, 1], [1, 1]].map(p => [p[0] * 1.5, p[1] * 1.5]) },
   star4:    { say: "four-point star", pts: [[0, 3], [1, 1], [3, 0], [1, -1], [0, -3], [-1, -1], [-3, 0], [-1, 1]] },
@@ -178,7 +179,7 @@ function tell(a, p) {
   const big = Math.max.apply(null, (p.groups || [[0]]).map(g => g.length));
   switch (a) {
     case "par": return ["no parallel sides", "exactly one pair of parallel sides", "2 pairs of parallel sides"][p.par];
-    case "eq": return p.eqAll ? "4 equal sides" : p.eqOpp ? "2 pairs of equal sides, opposite each other" : p.eqAdj ? "2 pairs of equal sides, next to each other" : big === 2 ? "only 2 equal sides" : "4 sides of different lengths";
+    case "eq": return p.eqAll ? "4 equal sides" : p.eqOpp ? "2 pairs of equal sides opposite each other" : p.eqAdj ? "2 pairs of equal sides next to each other" : big === 2 ? "only 2 equal sides" : "4 sides of different lengths";
     case "right": return plural(p.right, "right angle", "right angles");
     case "sym": return p.sym === 0 ? "no line of symmetry" : plural(p.sym, "line of symmetry", "lines of symmetry");
     case "rot": return p.rot === 1 ? "no rotational symmetry (order 1)" : "rotational symmetry of order " + p.rot;
@@ -197,7 +198,8 @@ const ST = {
   eq4: { a: "eq", has: "4 equal sides", test: Q(p => p.eqAll) },
   noteq4: { a: "eq", has: "sides that are not all equal", test: Q(p => !p.eqAll) },
   eqopp: { a: "eq", has: "opposite sides of equal length", test: Q(p => p.eqOpp) },
-  kite: { a: "eq", has: "2 pairs of equal sides, next to each other", test: Q(p => p.eqAdj && !p.eqAll) },
+  kite: { a: "eq", has: "2 pairs of equal sides next to each other", needs: "2 pairs of equal sides next to each other. Its 4 sides must not all be equal", test: Q(p => p.eqAdj && !p.eqAll) },
+  kitei: { a: "eq", has: "2 pairs of equal sides next to each other", test: Q(p => p.eqAdj) },
   right0: { a: "right", has: "no right angles", test: Q(p => p.right === 0) },
   right2: { a: "right", has: "exactly 2 right angles", test: Q(p => p.right === 2) },
   right4: { a: "right", has: "4 right angles", test: Q(p => p.right === 4) },
@@ -317,7 +319,8 @@ function whyNot(name, p) {
   const t = name === "square" ? (p.eqAll ? "right" : "eq") : name === "rectangle" ? "right" : name === "rhombus" ? "eq" : name === "kite" ? "eq" : "par";
   return DEF[name] + " This shape has " + tell(t, p) + ".";
 }
-const describe = p => "It has " + list([tell("par", p), tell("eq", p), tell("right", p)]) + ".";
+/* short sentences, one property each (a list with commas reads badly with "next to each other") */
+const describe = p => ["par", "right", "eq"].map(a => "It has " + tell(a, p) + ".").join(" ");
 const num = v => (/^\d+$/.test(String(v)) ? +v : NaN);
 /* what went wrong with an order of rotational symmetry */
 function rotSlip(p, typed) {
@@ -350,24 +353,58 @@ M.qname = function (d) {
   };
 };
 
-/* the name from its properties */
+/* the name from its properties. A clue is an aspect ('par', 'eq', 'right', 'sym', 'rot', 'deq', 'dperp', 'dbis': the
+   sentence says what the shape has) or a statement key of ST ('noteq4'). Clues are read with the INCLUSIVE meaning:
+   "2 pairs of equal sides opposite each other" is true of a square too. The clues must fit no shape of the table that
+   is not the answer, and each wrong name must be ruled out by ONE clue (its feedback quotes that clue only). */
+const CLUE_SAY = { noteq4: ["My 4 sides are not all the same length.", "Its 4 sides are not all the same length.", "4 sides that are not all the same length"] };
+const ASPECTS = ["par", "eq", "right", "sym", "rot", "deq", "dperp", "dbis"];
+function clueOf(c, p) {
+  if (ASPECTS.indexOf(c) < 0) {
+    if (!ST[c].test(p)) throw new Error("qclue: the clue " + c + " is not true of " + p.id);
+    const w = CLUE_SAY[c] || ["I have " + ST[c].has + ".", "It has " + ST[c].has + ".", ST[c].has];
+    return { a: ST[c].a, me: w[0], it: w[1], what: w[2], test: x => !!ST[c].test(x) };
+  }
+  const t = tell(c, p), incl = c === "eq" ? (p.eqAll ? (x => x.eqAll) : p.eqOpp ? (x => x.eqOpp) : p.eqAdj ? (x => x.eqAdj) : null) : null;
+  return { a: c, me: "I have " + t + ".", it: "It has " + t + ".", what: t, test: incl || (x => tell(c, x) === t) };
+}
+/* what is true of EVERY shape with the name (a square is a rectangle, a rhombus and a kite), one sentence per aspect */
+const FAM = {
+  square: { par: "A square has 2 pairs of parallel sides.", right: "A square has 4 right angles.", eq: "A square has 4 equal sides.", sym: "A square has 4 lines of symmetry.",
+    rot: "A square has rotational symmetry of order 4.", deq: "The diagonals of a square are equal.", dperp: "The diagonals of a square cross at right angles." },
+  rectangle: { par: "A rectangle has 2 pairs of parallel sides.", right: "A rectangle has 4 right angles.", eq: "A rectangle has opposite sides of equal length.",
+    sym: "A rectangle has 2 or 4 lines of symmetry.", deq: "The diagonals of a rectangle are equal." },
+  rhombus: { par: "A rhombus has 2 pairs of parallel sides.", eq: "A rhombus has 4 equal sides.", sym: "A rhombus has 2 or 4 lines of symmetry.",
+    dperp: "The diagonals of a rhombus cross at right angles." },
+  parallelogram: { par: "A parallelogram has 2 pairs of parallel sides.", eq: "A parallelogram has opposite sides of equal length." },
+  trapezium: { par: "A trapezium has exactly one pair of parallel sides.", rot: "A trapezium has no rotational symmetry." },
+  kite: { par: "A kite never has exactly one pair of parallel sides.", eq: "A kite has 2 pairs of equal sides next to each other.", sym: "A kite always has a line of symmetry.",
+    dperp: "The diagonals of a kite cross at right angles." }
+};
 M.qclue = function (d) {
-  const p = of(d.id), sig = x => d.clues.map(a => tell(a, x)).join("|");
+  const p = of(d.id);
   if (!p.quad || !DEF[p.name]) throw new Error("qclue: " + d.id + " has no special name");
-  d.opts.forEach(n => {
+  const cs = d.clues.map(c => clueOf(c, p)), all = QUADS.map(of), fits = x => cs.every(c => c.test(x));
+  all.filter(fits).forEach(x => { if (!is(x, p.name)) throw new Error("qclue: the clues also fit '" + x.id + "', which is not " + an(p.name)); });
+  const why = n => {
     if (!DEF[n] || is(p, n)) throw new Error("qclue: '" + n + "' is also true for " + d.id);
-    QUADS.forEach(id => { const x = of(id); if (x.name === n && sig(x) === sig(p)) throw new Error("qclue: the clues also fit the " + n + " '" + id + "'"); });
-  });
-  QUADS.forEach(id => { const x = of(id); if (x.name !== p.name && !is(x, p.name) && sig(x) === sig(p) && d.opts.indexOf(x.name) >= 0) throw new Error("qclue: not enough clues"); });
-  const clues = d.clues.map(a => "I have " + tell(a, p) + ".");
-  const opts = arrange([p.name].concat(d.opts).map((n, i) => ({ html: cap(n), ok: i === 0, why: i === 0 ? "" : whyNot(n, p).replace("This shape has", "The shape in the clues has") })), d.at);
+    const fam = all.filter(x => is(x, n));
+    if (!fam.length) throw new Error("qclue: no " + n + " in the table");
+    const c = cs.find(c => fam.every(x => !c.test(x)));
+    if (!c) throw new Error("qclue: no single clue rules out every " + n);
+    const s = (FAM[n] || {})[c.a] || (/^no /.test(c.what) ? "" : cap(an(n)) + " never has " + c.what + ".");
+    if (!s) throw new Error("qclue: no sentence for " + n + " / " + c.a);
+    return s + " The shape in the clues has " + c.what + ".";
+  };
+  const opts = arrange([p.name].concat(d.opts).map((n, i) => ({ html: cap(n), ok: i === 0, why: i === 0 ? "" : why(n) })), d.at);
+  const said = cs.map(c => c.it).join(" ") + " So it is " + an(p.name) + ".";
   return {
-    q: "I am a [[quadrilateral]]. " + clues.join(" ") + " What am I?", sub: "Tick (✓) one box.", opts: opts,
+    q: "I am a [[quadrilateral]]. " + cs.map(c => c.me).join(" ") + " What am I?", sub: "Tick (✓) one box.", opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why + " Read the clues again." }; },
     hint: { pic: d.opts.length ? { k: "shapes", letters: false, list: [p.name].concat(d.opts).sort().map(n => ({ id: QUADS.find(id => of(id).name === n), cap: cap(n) })), marks: MK } : null,
       step: "Take one clue at a time. Cross out every shape that does not fit it." },
-    worked: { text: "A quadrilateral with " + list(d.clues.map(a => tell(a, p))) + " is " + an(p.name) + ".", pic: fig(d.id, Object.assign({ cap: cap(p.name) }, MK)) },
-    yes: "A quadrilateral with " + list(d.clues.map(a => tell(a, p))) + " is " + an(p.name) + ".", key: cap(p.name)
+    worked: { text: said, pic: fig(d.id, Object.assign({ cap: cap(p.name) }, MK)) },
+    yes: said, key: cap(p.name)
   };
 };
 
@@ -463,14 +500,15 @@ M.swhich = function (d) {
   const marks = d.marks || (/sym|rot/.test(k0) && !/par|eq|right|kite/.test(k0) ? {} : /\bd/.test(k0) ? { diag: true, ticks: true, right: true } : MK);
   const tells = p => list(Ss.map(S => tell(S.a, p)).filter((x, i, a) => a.indexOf(x) === i));
   const opts = arrange(d.ids.map((id, i) => ({ html: "", fig: fig(id, marks), ok: i === 0, p: ps[i] })), d.at);
-  opts.forEach((o, i) => { o.alt = "Shape " + L6[i]; o.why = o.ok ? "" : "Shape " + L6[i] + " has " + tell(Ss.find(S => !S.test(o.p)).a, o.p) + "."; delete o.p; });
+  opts.forEach((o, i) => { o.alt = "Shape " + L6[i]; const fail = Ss.find(S => !S.test(o.p));
+    o.why = o.ok ? "" : "Shape " + L6[i] + " has " + tell(fail.a, o.p) + (fail === ST.kitei ? ", so it is not a kite" : "") + "."; delete o.p; });
   const right = opts.findIndex(o => o.ok), pr = ps[0];
   return {
     q: d.text || "Which shape has " + has + "?", sub: "Tick (✓) one box.", letters: true, opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why + (d.text ? " Look for a shape with " + has + "." : "") }; },
     hint: { pic: /sym|rot/.test(k0) || marks.grid ? null : KEY,
-      step: /rot/.test(k0) ? "Turn each shape in your head. Count how many times it fits in one full turn." : /sym/.test(k0) ? "Look for fold lines. Both halves must match exactly." : marks.grid ? "Count the steps between the dots. " + (/par/.test(k0) ? "Parallel sides go the same way: the same steps across and the same steps up." : "Equal sides have the same steps across and up or down.") : "Check the shapes one at a time with the marks." },
-    worked: { text: "Shape " + L6[right] + " has " + tells(pr) + ". " + opts.map(o => (o.ok ? "" : o.why)).filter(Boolean).join(" "), pic: fig(d.ids[0], Object.assign({}, marks, /sym/.test(k0) ? { sym: true } : {}, { cap: "Shape " + L6[right] })) },
+      step: /rot/.test(k0) ? "Turn each shape in your head. Count how many times it fits in one full turn." : /sym/.test(k0) ? "Look for fold lines. Both halves must match exactly." : marks.grid ? "Count the steps between the dots. " + (/par/.test(k0) ? "Parallel sides go the same way on the dots: a flat side with a flat side, or the same slope, like 1 up for 2 across and 2 up for 4 across." : "Sides with the same steps across and the same steps up or down are equal.") : "Check the shapes one at a time with the marks." },
+    worked: { text: (d.worked ? d.worked + " " : "") + "Shape " + L6[right] + " has " + tells(pr) + ". " + opts.map(o => (o.ok ? "" : o.why)).filter(Boolean).join(" "), pic: fig(d.ids[0], Object.assign({}, marks, /sym/.test(k0) ? { sym: true } : {}, { cap: "Shape " + L6[right] })) },
     yes: "Shape " + L6[right] + " has " + tells(pr) + ".", key: L6[right]
   };
 };
@@ -557,7 +595,7 @@ M.gdraw = function (d) {
     if (!o) return "Three of your corners are in one straight line. That does not make a quadrilateral. Move one corner.";
     if (!edges.every(e => o.some((p, i) => { const q = o[(i + 1) % 4]; return (samePt(p, e[0]) && samePt(q, e[1])) || (samePt(p, e[1]) && samePt(q, e[0])); }))) return "Keep the sides that are drawn. Try another dot.";
     const p = quad(o), miss = need.find(S => !S.test(p));
-    return miss ? "Your shape has " + tell(miss.a, p) + ". It needs " + miss.has + "." : "";
+    return miss ? "Your shape has " + tell(miss.a, p) + ". It needs " + (miss.needs || miss.has) + "." : "";
   }
   if (!d.ex || fault(d.ex)) throw new Error("gdraw: the example drawing does not fit: " + fault(d.ex || []));
   const exO = order4(given.concat(d.ex), edges), exP = quad(exO), nm = d.shape || "quadrilateral", k = 4 - given.length;
@@ -572,7 +610,7 @@ M.gdraw = function (d) {
     check(r) { const f = fault(parsePts(r.pts)); return f ? { ok: false, msg: f } : { ok: true }; },
     given: r => String(r.pts || ""),
     hint: { pic: given.length === 3 && DEF[nm] ? fig(QUADS.find(id => of(id).name === nm), Object.assign({ cap: cap(nm) }, MK)) : null,
-      step: (DEF[nm] ? DEF[nm] + " " : "") + (need.some(S => S.a === "par") ? "Parallel sides go the same way on the dots: the same steps across and the same steps up or down." : need.some(S => S.a === "eq") ? "Equal sides have the same steps across and up or down on the dots." : "Count the steps between the dots.") },
+      step: (DEF[nm] ? DEF[nm] + " " : "") + (need.some(S => S.a === "par") ? "Parallel sides go the same way on the dots: a flat side with a flat side, or the same slope, like 1 up for 2 across and 2 up for 4 across." : need.some(S => S.a === "eq") ? "Sides with the same steps across and the same steps up or down are equal." : "Count the steps between the dots.") },
     worked: { text: "Here is one right answer. It has " + list(d.need.map(kk => tell(ST[kk].a, exP)).filter((x, i, a) => a.indexOf(x) === i)) + ".", pic: { k: "shape", pts: exO, ydown: true, grid: { cols: d.cols || 7, rows: d.rows || 6 } } },
     yes: "Yes! Your shape has " + what + ".", key: (DEF[nm] ? nm + ": " : "") + what + " (" + k + (k === 1 ? " dot" : " dots") + ")"
   };

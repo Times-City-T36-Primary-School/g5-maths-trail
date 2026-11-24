@@ -229,7 +229,7 @@ M.pconv = function (d) {
 M.psame = function (d) {
   const q = need(Q(d.v)), os = d.opts.map(x => need(Q(x)));
   if (os.filter(o => Q.cmp(o, q) === 0).length !== 1 || Q.cmp(os[0], q) !== 0) throw new Error("psame: exactly one option, the first, must be equal to " + q.text);
-  const opts = arrange(os.map((o, i) => ({ html: o.html, alt: o.text, ok: i === 0, why: i === 0 ? "" : chain(o) + ". But " + (q.kind === "p" ? q.text + " = " + F(q.h, 100) : toPct(q)) + "." })), d.at);
+  const opts = arrange(os.map((o, i) => ({ html: o.html, alt: o.text, ok: i === 0, why: i === 0 ? "" : (o.h > 100 ? o.text + " is more than 1 whole" : chain(o)) + ". But " + (q.kind === "p" ? q.text + " = " + F(q.h, 100) + " = " + decOf(q.h) : toPct(q)) + "." })), d.at);
   return {
     q: "Which is [[equivalent]] to <b>" + q.html + "</b>?", sub: "Tick (✓) one box.", opts: opts,
     check(r) { const o = opts[r.pick]; return o.ok ? { ok: true } : { ok: false, msg: o.why }; },

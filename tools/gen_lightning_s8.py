@@ -4,7 +4,8 @@
 #      marker lines "// LIGHTNING-BEGIN" and "// LIGHTNING-END".
 # The right answers are worked out with Decimal; at the end every one is worked out again from the words of the
 # question with Fraction (a second way). The wrong answers are real slips: halve instead of double, double instead of
-# halve, the diameter for the compasses, the radius for the width of a circle, add 2 instead of double.
+# halve, the diameter for the compasses, the radius for the width of a circle, add 2 instead of double, the diameter
+# kept as the radius (no halving), the .5 dropped when an odd diameter is halved.
 import random, json, re, sys
 from decimal import Decimal as Dc
 from fractions import Fraction as Fr
@@ -35,8 +36,9 @@ c = 0
 for r in R.sample(radii, len(radii)):
     if c >= 13: break
     u = unit(r); d = 2 * r
-    wrong2 = d - 2 if d - 2 != r else d + 2
-    if add(f'Diameter {s(d)} {u}. Radius?', f'{s(r)} {u}', [f'{s(2 * d)} {u}', f'{s(wrong2)} {u}']): c += 1
+    # slips: the diameter itself (no halving); half of an odd number with the .5 dropped; or + 2 for "halve"
+    wrong2 = r - Dc('0.5') if r % 1 else r + 2
+    if add(f'Diameter {s(d)} {u}. Radius?', f'{s(r)} {u}', [f'{s(d)} {u}', f'{s(wrong2)} {u}']): c += 1
 # the compasses
 small = [r for r in radii if r <= Dc('7.5')]
 c = 0
@@ -62,7 +64,7 @@ while c < 8:
 c = 0
 for r in R.sample([Dc(x) for x in ('2.5 3.5 4.5 5 7 7.5 9 15').split()], 8):
     if c >= 6: break
-    if add(f'A circle fits in a square. Radius {s(r)} cm. Square side?', f'{s(2 * r)} cm', [f'{s(r)} cm', f'{s(4 * r)} cm']): c += 1
+    if add(f'Circle fits exactly in a square. Radius {s(r)} cm. Side?', f'{s(2 * r)} cm', [f'{s(r)} cm', f'{s(4 * r)} cm']): c += 1
 # the words (each checked by hand, twice)
 WORDS = [
     ('The line all the way round a circle is the', ['circumference', 'diameter', 'radius']),
@@ -76,7 +78,7 @@ WORDS = [
     ('How many radii make one diameter?', ['2', '1', '4']),
     ('A line across a circle that misses the centre is', ['not a diameter', 'a diameter', 'a radius']),
     ('All radii of one circle are the same length.', ['always true', 'sometimes true', 'never true']),
-    ('Which is longer in one circle?', ['the diameter', 'the radius', 'they are equal']),
+    ('Radius or diameter: which is longer?', ['the diameter', 'the radius', 'they are equal']),
     ('The compasses are opened to the', ['radius', 'diameter', 'circumference']),
     ('A diameter always passes through the', ['centre', 'radius', 'corner']),
 ]
@@ -100,7 +102,7 @@ for q, o in items:
     if m: assert val(o[0]) / 2 == num(m.group(1)), q; checked += 1; continue
     m = re.match(r'(\d) circles touch in a row\. Radius ([\d.,]+) cm', q)
     if m: assert val(o[0]) / int(m.group(1)) / 2 == num(m.group(2)), q; checked += 1; continue
-    m = re.match(r'A circle fits in a square\. Radius ([\d.,]+) cm', q)
+    m = re.match(r'Circle fits exactly in a square\. Radius ([\d.,]+) cm\. Side\?', q)
     if m: assert val(o[0]) == num(m.group(1)) + num(m.group(1)), q; checked += 1; continue
     assert any(q == w[0] for w in WORDS), 'not checked: ' + q
 for q, o in items:

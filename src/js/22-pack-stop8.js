@@ -27,7 +27,7 @@
         'circumference': { art: 'w-circumference', vi: 'đường tròn (độ dài của nó là chu vi hình tròn)', def: 'The line all the way round a circle. Also the distance all the way round it.' },
         'compasses': { art: 'w-compasses', vi: 'com-pa', def: 'A tool for drawing circles. It has a sharp point and a pencil.' },
         'construct': { art: 'w-construct', vi: 'dựng hình (vẽ chính xác bằng dụng cụ)', def: 'To draw a shape exactly, with tools like compasses and a ruler.' },
-        'double': { art: 'w-double', vi: 'gấp đôi', def: 'Two times as much. Double 4.5 is 9. Double the radius to get the diameter.' },
+        'double': { art: 'w-double', vi: 'gấp đôi', def: 'Two times as much. Double 6.5 is 13. Double the radius to get the diameter.' },
         'half': { art: 'w-half', vi: 'một nửa', def: 'One of 2 equal parts. Half of 7 is 3.5. The radius is half of the diameter.' }
       }
     },
@@ -52,7 +52,7 @@
         { id: 'draw', title: { en: 'Draw with compasses', vi: 'Vẽ bằng com-pa' }, tool: 'compass', compass: { pts: [['P', 5, 5]], h: 2, measure: true },
           steps: [
             { can: { set: 5 }, wait: 'set', until: { h: 5 },
-              zip: { en: 'A circle *5 cm* across. Open the compasses to *2.5 cm*.', vi: 'Hình tròn rộng *5 cm*. Mở com-pa *2.5 cm* (bấm +).' },
+              zip: { en: 'Circle *5 cm* across. Open the compasses to *2.5 cm*.', vi: 'Hình tròn rộng *5 cm*. Mở com-pa *2.5 cm* (bấm +).' },
               then: { en: 'Half of 5 is 2.5. That is the *radius*.', vi: 'Một nửa của 5 là 2.5. Đó là *bán kính*.' } },
             { can: { point: 'P' }, wait: 'point', until: { at: 'P' },
               zip: { en: 'Put the point on *P*. Tap the dot.', vi: 'Đặt đầu nhọn vào *P*. Bấm vào chấm.' },
@@ -77,17 +77,17 @@
             {"type":"cname","part":"diameter","a":160,"at":0},
             {"type":"cname","part":"radius","a":70,"at":3}] },
           { mode: "your", lo: ["6Gg.02"], v: [
-            {"type":"crd","items":[{"r":"4.5"}],"unit":"cm","fig":true},
+            {"type":"crd","items":[{"r":"5.5"}],"unit":"cm","fig":true},
             {"type":"crd","items":[{"d":"7"}],"unit":"cm","fig":true},
-            {"type":"crd","items":[{"r":"2.5"}],"unit":"cm","fig":true}] },
+            {"type":"crd","items":[{"r":"7.5"}],"unit":"cm","fig":true}] },
           { mode: "your", lo: ["6Gg.11"], v: [
             {"type":"cdraw","r":"3.5","at":"P"},
             {"type":"cdraw","r":"2","at":"M"},
             {"type":"cdraw","r":"1.5","at":"K"}] },
           { mode: "your", lo: ["6Gg.11"], v: [
-            {"type":"cdraw","d":"7","at":"M"},
-            {"type":"cdraw","d":"9","at":"K"},
-            {"type":"cdraw","d":"5","at":"C"}] }] } }]
+            {"type":"cdraw","d":"10","at":"M"},
+            {"type":"cdraw","d":"4","at":"K"},
+            {"type":"cdraw","d":"7","at":"C"}] }] } }]
     },
     // Practise: Pictorial (Draw it: the circle and the compasses) then Abstract (Solve it, like the test).
     practise: [
@@ -105,22 +105,22 @@
             {"type":"cline","ask":"none","lines":["c","r","d","r"],"tap":true}] }] },
       { title: { en: "Use the compasses", vi: "Dùng com-pa" }, rounds: [
           { mode: "your", lo: ["6Gg.11"], twm: ["TWM.02"], v: [
-            {"type":"cdraw","r":"2.5","at":"P"},
-            {"type":"cdraw","r":"4.5","at":"M"},
+            {"type":"cdraw","r":"5","at":"P"},
+            {"type":"cdraw","r":"1","at":"M"},
             {"type":"cdraw","r":"1.5","at":"K","pts":[["K",6,5],["T",2,2]]}] },
           { mode: "your", lo: ["6Gg.11"], twm: ["TWM.02"], v: [
-            {"type":"cdraw","d":"5","at":"C"},
-            {"type":"cdraw","d":"9","at":"P"},
+            {"type":"cdraw","d":"2","at":"C"},
+            {"type":"cdraw","d":"7","at":"P"},
             {"type":"cdraw","d":"3","at":"M","pts":[["S",3,3],["M",6,6]]}] }] },
       { title: { en: "How big is the circle?", vi: "Hình tròn to bao nhiêu?" }, rounds: [
           { mode: "your", lo: ["6Gg.11", "6Gg.02"], twm: ["TWM.02"], v: [
-            {"type":"cwhich","d":"5","wrong":["5","1.5"],"size":12,"at":1},
+            {"type":"cwhich","d":"3","wrong":["3","1"],"at":1},
             {"type":"cwhich","r":"2","wrong":["1","3.5"],"at":2},
             {"type":"cwhich","d":"2","wrong":["2","0.5"],"at":0}] },
           { mode: "your", lo: ["6Gg.02"], twm: ["TWM.02"], v: [
             {"type":"crow","n":3,"r":"2","give":"r","ask":"len","unit":"cm"},
             {"type":"crow","n":4,"r":"1.5","give":"r","ask":"len","unit":"cm"},
-            {"type":"crow","n":5,"r":"2.5","give":"d","ask":"len","unit":"cm"}] }] }] },
+            {"type":"crow","n":5,"r":"3.5","give":"d","ask":"len","unit":"cm"}] }] }] },
       { id: 's8a', kit: 'model', game: 'a', surface: 'paper', art: 'icon-step-test',
         title: 'Solve it', blurb: { en: 'Answer questions like the test.', vi: 'Trả lời câu hỏi giống bài kiểm tra.' },
         levels: [
@@ -140,25 +140,25 @@
       { title: { en: "Radius and diameter", vi: "Bán kính và đường kính" }, rounds: [
           { mode: "your", lo: ["6Gg.02"], twm: ["TWM.02"], v: [
             {"type":"crd","items":[{"r":"7"},{"d":"11"}],"unit":"cm"},
-            {"type":"crd","items":[{"d":"15"},{"r":"4.5"}],"unit":"cm"},
+            {"type":"crd","items":[{"d":"15"},{"r":"9.5"}],"unit":"cm"},
             {"type":"crd","items":[{"r":"12.5"},{"d":"30"}],"unit":"mm"}] },
           { mode: "your", lo: ["6Gg.11"], twm: ["TWM.02"], v: [
             {"type":"ccset","d":"13","unit":"cm","who":"Hoa"},
             {"type":"ccset","r":"5.5","unit":"cm","who":"Duc"},
-            {"type":"ccset","d":"90","unit":"mm","to":"cm","who":"Linh"}] },
+            {"type":"ccset","d":"30","unit":"mm","to":"cm","who":"Linh"}] },
           { mode: "your", lo: ["6Gg.02"], twm: ["TWM.01"], v: [
-            {"type":"crow","n":6,"r":"5","give":"r","ask":"len","unit":"cm","text":"{n} round plates touch in a row on a shelf. Each plate has a radius of {r}. How long is the row of plates?"},
+            {"type":"crow","n":6,"r":"5","give":"r","ask":"len","unit":"cm","obj":["plate","plates"],"text":"{n} round plates touch in a row on a shelf. Each plate has a radius of {r}. How long is the row of plates?"},
             {"type":"csq","r":"7.5","give":"r","ask":"perim","unit":"cm"},
             {"type":"crow","n":5,"r":"3.5","give":"r","ask":"r","unit":"cm"}] }] },
       { title: { en: "Who is correct?", vi: "Ai đúng?" }, rounds: [
           { mode: "your", lo: ["6Gg.11", "6Gg.02"], twm: ["TWM.07", "TWM.08"], v: [
             {"type":"ccfix","who":"Hung","kind":"set","d":"11","unit":"cm","at":1},
-            {"type":"ccfix","who":"Kim","kind":"halved","r":"14","unit":"cm","text":"The radius of a round wall clock is {r}. {who} says the clock is {half} across.","at":0},
+            {"type":"ccfix","who":"Kim","kind":"same","r":"14","unit":"cm","text":"The radius of a round wall clock is {r}. {who} says the clock is {r} across.","at":0},
             {"type":"ccfix","who":"Giang","kind":"set","d":"15","unit":"cm","at":2}] },
           { mode: "your", lo: ["6Gg.02"], twm: ["TWM.07", "TWM.04"], v: [
             {"type":"claim","who":"Minh","ok":true,"at":1,"says":"All the radii of one circle are the same length.","reasons":[{"t":"every point on the circumference is the same distance from the centre."},{"t":"a radius that goes up is longer than a radius that goes to the side.","why":"Turn the page and the circle looks the same. Measure the two radii: they are equal."},{"t":"it is only true for small circles.","why":"It is true for every circle. The compasses stay open the same distance all the way round."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":20},{"t":"r","a":140},{"t":"r","a":260}]},"step":"Think how compasses draw a circle. Does the opening change when the pencil goes round?"},"worked":"The compasses stay open the same distance all the way round. So every point on the circumference is the same distance from the centre, and every radius has the same length.","model":"Minh is correct because every point on the circumference is the same distance from the centre."},
             {"type":"claim","who":"Trang","ok":false,"at":0,"fig":{"k":"circle","plain":true,"lines":[{"t":"c","a":250}]},"says":"This line goes from one side of the circle to the other side. So it is a diameter.","reasons":[{"t":"the line does not pass through the centre. A diameter must pass through the centre."},{"t":"the line is straight and it touches the circumference two times.","why":"That is true, but it is not enough. A diameter also passes through the centre."},{"t":"a diameter must start at the centre.","why":"A line that starts at the centre is a radius. A diameter goes through the centre, from side to side."}],"hint":{"pic":{"k":"circle","lines":[{"t":"d","a":0,"lab":"diameter"}]},"step":"Find the centre of the circle. Does the line pass through it?"},"worked":"The line goes from side to side, but it misses the centre. A diameter always passes through the centre. So this line is not a diameter.","model":"Trang is incorrect because the line does not pass through the centre of the circle."},
-            {"type":"claim","who":"Phong","ok":true,"at":2,"says":"The radius of my circle is 4.5 cm. So its diameter is 9 cm.","reasons":[{"t":"the diameter is 2 radii: 2 × 4.5 = 9."},{"t":"the diameter is half of the radius: 4.5 ÷ 2 = 2.25.","why":"The diameter is the longer one. It goes all the way across the circle: 2 radii."},{"t":"the diameter is 2 cm more than the radius: 4.5 + 2 = 6.5.","why":"Double means × 2, not + 2."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":0,"lab":"4.5 cm"},{"t":"r","a":180,"lab":"4.5 cm","dash":true}]},"step":"A diameter is 2 radii in a straight line. Double 4.5."},"worked":"A diameter is 2 radii in a straight line. 2 × 4.5 = 9. So the diameter is 9 cm.","model":"Phong is correct because the diameter is double the radius: 2 × 4.5 = 9 cm."}] }] }] }
+            {"type":"claim","who":"Phong","ok":true,"at":2,"says":"The radius of my circle is 7.5 cm. So its diameter is 15 cm.","reasons":[{"t":"the diameter is 2 radii: 2 × 7.5 = 15."},{"t":"the diameter is half of the radius: 7.5 ÷ 2 = 3.75.","why":"The diameter is the longer one. It goes all the way across the circle: 2 radii."},{"t":"the diameter is 2 cm more than the radius: 7.5 + 2 = 9.5.","why":"Double means × 2, not + 2."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":0,"lab":"7.5 cm"},{"t":"r","a":180,"lab":"7.5 cm","dash":true}]},"step":"A diameter is 2 radii in a straight line. Double 7.5."},"worked":"A diameter is 2 radii in a straight line. 2 × 7.5 = 15. So the diameter is 15 cm.","model":"Phong is correct because the diameter is double the radius: 2 × 7.5 = 15 cm."}] }] }] }
     ],
     // Notes: how to do it, each with a worked example and a picture made by the circle tools; then one gap
     // sentence per note, in the same order (the first choice in the braces is the right one).
@@ -170,24 +170,24 @@
           pic: { k: 'circle', ring: 'hl', ringLab: 'circumference', dotLab: 'centre' } },
         { en: 'A [[radius]] is a straight line from the centre to the circumference. All the radii of one circle are the same length.',
           vi: 'Bán kính là đoạn thẳng nối tâm với một điểm trên đường tròn. Mọi bán kính của một hình tròn đều dài bằng nhau.',
-          example: ['This circle has a radius of *2.5 cm*.', 'Every radius of this circle is 2.5 cm long.'],
-          pic: { k: 'circle', lines: [{ t: 'r', a: 150, dim: true }, { t: 'r', a: 270, dim: true }, { t: 'r', a: 30, lab: '2.5 cm' }] } },
+          example: ['This circle has a radius of *6.5 cm*.', 'Every radius of this circle is 6.5 cm long.'],
+          pic: { k: 'circle', lines: [{ t: 'r', a: 150, dim: true }, { t: 'r', a: 270, dim: true }, { t: 'r', a: 30, lab: '6.5 cm' }] } },
         { en: 'A [[diameter]] is a straight line across the circle, through the centre. A line that misses the centre is not a diameter.',
           vi: 'Đường kính là đoạn thẳng nối hai điểm trên đường tròn và đi qua tâm. Đoạn thẳng không đi qua tâm thì không phải là đường kính.',
           example: ['The line through the centre is a *diameter*.', 'The other line misses the centre. It is *not* a diameter.'],
           pic: { k: 'circle', lines: [{ t: 'd', a: 0, lab: 'diameter' }, { t: 'c', a: 270, lab: 'not a diameter' }] } },
         { en: 'The diameter is [[double]] the radius. The radius is [[half]] of the diameter.',
           vi: 'Đường kính gấp đôi bán kính. Bán kính bằng một nửa đường kính.',
-          example: ['Radius 4.5 cm: diameter = 2 × 4.5 = *9 cm*.', 'Diameter 7 cm: radius = 7 ÷ 2 = *3.5 cm*.'],
-          pic: { k: 'circle', lines: [{ t: 'd', a: 0, lab: '9 cm' }, { t: 'r', a: 125, lab: '4.5 cm' }] } },
+          example: ['Radius 8.5 cm: diameter = 2 × 8.5 = *17 cm*.', 'Diameter 7 cm: radius = 7 ÷ 2 = *3.5 cm*.'],
+          pic: { k: 'circle', lines: [{ t: 'd', a: 0, lab: '17 cm' }, { t: 'r', a: 125, lab: '8.5 cm' }] } },
         { en: 'To [[construct]] a circle, use [[compasses]]. Open them to the radius. Put the point on the centre. Turn the pencil all the way round.',
           vi: 'Để dựng hình tròn, hãy dùng com-pa. Mở com-pa bằng bán kính. Đặt đầu nhọn vào tâm. Quay đầu bút chì đủ một vòng.',
           example: ['A circle with a radius of 3.5 cm:', 'open the compasses to *3.5 cm* on the ruler.'],
           pic: { k: 'cruler', r: '3.5' } },
         { en: 'When you know the diameter, halve it first. The compasses are set to the radius, never to the diameter.',
           vi: 'Khi biết đường kính, hãy chia đôi trước. Com-pa luôn mở bằng bán kính, không bao giờ bằng đường kính.',
-          example: ['A circle 5 cm across: 5 ÷ 2 = 2.5.', 'Open the compasses to *2.5 cm*.'],
-          pic: { k: 'cgrid', r: '2.5', across: true, big: true } }
+          example: ['A circle 3 cm across: 3 ÷ 2 = 1.5.', 'Open the compasses to *1.5 cm*.'],
+          pic: { k: 'cgrid', r: '1.5', across: true, big: true } }
       ],
       check: [
         { sentence: 'The line all the way round a circle is the {circumference|diameter|radius}.', answer: 'circumference' },
@@ -205,7 +205,7 @@
         { dok: 1, lo: ["6Gg.02"], twm: ["TWM.05"], v: [
           {"type":"cname","part":"diameter","a":155,"at":1},
           {"type":"cname","part":"radius","a":60,"at":3},
-          {"type":"cname","part":"circumference","at":2}
+          {"type":"cshow","part":"circumference","opts":["circumference","radius","diameter"],"at":1}
         ] },
         { dok: 1, lo: ["6Gg.02"], twm: ["TWM.02"], v: [
           {"type":"crd","items":[{"r":"9"}],"unit":"cm"},
@@ -214,7 +214,7 @@
         ] },
         { dok: 1, lo: ["6Gg.02"], twm: ["TWM.02"], v: [
           {"type":"crd","items":[{"d":"17"}],"unit":"cm","fig":true},
-          {"type":"crd","items":[{"d":"5"}],"unit":"cm","fig":true},
+          {"type":"crd","items":[{"d":"19"}],"unit":"cm","fig":true},
           {"type":"crd","items":[{"d":"22"}],"unit":"cm","fig":true}
         ] },
         { dok: 1, lo: ["6Gg.02"], twm: ["TWM.06"], v: [
@@ -228,24 +228,24 @@
           {"type":"ccset","r":"5","unit":"cm","who":"Yen"}
         ] },
         { dok: 2, lo: ["6Gg.11"], twm: ["TWM.02"], v: [
-          {"type":"ccset","d":"15","unit":"cm","who":"Binh"},
-          {"type":"ccset","d":"11","unit":"cm","who":"Hanh"},
+          {"type":"ccset","d":"130","unit":"mm","to":"cm","who":"Binh"},
+          {"type":"ccset","d":"110","unit":"mm","to":"cm","who":"Hanh"},
           {"type":"ccset","d":"70","unit":"mm","to":"cm","who":"Tam"}
         ] },
         { dok: 2, lo: ["6Gg.02"], twm: ["TWM.01"], v: [
-          {"type":"crow","n":4,"r":"2.5","give":"r","ask":"len","unit":"cm","box":true,"text":"{n} round biscuits touch in a row in a box. Each biscuit has a radius of {r}. How long is the row of biscuits?"},
-          {"type":"crow","n":3,"r":"35","give":"r","ask":"len","unit":"cm","text":"A truck carries {n} equal wheels in a row. The wheels touch. Each wheel has a radius of {r}. How long is the row of wheels?"},
-          {"type":"crow","n":5,"r":"1.5","give":"r","ask":"len","unit":"m","text":"{n} round flower beds touch in a row in a park. Each flower bed has a radius of {r}. How long is the row of flower beds?"}
+          {"type":"crow","n":4,"r":"3.5","give":"r","ask":"len","unit":"cm","box":true,"obj":["biscuit","biscuits"],"text":"{n} round biscuits touch in a row in a box. Each biscuit has a radius of {r}. How long is the row of biscuits?"},
+          {"type":"crow","n":3,"r":"35","give":"r","ask":"len","unit":"cm","obj":["wheel","wheels"],"text":"A truck carries {n} equal wheels in a row. The wheels touch. Each wheel has a radius of {r}. How long is the row of wheels?"},
+          {"type":"crow","n":5,"r":"1.5","give":"r","ask":"len","unit":"m","obj":["flower bed","flower beds"],"text":"{n} round flower beds touch in a row in a park. Each flower bed has a radius of {r}. How long is the row of flower beds?"}
         ] },
         { dok: 2, lo: ["6Gg.11"], twm: ["TWM.07"], v: [
-          {"type":"ccfix","who":"Dung","kind":"set","d":"5","unit":"cm","at":2},
-          {"type":"ccfix","who":"Hai","kind":"set","d":"7","unit":"cm","at":0},
-          {"type":"ccfix","who":"Chi","kind":"set","d":"9","unit":"cm","at":1}
+          {"type":"ccfix","who":"Dung","kind":"set","d":"7","unit":"cm","at":2},
+          {"type":"ccfix","who":"Hai","kind":"set","d":"15","unit":"cm","at":0},
+          {"type":"ccfix","who":"Chi","kind":"set","d":"17","unit":"cm","at":1}
         ] },
-        { dok: 2, lo: ["6Gg.02", "6Gg.11"], twm: ["TWM.07", "TWM.04"], v: [
-          {"type":"claim","who":"Long","ok":false,"at":1,"says":"A circle has a diameter of 11 cm. So its radius is 22 cm.","reasons":[{"t":"the radius is half of the diameter: 11 ÷ 2 = 5.5 cm."},{"t":"the radius is double the diameter: 11 × 2 = 22 cm.","why":"The radius is the shorter one. It goes only from the centre to the circumference."},{"t":"the radius and the diameter of a circle are always the same length.","why":"The diameter is 2 radii long. It goes all the way across the circle."}],"hint":{"pic":{"k":"circle","lines":[{"t":"d","a":0,"lab":"11 cm"},{"t":"r","a":125,"lab":"?"}]},"step":"Which is longer, the radius or the diameter? Halve or double?"},"worked":"The radius goes from the centre to the circumference: half of the diameter. 11 ÷ 2 = 5.5. So the radius is 5.5 cm, not 22 cm.","model":"Long is incorrect because the radius is half of the diameter: 11 ÷ 2 = 5.5 cm."},
+        { dok: 2, lo: ["6Gg.02"], twm: ["TWM.07", "TWM.04"], v: [
+          {"type":"claim","who":"Long","ok":false,"at":1,"says":"I can draw many diameters in this circle. They all have different lengths.","fig":{"k":"circle","plain":true,"lines":[{"t":"d","a":0},{"t":"d","a":60},{"t":"d","a":125}]},"reasons":[{"t":"every diameter is 2 radii long, so all the diameters of one circle have the same length."},{"t":"a circle has only one diameter.","why":"Every straight line through the centre, from side to side, is a diameter. You can draw many."},{"t":"a diameter that goes up and down is longer than a diameter that goes across.","why":"Turn the page and the circle looks the same. Every diameter is 2 radii long."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":0},{"t":"r","a":180,"dash":true}]},"step":"How many radii make one diameter? Are all the radii the same length?"},"worked":"Every diameter goes through the centre. It is 2 radii long. All the radii of one circle have the same length, so all the diameters have the same length too.","model":"Long is incorrect because every diameter is 2 radii long, so all the diameters of one circle are the same length."},
           {"type":"claim","who":"Ngoc","ok":false,"at":2,"fig":{"k":"circle","plain":true,"lines":[{"t":"s","a":35}]},"says":"This line starts at the centre of the circle. So it is a radius.","reasons":[{"t":"the line stops before the circumference. A radius must reach the circumference."},{"t":"a radius must go through the centre to the other side.","why":"A line through the centre, from side to side, is a diameter. A radius starts at the centre."},{"t":"every line that starts at the centre is a radius.","why":"A radius must also end on the circumference. Look where this line ends."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":35,"lab":"radius"}]},"step":"A radius starts at the centre. Where must it end?"},"worked":"A radius goes from the centre to the circumference. This line starts at the centre, but it stops inside the circle. So it is not a radius.","model":"Ngoc is incorrect because the line does not reach the circumference."},
-          {"type":"claim","who":"Hanh","ok":true,"at":0,"says":"My compasses are open 6.5 cm. So the circle I draw is 13 cm across.","reasons":[{"t":"the opening is the radius, and the diameter is double the radius: 2 × 6.5 = 13."},{"t":"the circle is as wide as the opening: 6.5 cm across.","why":"The opening goes only from the centre to the circumference. Across the circle is 2 radii."},{"t":"the circle is 6.5 + 2 = 8.5 cm across.","why":"Double means × 2, not + 2."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":0,"lab":"6.5 cm"},{"t":"r","a":180,"lab":"6.5 cm","dash":true}]},"step":"The opening of the compasses is the radius. How far is it across the circle?"},"worked":"The compasses are open 6.5 cm, so the radius is 6.5 cm. Across the circle is the diameter: 2 × 6.5 = 13 cm.","model":"Hanh is correct because the diameter is double the radius: 2 × 6.5 = 13 cm."}
+          {"type":"claim","who":"Hanh","ok":true,"at":0,"says":"The centre of a circle is exactly in the middle of every diameter.","reasons":[{"t":"a diameter is 2 radii, and the 2 radii are the same length. They meet at the centre."},{"t":"the centre is at one end of a diameter.","why":"A line from the centre to the circumference is a radius. A diameter goes through the centre, to the other side."},{"t":"it is only true for the longest diameter.","why":"All the diameters of one circle have the same length. Each one passes through the centre."}],"hint":{"pic":{"k":"circle","lines":[{"t":"r","a":30,"lab":"radius"},{"t":"r","a":210,"lab":"radius","dash":true}]},"step":"A diameter is made of 2 radii. Where do they meet?"},"worked":"A diameter goes through the centre. The centre cuts it into 2 radii, and all the radii of one circle have the same length. So the centre is exactly in the middle of every diameter.","model":"Hanh is correct because every diameter is 2 equal radii that meet at the centre."}
         ] },
         { dok: 3, lo: ["6Gg.02"], twm: ["TWM.07", "TWM.04"], v: [
           {"type":"claim","who":"Yen","ok":true,"at":2,"says":"The longest straight line you can draw inside a circle is always a diameter.","reasons":[{"t":"a line across the circle that misses the centre is always shorter than a line through the centre."},{"t":"a radius is longer than a diameter.","why":"A diameter is 2 radii long, so it is longer than a radius."},{"t":"all straight lines inside a circle have the same length.","why":"A line near the edge of the circle is short. The lines get longer when they come nearer to the centre."}],"hint":{"pic":{"k":"circle","lines":[{"t":"d","a":0,"lab":"diameter"},{"t":"c","a":90,"off":0.45},{"t":"c","a":90,"off":0.8}]},"step":"Draw lines across a circle. Which are longer: lines near the edge or lines near the centre?"},"worked":"Lines across a circle get longer when they come nearer to the centre. The longest one passes through the centre: a diameter. No line inside the circle can be longer.","model":"Yen is correct because every line that misses the centre is shorter than a diameter."},
@@ -264,20 +264,20 @@
         ["Compasses open 7.5 cm. How far across is the circle?", ["15 cm", "7.5 cm", "3.75 cm"]],
         ["Radius 7 cm. Diameter?", ["14 cm", "3.5 cm", "9 cm"]],
         ["Radius 12.5 mm. Diameter?", ["25 mm", "6.25 mm", "14.5 mm"]],
-        ["Diameter 4 m. Radius?", ["2 m", "8 m", "6 m"]],
-        ["A circle fits in a square. Radius 7 cm. Square side?", ["14 cm", "7 cm", "28 cm"]],
-        ["Diameter 40 cm. Radius?", ["20 cm", "80 cm", "38 cm"]],
+        ["Diameter 9 cm. Radius?", ["4.5 cm", "9 cm", "4 cm"]],
+        ["Circle fits exactly in a square. Radius 7 cm. Side?", ["14 cm", "7 cm", "28 cm"]],
+        ["Diameter 18 cm. Radius?", ["9 cm", "18 cm", "11 cm"]],
         ["Compasses open 3.5 cm. How far across is the circle?", ["7 cm", "3.5 cm", "1.75 cm"]],
         ["A circle 13 cm across. Compasses open?", ["6.5 cm", "13 cm", "26 cm"]],
         ["A circle of radius 7.5 cm. Compasses open?", ["7.5 cm", "15 cm", "3.75 cm"]],
-        ["Diameter 13 cm. Radius?", ["6.5 cm", "26 cm", "11 cm"]],
-        ["Diameter 15 cm. Radius?", ["7.5 cm", "30 cm", "13 cm"]],
+        ["Diameter 40 cm. Radius?", ["20 cm", "40 cm", "22 cm"]],
+        ["Diameter 15 cm. Radius?", ["7.5 cm", "15 cm", "7 cm"]],
         ["A circle of radius 7 cm. Compasses open?", ["7 cm", "14 cm", "3.5 cm"]],
-        ["Diameter 9 cm. Radius?", ["4.5 cm", "18 cm", "7 cm"]],
+        ["Diameter 13 cm. Radius?", ["6.5 cm", "13 cm", "6 cm"]],
         ["Half of the diameter is the", ["radius", "centre", "circumference"]],
         ["All radii of one circle are the same length.", ["always true", "sometimes true", "never true"]],
         ["A circle 15 cm across. Compasses open?", ["7.5 cm", "15 cm", "30 cm"]],
-        ["A circle fits in a square. Radius 3.5 cm. Square side?", ["7 cm", "3.5 cm", "14 cm"]],
+        ["Circle fits exactly in a square. Radius 3.5 cm. Side?", ["7 cm", "3.5 cm", "14 cm"]],
         ["The line all the way round a circle is the", ["circumference", "diameter", "radius"]],
         ["5 circles touch in a row. Radius 10 cm. Row length?", ["100 cm", "50 cm", "20 cm"]],
         ["Radius 8.5 cm. Diameter?", ["17 cm", "4.25 cm", "10.5 cm"]],
@@ -294,40 +294,40 @@
         ["Radius 5.5 cm. Diameter?", ["11 cm", "2.75 cm", "7.5 cm"]],
         ["The point of the compasses goes on the", ["centre", "circumference", "diameter"]],
         ["Radius 7.5 cm. Diameter?", ["15 cm", "3.75 cm", "9.5 cm"]],
-        ["Diameter 10 cm. Radius?", ["5 cm", "20 cm", "8 cm"]],
+        ["Diameter 10 cm. Radius?", ["5 cm", "10 cm", "7 cm"]],
         ["Radius 4.5 cm. Diameter?", ["9 cm", "2.25 cm", "6.5 cm"]],
-        ["Diameter 25 mm. Radius?", ["12.5 mm", "50 mm", "23 mm"]],
-        ["Diameter 11 cm. Radius?", ["5.5 cm", "22 cm", "9 cm"]],
+        ["Diameter 7 cm. Radius?", ["3.5 cm", "7 cm", "3 cm"]],
+        ["Diameter 11 cm. Radius?", ["5.5 cm", "11 cm", "5 cm"]],
         ["A circle of radius 3.5 cm. Compasses open?", ["3.5 cm", "7 cm", "1.75 cm"]],
         ["A circle of radius 6.5 cm. Compasses open?", ["6.5 cm", "13 cm", "3.25 cm"]],
-        ["A circle fits in a square. Radius 15 cm. Square side?", ["30 cm", "15 cm", "60 cm"]],
+        ["Circle fits exactly in a square. Radius 15 cm. Side?", ["30 cm", "15 cm", "60 cm"]],
         ["A circle 7 cm across. Compasses open?", ["3.5 cm", "7 cm", "14 cm"]],
         ["A line across a circle that misses the centre is", ["not a diameter", "a diameter", "a radius"]],
         ["4 circles touch in a row. Radius 10 cm. Row length?", ["80 cm", "40 cm", "20 cm"]],
         ["From the centre to the circumference: a", ["radius", "diameter", "circle"]],
         ["Compasses open 6.5 cm. How far across is the circle?", ["13 cm", "6.5 cm", "3.25 cm"]],
-        ["Diameter 20 cm. Radius?", ["10 cm", "40 cm", "18 cm"]],
+        ["Diameter 20 cm. Radius?", ["10 cm", "20 cm", "12 cm"]],
         ["The compasses are opened to the", ["radius", "diameter", "circumference"]],
         ["A circle of radius 1.5 cm. Compasses open?", ["1.5 cm", "3 cm", "0.75 cm"]],
-        ["Diameter 5 cm. Radius?", ["2.5 cm", "10 cm", "3 cm"]],
-        ["A circle fits in a square. Radius 4.5 cm. Square side?", ["9 cm", "4.5 cm", "18 cm"]],
-        ["Which is longer in one circle?", ["the diameter", "the radius", "they are equal"]],
+        ["Diameter 5 cm. Radius?", ["2.5 cm", "5 cm", "2 cm"]],
+        ["Circle fits exactly in a square. Radius 4.5 cm. Side?", ["9 cm", "4.5 cm", "18 cm"]],
+        ["Radius or diameter: which is longer?", ["the diameter", "the radius", "they are equal"]],
         ["Compasses open 4.5 cm. How far across is the circle?", ["9 cm", "4.5 cm", "2.25 cm"]],
         ["4 circles touch in a row. Radius 1.5 cm. Row length?", ["12 cm", "6 cm", "3 cm"]],
         ["Double the radius. You get the", ["diameter", "circumference", "centre"]],
         ["Radius 45 mm. Diameter?", ["90 mm", "22.5 mm", "47 mm"]],
         ["3 circles touch in a row. Radius 2.5 cm. Row length?", ["15 cm", "7.5 cm", "5 cm"]],
-        ["Diameter 30 cm. Radius?", ["15 cm", "60 cm", "28 cm"]],
-        ["A circle fits in a square. Radius 9 cm. Square side?", ["18 cm", "9 cm", "36 cm"]],
+        ["Diameter 30 cm. Radius?", ["15 cm", "30 cm", "17 cm"]],
+        ["Circle fits exactly in a square. Radius 9 cm. Side?", ["18 cm", "9 cm", "36 cm"]],
         ["Radius 25 mm. Diameter?", ["50 mm", "12.5 mm", "27 mm"]],
         ["A circle 14 cm across. Compasses open?", ["7 cm", "14 cm", "28 cm"]],
         ["The tool that draws a circle", ["compasses", "ruler", "protractor"]],
         ["Radius 2.5 cm. Diameter?", ["5 cm", "1.25 cm", "4.5 cm"]],
-        ["Diameter 18 cm. Radius?", ["9 cm", "36 cm", "16 cm"]],
-        ["Diameter 90 mm. Radius?", ["45 mm", "180 mm", "88 mm"]],
+        ["Diameter 90 mm. Radius?", ["45 mm", "90 mm", "47 mm"]],
+        ["Diameter 25 mm. Radius?", ["12.5 mm", "25 mm", "12 mm"]],
         ["Radius 35 cm. Diameter?", ["70 cm", "17.5 cm", "37 cm"]],
         ["Radius 9 cm. Diameter?", ["18 cm", "4.5 cm", "11 cm"]],
-        ["A circle fits in a square. Radius 5 cm. Square side?", ["10 cm", "5 cm", "20 cm"]],
+        ["Circle fits exactly in a square. Radius 5 cm. Side?", ["10 cm", "5 cm", "20 cm"]],
         ["4 circles touch in a row. Radius 2 cm. Row length?", ["16 cm", "8 cm", "4 cm"]],
         ["Across a circle, through the centre: a", ["diameter", "radius", "circumference"]]
         // LIGHTNING-END
