@@ -18,7 +18,9 @@ All questions follow the test specification with new numbers and contexts; none 
 
 ## The app
 
-`release/g5-maths-trail.html` is the whole app in one file: open it in a browser, no server needed.
+On the web: https://times-city-t36-primary-school.github.io/g5-maths-trail/ (GitHub Pages, from `index.html`).
+
+`index.html` (the same as `release/g5-maths-trail.html`) is the whole app in one file: open it in a browser, no server needed.
 
 ## Building and checking
 
