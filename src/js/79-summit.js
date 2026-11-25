@@ -89,7 +89,7 @@
     let sheet = null;
     const back = T.ui.iconButton({ icon: 'back', label: 'Back to the map', kind: 'float', onClick: function () { T.router.go('home'); } });
     const scene = T.hubKit.buildScene({ sceneArt: 'world-summit', badgeArt: 'badge-summit' },
-      el('div', { class: 'hub__bar' }, back, el('span', { class: 'hub__spacer' }), T.ui.soundSwitch({ kind: 'float' })), function () { return sheet; });
+      el('div', { class: 'hub__bar' }, back, el('span', { class: 'hub__spacer' }), T.goto ? T.goto.button({ kind: 'float', here: 'summit' }) : null, T.ui.soundSwitch({ kind: 'float' })), function () { return sheet; });
     const resume = T.store.get(['summit', 'resume'], null);
     const line = !open ? say(S.zip.locked, { n: OPEN_AT - done }, 'think') : hasWon ? say(S.zip.won, null, 'cheer') : e ? say(S.zip.again) : say(S.zip.open, null, 'cheer');
     const C = S.cards;

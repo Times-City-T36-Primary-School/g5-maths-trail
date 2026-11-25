@@ -1,0 +1,35 @@
+/* 37-goto.css - the "Go to" button and its menu (37-goto.js): the trail map, the nine stops and the Summit */
+.topbar__goto + .topbar__sound { margin-left: 0; }
+.goto .dialog__body { margin-top: .25rem; }
+.goto__warn { margin: 0 0 .5rem; padding: .5rem .75rem; border-radius: var(--r-sm); background: var(--gold-soft); color: var(--gold-text); font: 800 var(--fs-small)/1.3 var(--font-body); }
+.goto__list { display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem; max-height: min(62vh, 34rem); overflow-y: auto; padding: .125rem .125rem .375rem; overscroll-behavior: contain; }
+/* wider screens: a wider menu, the stops two by two; "You are here" sits under the name, so nothing is squeezed */
+@media (min-width: 600px) {
+  .dialog.goto { max-width: 46rem; }
+  .goto__list { grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: min(70vh, 40rem); }
+  .goto__list > li:first-child, .goto__list > li:last-child { grid-column: 1 / -1; }
+}
+.goto__item {
+  --btn-drop: var(--edge-sm);
+  display: flex; align-items: center; gap: .75rem; width: 100%; min-height: 3.5rem;
+  padding: .5rem .75rem; border-radius: var(--r-md); text-align: left;
+}
+.goto__num {
+  flex: none; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  background: var(--hue, var(--accent)); color: #FFFFFF; font: 700 1.25rem/1 var(--font-display);
+  box-shadow: inset 0 -.1875rem 0 var(--hue-deep, var(--accent-text));
+}
+.goto__num .icon { width: 1.375rem; height: 1.375rem; }
+.goto__text { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.goto__name { font: 600 1.125rem/1.2 var(--font-display); color: var(--ink); }
+.goto__sub { font: 700 var(--fs-small)/1.25 var(--font-body); color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.goto__here { align-self: flex-start; margin-top: .25rem; padding: .125rem .5rem; border-radius: var(--r-pill); background: var(--gold-soft); color: var(--gold-text); font: 800 .875rem/1.3 var(--font-body); }
+.goto__item.is-here { --btn-face: var(--accent-soft); --btn-line: var(--accent); }
+.goto__item.is-locked .goto__num { filter: grayscale(.6); opacity: .75; }
+/* phones: four things share the top bar, so the icon buttons sit a little closer (still 44 px to tap) and the
+   "3 of 10" count gives way to the title */
+@media (max-width: 479px) {
+  .topbar { gap: .25rem; }
+  .topbar .icon-btn { width: 2.75rem; height: 2.75rem; }
+  .topbar__count { margin-left: .25rem; }
+}

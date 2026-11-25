@@ -76,7 +76,9 @@
     const progressEl = el('div', { class: 'topbar__progress', hidden: true });
     const meterFill = el('span', { class: 'stage__meter-fill' });
     const meter = el('span', { class: 'stage__meter', 'aria-hidden': 'true', hidden: true }, meterFill);
-    const topbar = el('header', { class: 'topbar' }, backButton, titleEl, progressEl, T.ui.soundSwitch({ kind: 'band', cls: 'topbar__sound' }), meter);
+    const gotoButton = T.goto ? T.goto.button({ kind: 'band', cls: 'topbar__goto', here: stop,
+      warn: function () { return step === 'test' && !resultBox ? 'Your answers on this test are not saved if you leave now.' : ''; } }) : null;
+    const topbar = el('header', { class: 'topbar' }, backButton, titleEl, progressEl, gotoButton, T.ui.soundSwitch({ kind: 'band', cls: 'topbar__sound' }), meter);
 
     const strip = T.ui.instruction({ mood: 'happy' });
     const stripBox = el('div', { class: 'stage__strip', hidden: true }, strip.el);
@@ -163,8 +165,13 @@
           progressEl.removeChild(dots);
           text.removeAttribute('aria-hidden');
         }
+        // still too long (a phone, now that the top bar also holds the map button): the title wins; the thin bar
+        // under the top bar still shows how far the child is, and a screen reader still hears "3 of 10"
+        if (!progressEl.querySelector('.dots') && titleEl.scrollWidth > titleEl.clientWidth && !text.classList.contains('sr-only')) {
+          text.classList.add('sr-only');
+        }
       };
-      if (progress.n <= 10) { fit(); requestAnimationFrame(fit); }
+      fit(); requestAnimationFrame(fit);
     }
 
     function setProgress(i, n, o) {

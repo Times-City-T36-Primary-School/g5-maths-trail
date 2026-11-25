@@ -398,7 +398,7 @@
   function mountOpen(info, pack) {
     const total = buildTotal(info);
     let sheet = null;
-    const scene = buildScene(info, el('div', { class: 'hub__bar' }, backButton(), total.el, T.ui.soundSwitch({ kind: 'float' })),
+    const scene = buildScene(info, el('div', { class: 'hub__bar' }, backButton(), total.el, T.goto ? T.goto.button({ kind: 'float', here: info.n }) : null, T.ui.soundSwitch({ kind: 'float' })),
       function () { return sheet; });
     const badge = el('p', { class: 'hub__badge', hidden: true }, T.ui.icon('trophy'), el('span', 'Badge won: ' + info.badge));
     // how far the child is: five parts (one per step), "2 of 5 steps done" and the stars
@@ -471,7 +471,7 @@
       T.ui.plate(T.ui.art(info.badgeArt, { decorative: true }), { shape: 'round bleed', replay: false }),
       el('span', { class: 'hub__lock', 'aria-hidden': 'true' }, T.ui.icon(building ? 'pencil' : 'lock')));
     const top = el('div', { class: 'hub__scene hub__scene--soon' }, disc,
-      el('div', { class: 'hub__bar' }, backButton(), el('span', { class: 'hub__spacer' }), T.ui.soundSwitch({ kind: 'float' })));
+      el('div', { class: 'hub__bar' }, backButton(), el('span', { class: 'hub__spacer' }), T.goto ? T.goto.button({ kind: 'float' }) : null, T.ui.soundSwitch({ kind: 'float' })));
     const sheet = el('div', { class: 'hub__sheet hub__sheet--soon rise' },
       el('div', { class: 'hub__intro' },
         el('p', { class: 'hub__eyebrow' }, 'Stop\u00a0' + info.n + ' · ' + info.world),
